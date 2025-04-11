@@ -1,0 +1,210 @@
+﻿@{
+    ViewData["Title"] = "討論版首頁";
+}
+<h1>討論版首頁(會移除)</h1>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>討論版</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/price_rangs.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-area">
+            <div class="main-header ">
+
+                <div class="header-bottom  header-sticky">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <!-- logo 2 -->
+                                <div class="logo2">
+                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                                </div>
+                                <!-- Main-menu -->
+                                <div class="main-menu text-center d-none d-lg-block">
+                                    <nav>
+                                        <ul id="navigation">
+                                            <li><a href="index.html">Home</a></li>
+                                            <li><a href="categories.html">Categories</a></li>
+                                            <li><a href="about.html">About</a></li>
+                                            <li>
+                                                <a href="#">Pages</a>
+                                                <ul class="submenu">
+                                                    <li><a href="login.html">login</a></li>
+                                                    <li><a href="cart.html">Cart</a></li>
+                                                    <li><a href="checkout.html">Checkout</a></li>
+                                                    <li><a href="book-details.html">book Details</a></li>
+                                                    <li><a href="blog_details.html">Blog Details</a></li>
+                                                    <li><a href="elements.html">Element</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="blog.html">Blog</a></li>
+                                            <li><a href="contact.html">Contect</a></li>
+                                            <li>
+                                                <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
+                                            </li>
+                                            <li>
+                                                <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                            <!-- Mobile Menu -->
+                            <div class="col-xl-12">
+                                <div class="mobile_menu d-block d-lg-none"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    @*Amy---改button成a連結+連結到使用者po文區*@
+    <a asp-controller="DiscussArticleView" asp-action="DiscussPoster"
+       style="wight:500px ;position: fixed ;color:red ; right:229px; top:340px">發表文章</a>
+
+    <main>
+
+        <!--  Hero area End -->
+        <!-- Blog Area Start-->
+        <section class="blog_area section-padding">
+            <div class="container" id="app">
+                <div class="row">
+
+
+                    <article class="blog_item">
+
+                        <div v-for="article in articles.filter(a => a.type === true)" :key="article.articleID" class="blog_details">
+                            <a :href="'/DiscussArticleView/DiscussArticle?id=' + article.articleID">
+                                <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
+                            </a>
+                            <p class="ellipsis-text">
+                                {{article.content}}
+                            </p>
+                            <ul class="blog-info-link">
+                                <li><a href="#"><i class="fa fa-user"></i> {{article.writerID}}</a></li>
+                                <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a href="#" class="page-link" aria-label="Previous">
+                                    <i class="ti-angle-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a href="#" class="page-link">1</a>
+                            </li>
+                            <li class="page-item active">
+                                <a href="#" class="page-link">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a href="#" class="page-link" aria-label="Next">
+                                    <i class="ti-angle-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div>
+
+
+            </div>
+        </section>
+        <!-- Blog Area End -->
+    </main>
+
+    <!-- Scroll Up -->
+    <div id="back-top">
+        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+    </div>
+
+    <!-- JS here -->
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+
+    <!-- Slick-slider , Owl-Carousel ,slick-nav -->
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+
+    <!--wow , counter , waypoint, Nice-select -->
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.counterup.min.js"></script>
+    <script src="./assets/js/waypoints.min.js"></script>
+    <script src="./assets/js/price_rangs.js"></script>
+
+    <!-- contact js -->
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+    <!--  Plugins, main-Jquery -->
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
+</body>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                articles:[],
+
+            }
+        },
+        methods: {
+
+            getArticles() {
+                let self = this;
+                fetch("/api/ArticlesApi/GetArticles").then(x => x.json()).then(res => self.articles = res)
+            },
+
+        },
+        mounted() {
+            this.getArticles();
+        }
+    }).mount("#app")
+
+</script>
+<style>
+    .ellipsis-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* 顯示幾行 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

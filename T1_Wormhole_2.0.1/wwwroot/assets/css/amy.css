@@ -1,0 +1,13 @@
+.publishBtn{
+    color: red;
+}
+
+.publishDiv{
+    background-color: rgb(243, 218, 217);
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.writer{
+    background-color: #fff;
+}

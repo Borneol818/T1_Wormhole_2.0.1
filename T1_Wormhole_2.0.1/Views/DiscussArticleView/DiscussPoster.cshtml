@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "發表文章";
+}
+
+
+
+<body>
+    <!-- Blog Area Start -->
+    <section class="blog_area single-post-area" id="app">
+        <div class="container">
+            <div class="row row-cols-2 ">
+                <div class="col-lg-3">
+                    @* <div class="row row-cols-1"> *@
+                    @*     <div class="form-group col-3"> *@
+                    @*         <button type="submit" class=" btn_1 boxed-btn mt-5">討論版</button> *@
+                    @*     </div> *@
+                    @* </div> *@
+                    <div class="row">
+                        <div class="form-group col-3">
+                            <button type="submit" class="btn_1 boxed-btn">討論版</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="comment-form publishDiv">
+                        <div class="row align-items-center">
+                            <h4 class="form-group col-9">發表文章</h4>
+                            <div class="form-group col-3">
+                                <button @@click="add" class="button button-contactForm btn_1 boxed-btn py-2 my-3">發表</button>
+                            </div>
+                        </div>
+                        <form class="form-contact comment_form" action="#" id="commentForm">
+                            <div class="row">
+                                <div class="col-12 pb-3 box">
+                                    <button type="submit" class="button button-contactForm btn_1 boxed-btn">上傳封面</button>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <input class="form-control writer" style="background-color: rgb(255, 255, 255);" v-model="posterTitle" id="posterTitle" type="text"
+                                               placeholder="標題">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100" style="background-color: rgb(255, 255, 255);" v-model="posterComment" id="posterComment" cols="30" rows="9"
+                                                  placeholder="文章內容"></textarea>
+                                        <textarea v-for="item in signature" class="form-control w-100" style="background-color: rgb(255, 255, 255);" id="signature" cols="30" rows="3" readonly="readonly"
+                                                  placeholder="簽名檔">{{item}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 pb-3 box">
+                                    <button @@click="getSignature" class="button button-contactForm btn_1 boxed-btn">加入簽名檔</button>
+                                    @* <input type="checkbox"  @@click="getSignature" class="button button-contactForm btn_1 boxed-btn"> *@
+                                    @* <lable>加入簽名檔</lable> *@
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Area End -->
+
+
+</body>
+
+<script>
+    Vue.createApp({
+        data(){
+            return{
+                posterTitle:"",
+                posterComment:"",
+                writerId:5,
+                signature:[],
+                signatureString:"",
+            }
+        },
+        methods:{
+            add() {
+                let self = this;
+                let data = {
+                    title: self.posterTitle,
+                    content: self.posterComment,
+                    writerID:self.writerId,
+                    signature:self.signature
+                }
+
+                fetch("/api/Poster/postArticle", {
+                    body: JSON.stringify(data), // must match 'Content-Type' header
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                    method: "POST",
+                }).then((response) => response.json()).then(res => {
+                    if (res) {
+                        alert('ok');
+                    } else {
+                      alert('Not ok')
+                    }
+                }) // 輸出成 json
+            },
+            getSignature()
+            {
+                let self=this;
+                fetch('/api/Poster/getSignature' + '?userID=' + 5, {
+                    method: 'GET'
+                }).then((response) => response.json()).then(res => self.signature=res)
+            },
+            transWords(){
+                let self = this;
+                var output=JSON.parse(JSON.stringify(self.signature))
+                console.log(output);
+            }
+        },
+        mounted() {
+            // this.getSignature();
+            // this.transWords();
+
+        }
+    }).mount("#app");
+</script>

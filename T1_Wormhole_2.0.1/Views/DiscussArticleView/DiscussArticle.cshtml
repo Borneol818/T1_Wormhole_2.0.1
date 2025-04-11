@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "討論版";
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>討論版</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
+
+    <div class="header-bottom  header-sticky">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-12">
+                    <!-- Main-menu -->
+                    <div class="main-menu text-center d-none d-lg-block">
+                        <nav>
+                            <ul id="navigation">
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="categories.html">Categories</a></li>
+                                <li><a href="about.html">About</a></li>
+                                <li>
+                                    <a href="#">Pages</a>
+                                    <ul class="submenu">
+                                        <li><a href="login.html">login</a></li>
+                                        <li><a href="cart.html">Cart</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="book-details.html">book Details</a></li>
+                                        <li><a href="blog_details.html">Blog Details</a></li>
+                                        <li><a href="elements.html">Element</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="blog.html">Blog</a></li>
+                                <li><a href="contact.html">Contect</a></li>
+                                <li>
+                                    <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <textarea type="inputtext" style="width:100%;   height:300px ;"></textarea>
+
+</head>
+<h1>討論內容</h1>
+
+
+<div class="comments-area">
+    <div class="comment-list" id="app">
+        <div class="single-comment justify-content-between d-flex">
+            <div class="user justify-content-between d-flex" v-for="Response in comments">
+                <div class="thumb">
+                    <img src="assets/img/blog/comment_1.png" alt="">
+                </div>
+                <div class="desc">
+                    <p class="comment">
+                        {{ Response.content }}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <h5>
+                                <a href="#">{{ Response.writer }}</a>
+                            </h5>
+                            <p class="date">時間{{ Response.date }}</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
+        <div class="reply-btn">
+            <button href="#"  class="btn-reply text-uppercase">reply</button>
+        </div>
+    </div>
+<script>
+
+    //const News = @Html.Raw(Json.Serialize(Model));
+    Vue.createApp({
+        data(){
+            return {
+                comments:[]
+            }
+        },
+        methods:{
+            
+            Comments(id){
+                    fetch('/api/comments/GetByArticleId'+'?articleId='+id)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.comments = data;
+                    }) 
+            }
+        },
+        mounted() {
+            this.Comments(1);
+        }
+
+    }).mount('#app')
+</script>

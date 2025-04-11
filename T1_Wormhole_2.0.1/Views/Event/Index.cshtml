@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@*Tab Bar*@
+<div id="TabBar" class="TabBar">
+    <ul class="row">
+        <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Obtain" asp-action="Index">Obtain</a></li>
+        
+    </ul>
+</div>
+@*wraaper*@
+<div class="row mt-3 mb-5 wrapper">
+    @*Sider*@
+    @* <div id="SiderBar">
+        <ul>
+            <li></li>
+        </ul>
+    </div> *@
+    @*Context*@
+    <div id="Context">
+        <ul class="row p-5 align-items-center">
+            <li class="col-3 event-box">
+                <a class="event-context" asp-controller="Home" asp-action="Index">
+                    <img class="event-img" src="~/assets/img/post/post_1.jpg" />
+                    新手七日登入簽到
+                </a>
+            </li>
+            <li class="col-3 event-box">
+                <a class="event-context" asp-controller="Home" asp-action="Index">
+                    <img class="event-img" src="~/assets/img/post/post_10.jpg" />
+                    每日小任務
+                </a>
+            </li>
+            <li class="col-3 event-box">
+                <a class="event-context" asp-controller="Home" asp-action="Index">
+                    <img class="event-img" src="~/assets/img/post/post_9.jpg" />
+                    發文成就黨
+                </a>
+            </li>
+            <li class="col-3 event-box">
+                <a class="event-context" asp-controller="Home" asp-action="Index">
+                    <img class="event-img" src="~/assets/img/post/post_7.jpg" />
+                    課長專屬
+                </a>
+            </li>
+            <li class="col-3 event-box">
+                <a class="event-context" asp-controller="Home" asp-action="Index">
+                    <img class="event-img" src="~/assets/img/post/post_5.jpg" />
+                    潛水王
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

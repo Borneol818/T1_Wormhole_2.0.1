@@ -1,0 +1,265 @@
+/*html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}*/
+/*Event Start*/
+body {
+    background-color: black;
+}
+
+.wrapper {
+    background-color:darkgrey;
+    border-radius:60px 50px;
+}
+
+.TabBar{
+    
+    
+}
+
+.TabBar-a {
+    
+    color: #272727;
+    display: block;
+    width: 100%;
+    text-align:center;
+    
+}
+
+.event-context {
+    font-size: 24px;
+    font-weight: 800;
+    color: #0026ff;
+    
+}
+
+.event-box {
+    width: 300px;
+    height: 350px;
+    
+    /*border:1px solid red;*/
+}
+
+.event-img {
+    width: 100%;
+    border-radius: 10%;
+}
+
+/*Event End*/
+
+
+/*Obtain Start*/
+a {
+    text-decoration: none;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+.top {
+    /* border: 2px solid #333; */
+    display: block;
+    height: 75px;
+    /* background-color: #fff; */
+    /* position: absolute; */
+}
+
+    .top a {
+        display: block;
+        height: 70px;
+        width: 70px;
+        /* border: 2px solid #333; */
+        float: inline-start;
+    }
+
+        .top a img {
+            height: 100%
+        }
+
+    .top input {
+        margin: 30px 0;
+        margin-right: 50px;
+        width: 400px;
+        /* background-color: #999; */
+        /* padding: 0 100px; */
+        /* box-sizing: border-box;   */
+    }
+
+    .top ul {
+        float: right;
+    }
+
+    .top li {
+        float: inline-end;
+        /* margin-left: 100px; */
+    }
+
+        .top li a {
+            display: block;
+            align-content: center;
+            text-align: center;
+        }
+
+.content {
+    /* border: 2px solid #333; */
+    /* background-color: #fff; */
+    padding: 10px;
+}
+
+.side {
+    /* border: 2px solid #333; */
+    width: 230px;
+    margin-left: 0;
+    /* padding: 10px; */
+    float: left;
+}
+
+.foremost {
+    /* border: 2px solid #333; */
+    margin-left: 255px;
+    padding: 30px;
+    border-radius: 5%;
+    background-color: #999;
+}
+
+.content ul {
+}
+
+.catgory {
+    /* border: 2px solid #333; */
+    /* align-content: center; */
+    text-align: center;
+    margin: 0 auto 30px;
+    width: 600px;
+}
+
+    .catgory h1 {
+        font-size: 100px;
+    }
+
+    .catgory p {
+        font-size: 20px;
+    }
+
+.recommended {
+    text-align: left;
+    
+    /* margin: 0 auto; */
+    /* padding: 50px 50px; */
+}
+
+    .recommended img {
+        width: 100%;
+    }
+
+    .recommended h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .recommended li {
+        display: inline-block;
+        width: 280px;
+        /*height: 430px;*/
+        border: 1px solid #fff;
+        background-color: #999;
+        padding: 10px;
+        border-radius: 5%;
+        margin: 10px;
+        
+    }
+
+        .recommended li h1 {
+            font-size: 40px;
+            margin-bottom: 0;
+        }
+
+        .recommended li p {
+        }
+
+        .recommended li a {
+            display: block;
+            /* background-color: #666; */
+            width: 50px;
+            padding: 10px;
+            float: inline-end;
+        }
+
+.chatRoom {
+    /* background-color:gray; */
+    display: block;
+    box-sizing: border-box;
+    padding: 10px;
+    /* width: 25%; */
+    /* height: 100%; */
+    /* float: left; */
+    border-radius: 5%;
+    background-color: #999;
+}
+
+    .chatRoom li {
+        margin: 10px 0;
+        padding: 10px 0px 0px;
+        background-color: #999;
+        border-bottom: 1px solid #fff;
+        border-radius: 5%;
+    }
+
+    .chatRoom a {
+    }
+
+    .chatRoom h1 {
+        font-size: 20px;
+    }
+
+    .chatRoom p {
+        font-size: 14px;
+    }
+
+.neighbor {
+    /* background-color: gray; */
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5%;
+    background-color: #999;
+}
+
+    .neighbor h1 {
+        font-size: 20px;
+    }
+
+    .neighbor img {
+        width: 100%;
+        /* margin: 0 auto; */
+    }
+
+a:hover {
+}
+
+li:hover {
+    filter: brightness(1.3) drop-shadow(15px 25px 10px #000);
+}
+
+.neighbor:hover {
+    filter: drop-shadow(15px 25px 10px #000);
+}
+/*Obtain End*/

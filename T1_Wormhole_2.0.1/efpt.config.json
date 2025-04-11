@@ -1,0 +1,97 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "WormHoleContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "T1_Wormhole_2._0._1",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Article]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ArticleResponse]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BO_Managers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Event]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EventObtain]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ForumCoins]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Login]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Obtain]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ObtainStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Participation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Rating]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserStatus]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}
