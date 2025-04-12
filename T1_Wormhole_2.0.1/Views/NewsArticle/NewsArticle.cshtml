@@ -106,8 +106,12 @@
             }
         },
         mounted() {
-            this.Comments(id);
+            
+             var articleId =new URLSearchParams(window.location.search).get('id');
+             
 
+             this.Comments(articleId);
+            
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
         }
 

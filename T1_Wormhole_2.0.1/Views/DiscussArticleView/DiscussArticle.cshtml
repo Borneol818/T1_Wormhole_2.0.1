@@ -103,7 +103,10 @@
             }
         },
         mounted() {
-            this.Comments(1);
+                    var url =new URLSearchParams(window.location.search)
+                    var  articleId=url.get('id');
+
+                    this.Comments(articleId);
         }
 
     }).mount('#app')
