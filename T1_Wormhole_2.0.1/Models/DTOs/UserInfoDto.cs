@@ -13,7 +13,7 @@
 
         public string? Signature { get; set; }
 
-        //public bool Sex { get; set; }
+        public bool Sex { get; set; }
 
     }
 }

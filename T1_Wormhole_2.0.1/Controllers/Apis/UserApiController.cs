@@ -27,7 +27,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             //    Name = x.Name,
             //}).ToList();
 
-            var result = _db.UserInfos.Where(x => x.UserId == id);
+            var result = _db.UserInfos.Where(x => x.UserId == id);            
             return result;
         }
         [HttpGet]
@@ -58,7 +58,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             data.Phone = model.Phone;
             data.Brithday = DateOnly.Parse(model.Birthday);
             data.SignatureLine = model.Signature;
-            //data.Sex = model.Sex;
+            data.Sex = model.Sex;
             //_db.Update(data);
             _db.SaveChanges();
             return true;
