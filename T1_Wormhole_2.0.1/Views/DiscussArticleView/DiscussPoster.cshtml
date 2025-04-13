@@ -54,6 +54,7 @@
                                     @* <input type="checkbox"  @@click="getSignature" class="button button-contactForm btn_1 boxed-btn"> *@
                                     @* <lable>加入簽名檔</lable> *@
                                 </div>
+                                <button @@click="jumpPage" class="button button-contactForm btn_1 boxed-btn">跳轉</button>
                             </div>
                         </form>
                     </div>
@@ -100,6 +101,8 @@
                       alert('Not ok')
                     }
                 }) // 輸出成 json
+
+                
             },
             getSignature()
             {
@@ -112,6 +115,11 @@
                 let self = this;
                 var output=JSON.parse(JSON.stringify(self.signature))
                 console.log(output);
+            },
+            jumpPage(){
+                window.location.href=".";
+                // this.$router('/DiscussArticleView');
+                
             }
         },
         mounted() {
