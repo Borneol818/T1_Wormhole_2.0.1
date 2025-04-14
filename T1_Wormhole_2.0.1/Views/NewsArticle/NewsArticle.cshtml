@@ -107,10 +107,17 @@
         },
         mounted() {
             
-             var articleId =new URLSearchParams(window.location.search).get('id');
-             
+             var url=location.href;
+                 var articleId="";
+                 var str="";
+             if(url.indexOf('?')!=-1){
+                     str=url.split('?');
+                     articleId=str[1].split('=');
+             }
 
-             this.Comments(articleId);
+                 //alert(articleId[1]);
+
+             this.Comments(articleId[1]);
             
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
         }
