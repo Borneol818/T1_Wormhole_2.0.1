@@ -11,11 +11,11 @@
                             <div class="col-lg-3" align="center">
                                 <!-- 大頭貼 -->
                                 <div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
-                                    <img class="img-fluid" :src=`https://localhost:7053/api/User/GetPhoto/${item.userId}?v=${rand}` :title="item.name" />
+                                    <img class="img-fluid" :src=`/api/User/GetPhoto?id=${item.userId}` :title="item.name" />
                                 </div>
                                 <div>
                                     @* <input type="file" /> *@
-                                    <input id="editFile" type="file" class="form-control" @@change="editFileChange($event.target)"  accept="image/*" />
+                                    <input id="editFile" type="file" class="form-control" @@change="editFileChange($event.target)" accept="image/*" />
                                 </div>
                                 <div v-for="item in userstatus">
                                     <h4 style="margin-top: 20px;">LV: {{item.level}}</h4>
@@ -96,7 +96,7 @@
                         <div class="col-lg-3" align="center">
                             <!-- 大頭貼 -->
                             <div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
-                                <img class="img-fluid" :src=`https://localhost:7053/api/User/GetPhoto/${item.userId}?v =${rand}` :title="item.name" />
+                                <img class="img-fluid" :src=`/api/User/GetPhoto?id=${item.userId}` :title="item.name" />
                             </div>
                             <div v-for="item in userstatus">
                                 <h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
@@ -242,11 +242,10 @@
                     // },
                     method:"POST",
                 }).then((response)=>response.json()).then(res=>{
-                    if(res){
+                    if(res){                        
+                        alert('Ok: '+res.data); 
                         self.getAll(self.userId);
-                        alert('Ok: '+res.data);
-                        self.filterEmployees();
-                        self.rand=new Date().getTime(); //用時間控制rand擷取版本
+                        //self.rand=new Date().getTime(); //用時間控制rand擷取版本
                     }else{
                         alert('Not ok')
                     }
@@ -275,11 +274,11 @@
                 }                
             },
             editFileChange(inputTypeFile){
-                    alert(`Change:${inputTypeFile[0].name}`);
+                    alert(`Change:${inputTypeFile.name}`);
                     // let _this=this;
-                    // _this.readURL(inputTypeFile,inputTypeFile.parentElement.previousSibling,$("#saveEdit"));
+                    // _this.readURL(inputTypeFile,inputTypeFile.$("#saveEdit"));
 
-                },
+            },
 
         },
         mounted() {

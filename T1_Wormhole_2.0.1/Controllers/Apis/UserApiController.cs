@@ -5,6 +5,7 @@ using System.Text.Json;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.Models.DTOs;
 
+
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
     [Route("api/User/[Action]")]
@@ -12,9 +13,12 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
     public class UserApiController : ControllerBase
     {
         private readonly WormHoleContext _db;
-        public UserApiController(WormHoleContext db)
+        //private readonly IWebHostEnvironment _env;
+
+        public UserApiController(WormHoleContext db) //IWebHostEnvironment env
         {
             _db = db;
+            //_env = env;
         }
 
         //[HttpGet]
@@ -167,12 +171,12 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             return result;
         }
 
-        [HttpGet("GetPhoto/{id}")]
+        [HttpGet]
         public async Task<FileResult> GetPhoto(int id)
         {
-            string fileName = Path.Combine("wwwroot", "images", "200Test.jpg");
+            string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
             UserInfo e = await _db.UserInfos.FindAsync(id);
-            byte[]? ImageContent = e?.Photo != null ? e.Photo : System.IO.File.ReadAllBytes(fileName);
+            byte[] ImageContent = e?.Photo != null ? e.Photo : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
 
