@@ -66,7 +66,7 @@
         <div class="side">
             <div class="neighbor">
                 <h1 style="font-size:30px">Wallet</h1>
-                <h2 style="text-align:right"><i class="fa-solid fa-coins fa-beat"></i>99999</h2>
+                <h2 style="text-align:right"><i class="fa-solid fa-coins fa-beat"></i>{{coins}}</h2>
 
             </div>
             <ul class="chatRoom">
@@ -166,6 +166,7 @@
         data() {
             return {
                 obtains:[],
+                coins:"",
 
             }
         },
@@ -175,10 +176,17 @@
                 let self = this;
                 fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
             },
+            getCoins(id){
+                let self = this;
+                fetch("/api/ObtainsApi/GetCoins?Userid="+id).then(x => x.json()).then(coins => self.coins = coins)
+
+            }
+            
 
         },
         mounted() {
             this.getObtains();
+            this.getCoins(3);
         }
     }).mount("#app")
 
