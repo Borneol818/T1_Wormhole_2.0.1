@@ -25,6 +25,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [HttpGet]
         public async Task<IEnumerable<UserInfo>> Get(int id)
         {
+            //await updateCoins(id);
             var result = _db.UserInfos.Where(x => x.UserId == id)
                 .Select(e => new UserInfo
                 {
@@ -36,6 +37,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     SignatureLine = e.SignatureLine,
                     Sex = e.Sex,
                     Photo = null,
+                    Wallet = e.Wallet,
                 });
             return result;
         }
@@ -44,6 +46,25 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         {
             var result = _db.UserStatuses.Where(x => x.Id == id);
             return result;
+        }
+
+        [HttpGet]
+        public async Task<int?> updateCoins(int id)
+        {
+            var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放"));                
+            var totalCoins = result.Sum(x => x.CoinAmount);
+            var user =await _db.UserInfos.FindAsync(id);            
+            
+            if (user != null)
+            {                                
+                user.Wallet = totalCoins;
+                await _db.SaveChangesAsync();
+                return user.Wallet;
+            }
+            else
+            {
+                return null;
+            }          
         }
 
         [HttpGet]

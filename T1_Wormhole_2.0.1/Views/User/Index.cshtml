@@ -61,7 +61,7 @@
                                 @* </form> *@
                             </div>
                             <div class="col-lg-4">
-                                <div class="order_box">
+                                <div class="order_box">                                    
                                     <h3 style="margin-bottom: 10px;">Recently Post</h3>
                                     <ul class="list">
                                         <li>
@@ -135,6 +135,10 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="order_box">
+                                <div style="border-bottom:1px solid #333;">
+                                    <label class="col-md-12" style="font-size: 20px;">Wallet</label>
+                                    <a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
+                                </div>
                                 <h3 style="margin-bottom: 10px;">Recently Post</h3>
                                 <ul class="list">
                                     <li>
@@ -178,7 +182,7 @@
         data(){
             return {
                 userinfo:[],
-                userstatus:[],
+                userstatus:[],                
                 name:"",
                 userId:5,
                 phone:"",
@@ -194,6 +198,8 @@
             getAll(id) {
                 let self = this;
                 
+                fetch('/api/User/updateCoins'+'?id='+id).then(x => x.json()).then(res => res);
+
                 fetch('/api/User/Get'+'?id='+id)
                 .then(x => x.json())
                 .then(res => {
@@ -208,6 +214,7 @@
                     item.edit=false;                    
                 });
                 fetch('/api/User/GetStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res);
+                
             },
             edit(userid){                
                 let self = this;

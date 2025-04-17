@@ -14,6 +14,7 @@
         public string? Signature { get; set; }
 
         public bool Sex { get; set; }
+        public int? Wallet { get; set; }
 
     }
 }
