@@ -25,15 +25,19 @@
                 <div class="col-lg-9">
                     <div class="comment-form publishDiv">
                         <div class="row align-items-center">
-                            <h4 class="form-group col-9">發表文章</h4>
+                            <h2 class="form-group col-9">發表文章</h2>
                             <div class="form-group col-3">
-                                <button @@click="add" class="button button-contactForm btn_1 boxed-btn py-2 my-3">發表</button>
+                                <button id="postNewArticle" @@click="add" class="button button-contactForm btn_1 boxed-btn py-2 my-3">發表</button>
                             </div>
                         </div>
                         <form class="form-contact comment_form" action="#" id="commentForm">
                             <div class="row">
                                 <div class="col-12 pb-3 box">
-                                    <button type="submit" class="button button-contactForm btn_1 boxed-btn">上傳封面</button>
+                                    <h3>上傳封面</h3>
+                                    <div style="width:600px; border: 2px solid gray; overflow:hidden;">
+                                        <img id="PreViewCover" class="img-fluid" src=" ~/images/PhotoTest.jpg" title="待上傳" asp-append-version=true />
+                                    </div>
+                                    <input type="file" id="ArticleCoverFile" class="form-control" @@change="ArticleCoverFileChange($event.target)" accept="image/*">
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
@@ -75,31 +79,34 @@
                 writerId:5,
                 signature:[],
                 signatureString:"",
+                //articleCover:"",
+                //rand:1,
             }
         },
         methods:{
-            add() {
-                let self = this;
-                let data = {
-                    title: self.posterTitle,
-                    content: self.posterComment,
-                    writerID:self.writerId,
-                    signature:self.signature
-                }
-
-                fetch("/api/Poster/postArticle", {
-                    body: JSON.stringify(data), // must match 'Content-Type' header
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                    method: "POST",
-                }).then((response) => response.json()).then(res => {
-                    if (res) {
-                        alert('ok');
-                    } else {
-                      alert('Not ok')
-                    }
-                }) // 輸出成 json
+			add() {
+				let self = this;
+				var data = new FormData();
+				data.append("title",self.posterTitle);
+				data.append("content",self.posterComment);
+				data.append("writerId",self.writerId);
+				data.append("signature",self.signatureString);
+                data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
+                alert(JSON.stringify(data));
+				fetch("/api/Poster/postArticle", {
+					body:data, // must match 'Content-Type' header
+					// headers: {
+					//     "content-type": "application/json",
+					// },
+					method: "POST",
+				}).then((response) => response.json()).then(res => {
+					if (res) {
+						alert('ok');
+						//self.rand=new Date().getTime(); //用時間控制rand擷取版本
+					} else {
+					  alert('Not ok')
+					}
+				}) 
             },
             getSignature()
             {
@@ -112,7 +119,33 @@
                 let self = this;
                 var output=JSON.parse(JSON.stringify(self.signature))
                 console.log(output);
-            }
+            },
+            readURL(inputTypeFile,img,btn){
+                if(inputTypeFile.files[0]!=null){
+                    var file=inputTypeFile.files[0];
+                    var allowType="image.*";
+                    if(file.type.match(allowType)){
+                        btn.prop("disabled",false);
+                        var reader=new FileReader();
+                        reader.onload=function(e){
+                            img.src=e.target.result;
+                            img.title=file.name;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    else
+                    {
+                        alert("請選擇圖片檔案");
+                        btn.prop("disabled",true);
+                        inputTypeFile.value="";
+                    }
+                }
+            },
+            ArticleCoverFileChange(inputTypeFile){
+                    //alert(`Change:${inputTypeFile.name}`);
+                    let self=this;
+                    self.readURL(inputTypeFile,inputTypeFile.previousElementSibling.firstElementChild,$("#postNewArticle"));
+            },
         },
         mounted() {
             // this.getSignature();
