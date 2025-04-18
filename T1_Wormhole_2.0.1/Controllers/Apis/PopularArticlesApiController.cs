@@ -20,7 +20,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [HttpGet]
         public List<RatingsDTOs> Get() {
             //得到近期日期文章(暫停)
-            var RecentArticlesID = _db.Articles.Where(x =>new TimeSpan(DateTime.Now.Ticks-x.CreateTime.Ticks).Days <= 7).Select(x => x.ArticleId);
+            //var RecentArticlesID = _db.Articles.Where(x =>new TimeSpan(DateTime.Now.Ticks-x.CreateTime.Ticks).Days <= 7).Select(x => x.ArticleId);
 
 
             var allArticlesID = _db.Articles.Select(x=>x.ArticleId);
