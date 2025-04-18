@@ -3,18 +3,12 @@ using T1_Wormhole_2._0._1.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.Xml;
-<<<<<<< HEAD
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-=======
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
->>>>>>> origin/Borneol
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
@@ -124,7 +118,9 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 CreateTime = Article.CreateTime,
                 Content = Article.Content,
                 WriterID=Article.WriterId,
+              
             };
+
             
             return DTOModel;
         }

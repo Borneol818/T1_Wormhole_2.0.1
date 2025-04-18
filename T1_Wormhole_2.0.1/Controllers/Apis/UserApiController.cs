@@ -67,7 +67,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [HttpGet]
         public  int GetCoins(int id)
         {
-
+            return -1;
             //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
             //{
             //    Id = x.UserId,
