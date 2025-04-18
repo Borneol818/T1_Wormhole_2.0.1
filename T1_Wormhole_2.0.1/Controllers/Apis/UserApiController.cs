@@ -28,7 +28,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             //}).ToList();
 
             var result = _db.UserInfos.Where(x => x.UserId == id);
-            return result;
+            var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
+            return result ;
         }
         [HttpGet]
         public IEnumerable<UserStatus> GetStatus(int id)
@@ -36,7 +37,20 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var result = _db.UserStatuses.Where(x => x.Id == id);
             return result;
         }
+        [HttpGet]
+        public  int GetCoins(int id)
+        {
 
+            //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
+            //{
+            //    Id = x.UserId,
+            //    Name = x.Name,
+            //}).ToList();
+
+            //var result = _db.UserInfos.Where(x => x.UserId == id);
+            var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
+            return usercoins;
+        }
         //[HttpGet]
         //public string Get(int id)
         //{

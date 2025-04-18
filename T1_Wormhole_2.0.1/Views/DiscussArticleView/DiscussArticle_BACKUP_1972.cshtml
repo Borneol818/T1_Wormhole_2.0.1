@@ -52,6 +52,7 @@
 
 
 </head>
+<<<<<<< HEAD
 
 
 
@@ -61,12 +62,11 @@
 	@*amy新增，之後請負責人放至適合位置*@
 	<button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
 
+	<h1>討論內容</h1>
+
 
 	<div class="comments-area">
-		<div class="comment-list" v-for="articles in articles">
-        <h1>{{articles.content}}</h1>
-        <p>喜歡:{{Ratingcount}}</p>
-        <p>不喜歡:{{nRatingcount}}</p>
+		<div class="comment-list">
 			<div class="single-comment justify-content-between d-flex">
 				<div class="user justify-content-between d-flex" v-for="Response in comments">
 					<div class="thumb">
@@ -105,15 +105,12 @@
 				return {
 					comments:[],
 					testID:6,//測試用id，功能建置完成後刪除
-					Ratingcount:0,
-                    nRatingcount:0,
-                    articles:[],
 				}
 			},
 			methods:{
 
 				Comments(id){
-						fetch('/api/Comments/GetByArticleId?articleId='+id)
+						fetch('/api/comments/GetByArticleId'+'?articleId='+id)
 						.then(response => response.json())
 						.then(data => {
 							this.comments = data;
@@ -129,8 +126,73 @@
 							}).then(() => {window.location.href="/DiscussArticleView/DiscussPoster";})
 				},
 				/*--------------進行文章編輯--------------*/
+			},
+			mounted() {
+				this.Comments(1);
+			}
 
-				getArticles() {
+		}).mount('#app')
+	</script>
+=======
+
+
+
+<div class="comments-area">
+    <div class="comment-list" id="app" v-for="articles in articles">
+        <h1>{{articles.content}}</h1>
+        <p>喜歡:{{Ratingcount}}</p>
+        <p>不喜歡:{{nRatingcount}}</p>
+        <div class="single-comment justify-content-between d-flex">
+            <div class="user justify-content-between d-flex" v-for="Response in comments">
+                <div class="thumb">
+                    <img src="assets/img/blog/comment_1.png" alt="">
+                </div>
+                <div class="desc">
+                    <p class="comment">
+                        {{ Response.content }}
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <h5>
+                                <a href="#">{{ Response.writer }}</a>
+                            </h5>
+                            <p class="date">時間{{ Response.date }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
+        <div class="reply-btn">
+            <button href="#" class="btn-reply text-uppercase">reply</button>
+        </div>
+    </div>
+    <script>
+
+        //const News = @Html.Raw(Json.Serialize(Model));
+        Vue.createApp({
+            data(){
+                return {
+                    comments:[],
+                    Ratingcount:0,
+                    nRatingcount:0,
+                    articles:[],
+                }
+            },
+            methods:{
+
+                Comments(id){
+                        fetch('/api/Comments/GetByArticleId?articleId='+id)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.comments = data;
+                        })
+                },
+
+
+
+              getArticles() {
                 let self = this;
                 fetch('/api/ArticlesApi/GetArticles')
                 .then(x => x.json())
@@ -150,9 +212,9 @@
                         })
 
                 }
-			},
-			mounted() {
-				var url=location.href;
+            },
+            mounted() {
+                     var url=location.href;
                      var articleId="";
                      var str="";
                      if(url.indexOf('?')!=-1){
@@ -164,7 +226,8 @@
                      this.Comments(articleId[1]);
                      this.Ratingcount(articleId[1]);
                      this.getArticles(articleId[1]);
-			}
+            }
 
-		}).mount('#app')
-	</script>
+        }).mount('#app')
+    </script>
+>>>>>>> origin/Sam
