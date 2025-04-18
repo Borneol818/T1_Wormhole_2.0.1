@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
