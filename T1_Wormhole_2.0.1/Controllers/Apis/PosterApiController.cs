@@ -3,6 +3,9 @@ using T1_Wormhole_2._0._1.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.Xml;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
@@ -35,6 +38,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             WriterId = DTOModel.WriterID,//讀取使用者ID
                         });
                         _db.SaveChanges();
+
                         return true;
                     }
                     else
@@ -48,6 +52,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             WriterId = DTOModel.WriterID,//讀取使用者ID
                         });
                         _db.SaveChanges();
+
+                        //return RedirectToAction("Index", "DiscussArticleView");
                         return true;
                     }
                 }
@@ -64,10 +70,84 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
 
         }
 
+        //呼叫簽名檔
         public IEnumerable<string> getSignature(int userID)
         {
             var result = _db.UserInfos.Where(x => x.UserId == userID).Select(x => x.SignatureLine);
             return result;
         }
+
+
+        //編輯文章，將ID儲存於LocalStorage，待轉頁面後呼叫
+        // GET: api/Poster/GetEditArticle/6
+        [HttpGet("{id}")]
+        public async Task<AddDiscussArticlesDTO> GetEditArticle(int id)
+        {
+            var Article = await _db.Articles.FindAsync(id) ;
+
+            if (Article == null)
+            {
+                return null;
+            }
+            //暫不做簽名檔處理(暫時視為原簽名檔是文章內容一部份)
+            //(需要在資料庫article新增簽名檔欄位之後讀取處理)
+            AddDiscussArticlesDTO DTOModel = new AddDiscussArticlesDTO
+            {
+                Title = Article.Title,
+                Type = Article.Type,//讀取是否為使用者
+                CreateTime = Article.CreateTime,
+                Content = Article.Content,
+                WriterID=Article.WriterId,
+            };
+            
+            return DTOModel;
+        }
+
+        //api/Poster/EditArticle/6
+        //編輯文章，送出編輯內容
+        [HttpPut("{id}")]
+        public async Task<string> EditArticle(int id, AddDiscussArticlesDTO DTOModel)
+        {
+            var Article = await _db.Articles.FindAsync(id);
+
+            if (DTOModel.Signature!=null&&DTOModel.Signature.Length >= 1) 
+            {
+                Article.Title = DTOModel.Title;
+                Article.Content = DTOModel.Content + DTOModel.Signature[0];
+            } 
+            else 
+            {
+                Article.Title = DTOModel.Title;
+                Article.Content= DTOModel.Content;
+            }
+               
+
+            _db.Entry(Article).State = EntityState.Modified;
+
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ArticleExists(id))
+                {
+                    return "文章修改失敗";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return "文章修改成功";
+        }
+
+        //確保article存在用
+        private bool ArticleExists(int id)
+        {
+            return _db.Articles.Any(e => e.ArticleId == id);
+        }
+
     }
 }
