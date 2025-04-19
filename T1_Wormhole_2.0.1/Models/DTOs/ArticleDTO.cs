@@ -11,7 +11,6 @@
         public int? ReleaseBy { get; set;}
 
         public IFormFile? ArticleCover { get; set; }
-
-
+        public byte[] Photo { get; internal set; }
     }
 }

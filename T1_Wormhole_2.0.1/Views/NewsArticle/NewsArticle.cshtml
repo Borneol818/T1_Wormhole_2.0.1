@@ -55,7 +55,7 @@
     <h1>{{articles.title}}</h1>
 
     <p>{{articles.content}}</p>
-    <img :src=`/api/User/GetPhoto?id=${item.userId}&?v=${rand}` />
+    <img :src=`/api/ArticlesApi/GetArticles?id =${articles.ArticleID}` />
     <div class="comments-area">
         <div class="comment-list">
             <p>喜歡:{{ ratingcount.positive }}</p>
