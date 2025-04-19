@@ -143,7 +143,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
 
             //_db.Update(data);
             await _db.SaveChangesAsync();
-            return (data.ToString());
+            return "修改成功";
         }
     }
 }
