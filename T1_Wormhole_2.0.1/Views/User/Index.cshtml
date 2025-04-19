@@ -53,7 +53,7 @@
                                               v-model="signature"></textarea>
                                 </div>
                                 <div style="margin-top: 20px; display: flex; justify-content: center;">
-                                    <button id="saveEdit" class="submit-btn" @@click="editInfo(item)">Save</button>
+                                    <button type="button" id="saveEdit" class="submit-btn" @@click="editInfo">Save</button>
                                 </div>
                                 <div style="margin-top: 20px; display: flex; justify-content: center;">
                                     <button class="btn btn-primary" @@click="cancel">Cancel</button>
@@ -250,11 +250,12 @@
                     //     "content-type":"multipart/form-data",
                     // },
                     method:"POST",
-                }).then((response)=>response.json()).then(res=>{
+                }).then(res=>{
                     if(res){                        
                         alert('Ok: '+res.data); 
                         self.getAll(self.userId);
                         self.rand=new Date().getTime(); //用時間控制rand擷取版本
+                        self.userinfo[0].edit=false;
                     }else{
                         alert('Not ok')
                     }
