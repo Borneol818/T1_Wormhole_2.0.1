@@ -25,7 +25,6 @@
                 <div class="col-lg-9">
                     <div class="comment-form publishDiv">
                         <div class="row align-items-center">
-<<<<<<< HEAD
                             <h4 class="form-group col-6">發表文章</h4>
                             <div class="form-group col-3">
                                 <button @@click="jumpToDiscussArticleView" class="button button-contactForm btn_1 boxed-btn py-2 my-3 ">取消編輯</button>
@@ -33,12 +32,7 @@
                             
                             <div class="form-group col-3">
                                 <button v-if="EditMode" @@click="putEditArticle" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-                                <button v-else="EditMode" @@click="add" class="button button-contactForm btn_1 py-2 my-3">發表</button>
-=======
-                            <h2 class="form-group col-9">發表文章</h2>
-                            <div class="form-group col-3">
-                                <button id="postNewArticle" @@click="add" class="button button-contactForm btn_1 boxed-btn py-2 my-3">發表</button>
->>>>>>> origin/Borneol
+                                <button id="postNewArticle" v-else="EditMode" @@click="add" class="button button-contactForm btn_1 py-2 my-3">發表</button>
                             </div>
                         </div>
                         <form class="form-contact comment_form" action="#" id="commentForm">
@@ -91,45 +85,12 @@
                 writerId:5,
                 signature:[],
                 signatureString:"",
-<<<<<<< HEAD
                 EditMode:false,
                 EditId:0,
             }
         },
         methods:{
             /*------------發表文章-----------*/
-            add() {
-                let self = this;
-                let data = {
-                    title: self.posterTitle,
-                    content: self.posterComment,
-                    writerID:self.writerId,
-                    signature:self.signature
-                }
-
-                fetch("/api/Poster/postArticle", {
-                    body: JSON.stringify(data), // must match 'Content-Type' header
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                    method: "POST",
-                }).then((response) => response.json()).then(res => {
-                    if (res) {
-                        //發表成功後到文章列
-                        alert('文章發表成功');
-                        window.location.href = "/DiscussArticleView";
-                    } else {
-                        //發表失敗後到重整頁面
-                      alert('文章發表失敗，請重新輸入')
-                      window.location.href = "/DiscussArticleView/DiscussPoster"
-                    }
-                }) // 輸出成 json
-=======
-                //articleCover:"",
-                //rand:1,
-            }
-        },
-        methods:{
 			add() {
 				let self = this;
 				var data = new FormData();
@@ -153,7 +114,6 @@
 					  alert('Not ok')
 					}
 				}) 
->>>>>>> origin/Borneol
             },
             /*------------發表文章-----------*/
 
@@ -176,6 +136,10 @@
                                 // alert(JSON.stringify(data));
                                 self.posterTitle=data.title;//雙向繫結，自動變化內文
                                 self.posterComment=data.content;
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/Sam
                                 localStorage.removeItem("EditArticleId");
                             }
                     }
@@ -228,13 +192,11 @@
                 var output=JSON.parse(JSON.stringify(self.signature))
                 console.log(output);
             },
-<<<<<<< HEAD
             jumpToDiscussArticleView(){
                 fetch('/DiscussArticleView/Index' , {
                     method: 'GET'
                 }).then(() => {window.location.href="/DiscussArticleView";})
-            }
-=======
+            },
             readURL(inputTypeFile,img,btn){
                 if(inputTypeFile.files[0]!=null){
                     var file=inputTypeFile.files[0];
@@ -261,7 +223,6 @@
                     let self=this;
                     self.readURL(inputTypeFile,inputTypeFile.previousElementSibling.firstElementChild,$("#postNewArticle"));
             },
->>>>>>> origin/Borneol
         },
         mounted() {
             // this.getSignature();

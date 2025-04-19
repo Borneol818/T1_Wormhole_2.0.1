@@ -1,0 +1,155 @@
+﻿<body>
+    <!-- header end -->
+    <main class="login-bg">
+        <!-- Register Area Start -->
+        <div class="register-form-area" id="app">
+            <div class="register-form text-center">
+                <!-- Login Heading -->
+                <div class="register-heading">
+                    <span>Sign Up</span>
+                    <p>Create your account to get full access</p>
+                </div>
+                <form action="/Account/Register" method="post">
+                <!-- Single Input Fields -->
+                    <div class="input-box" style="margin-bottom:20px;">
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>Username</label>
+                            <input type="text" name="Account" v-model="account" @@blur="checkAccount" placeholder="Enter username" style="margin-bottom: 10px;" minlength="4" maxlength="20">
+                            <label v-show="isAccountAvailable" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Username</label>
+                            <label v-show="isExistAccount" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Username already taken</label>
+                        </div>
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>Email Address</label>
+                            <input type="email" name="Email" v-model="Email" @@input="checkEmailFormat" placeholder="Enter email address" style="margin-bottom: 10px;">
+                            <label v-show="isEmailFormat" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Email Format</label>
+                            <label v-show="isNotEmailFormat" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Incorrect Email format</label>
+                        </div>
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>Password</label>
+                            <input type="password" name="Password" v-model="Password" @@input="checkPassword" placeholder="Enter Password" style="margin-bottom: 10px;" minlength="8" maxlength="20">
+                            <label v-show="isValidPassword" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Password</label>
+                            <label v-show="isInValidPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Invalid Password</label>
+                        </div>
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>Confirm Password</label>
+                            <input type="password" name="ConfirmPassword" v-model="ConfirmPassword" @@input="checkConfirmPassword" placeholder="Confirm Password" style="margin-bottom: 10px;">
+                            <label v-show="isMatchPassword" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Password Match</label>
+                            <label v-show="isNotMatchPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Password Is Not Match</label>
+                        </div>
+                    </div>
+                
+                    <!-- form Footer -->
+                    <div class="register-footer">
+<<<<<<< HEAD
+                        <p> Already have an account? <a href="/Account/Login"> Login</a> here</p> @* 修改連結內容 *@
+=======
+                        <p> Already have an account? <a href="login.html"> Login</a> here</p>
+>>>>>>> origin/Sam
+                        <button v-bind:disabled="!formIsValid" class="submit-btn3">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Register Area End -->
+    </main>
+
+</body>
+
+<script>
+     Vue.createApp({
+        data() {
+            return {
+                account: '',
+                isAccountAvailable: false,
+                isExistAccount: false,
+                Email:'',
+                isEmailFormat: false,
+                isNotEmailFormat: false,
+                Password:'',
+                isValidPassword: false,
+                isInValidPassword: false,
+                ConfirmPassword:'',
+                isMatchPassword: false,
+                isNotMatchPassword: false,
+            };
+        },
+        methods: {
+            checkAccount() {
+                let self = this;
+                self.isAccountAvailable = false;
+                self.isExistAccount = false;
+
+                if (self.account.length < 4) {
+                    return;
+                }
+
+                fetch(`/api/AccountApi/GetAccount?Account=${self.account}`)
+                .then(response => response.json())
+                .then(data => {
+                    self.isAccountAvailable = data;
+                    self.isExistAccount = !data;
+                })
+                .catch(error => {
+                    console.log('Error checking account:', error);
+                });
+            },
+            checkEmailFormat(){
+                let self = this;
+                if (self.Email == '') {
+                    self.isEmailFormat = false;
+                    self.isNotEmailFormat = false;
+                    return;
+                }
+                let emailRule = /^\w+((-\w+)|(\.\w+))*\@@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+                self.isEmailFormat = emailRule.test(self.Email);
+                self.isNotEmailFormat = !self.isEmailFormat;
+            },
+            checkPassword(){
+                let self = this;
+                if (self.Password == '') {
+                    self.isValidPassword = false;
+                    self.isInValidPassword = false;
+                    return;
+                }
+
+                if (self.Password.length < 8){
+                    self.isValidPassword = false;
+                    self.isInValidPassword = true;
+                }
+                else {
+                    self.isValidPassword = true;
+                    self.isInValidPassword = false;
+                }
+            },
+            checkConfirmPassword(){
+                let self = this;
+                if (self.ConfirmPassword == '') {
+                    self.isMatchPassword = false;
+                    self.isNotMatchPassword = false;
+                    return;
+                }
+                if(self.Password == self.ConfirmPassword)
+                {
+                    self.isMatchPassword = true;
+                    self.isNotMatchPassword = false;
+                }
+                else{
+                    self.isMatchPassword = false;
+                    self.isNotMatchPassword = true;
+                }
+            }
+        },
+        computed:{
+            formIsValid() {
+                let self = this;
+                return self.isAccountAvailable &&
+                       self.isEmailFormat &&
+                       self.isValidPassword &&
+                       self.isMatchPassword;
+            }
+        },
+        mounted() {
+
+        }
+    }).mount("#app")
+</script>

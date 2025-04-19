@@ -25,18 +25,20 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [HttpGet]
         public async Task<IEnumerable<UserInfo>> Get(int id)
         {
-<<<<<<< HEAD
 
             //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
             //{
             //    Id = x.UserId,
             //    Name = x.Name,
             //}).ToList();
-
-            var result = _db.UserInfos.Where(x => x.UserId == id);
-            var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
-            return result ;
-=======
+            
+            //---------sam變更(封存)----------
+            //amy:看起來寫到相同userCoin功能
+            // var result = _db.UserInfos.Where(x => x.UserId == id);
+            // var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
+            // return result ;
+            //---------sam變更(封存)----------
+            
             //await updateCoins(id);
             var result = _db.UserInfos.Where(x => x.UserId == id)
                 .Select(e => new UserInfo
@@ -52,7 +54,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Wallet = e.Wallet,
                 });
             return result;
->>>>>>> origin/Borneol
         }
         [HttpGet]
         public async Task<IEnumerable<UserStatus>> GetStatus(int id)
@@ -60,21 +61,27 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var result = _db.UserStatuses.Where(x => x.Id == id);
             return result;
         }
+
+        //---------sam變更(封存)----------
+            //amy:看起來寫到相同userCoin功能
         [HttpGet]
         public  int GetCoins(int id)
         {
-
-<<<<<<< HEAD
+            return -1;
             //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
             //{
             //    Id = x.UserId,
             //    Name = x.Name,
             //}).ToList();
 
+            
             //var result = _db.UserInfos.Where(x => x.UserId == id);
-            var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
-            return usercoins;
+            // var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
+            // return usercoins;
+            
         }
+        //---------sam變更(封存)----------
+
         //[HttpGet]
         //public string Get(int id)
         //{
@@ -82,7 +89,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         //    string? imageUrl = p?.Photo;
         //    return imageUrl;
         //}
-=======
         [HttpGet]
         public async Task<int?> updateCoins(int id)
         {
@@ -110,7 +116,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             byte[] ImageContent = e?.Photo != null ? e.Photo : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
->>>>>>> origin/Borneol
 
         [HttpPost]
         public async Task<string> Edit(UserInfoDto model)
@@ -138,7 +143,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
 
             //_db.Update(data);
             await _db.SaveChangesAsync();
+<<<<<<< HEAD
+            return "修改成功";
+=======
             return (data.ToString());
+>>>>>>> origin/Sam
         }
     }
 }

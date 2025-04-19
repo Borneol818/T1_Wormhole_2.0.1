@@ -1,0 +1,335 @@
+﻿<main>
+    <!-- Hero area Start-->
+    <!--  Hero area End -->
+    <!--? Checkout Area Start-->
+    <section class="checkout_area section-padding">
+        <div id="app" class="container">
+            <div class="billing_details">
+                <div class="row" v-for="item in userinfo">
+                    <template v-if="item.edit==true">
+                        <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                            <div class="col-lg-3" align="center">
+                                <!-- 大頭貼 -->
+                                <div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
+                                    <img id="preView" class="img-fluid" :src=`/api/User/GetPhoto?id=${item.userId}&?v=${rand}` :title="item.name" />
+                                </div>
+                                <div>
+                                    @* <input type="file" /> *@
+<<<<<<< HEAD
+                                    <input id="editFile" type="file" class="form-control" name="photo" @@change="editFileChange($event.target)" style="width:200px;" accept="image/*" />
+=======
+                                    <input id="editFile" type="file" class="form-control" @@change="editFileChange($event.target)" style="width:200px;" accept="image/*" />
+>>>>>>> origin/Sam
+                                </div>
+                                <div v-for="item in userstatus">
+                                    <h4 style="margin-top: 20px;">LV: {{item.level}}</h4>
+                                </div>
+                                <div>
+                                    <p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Achievement</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <h3>User Profile</h3>
+                                @* <form class="row contact_form" action="#" method="post" novalidate="novalidate" v-for="item in userinfo"> *@
+                                <div class="col-md-10 form-group p_star">
+<<<<<<< HEAD
+                                    <input type="text" class="form-control" name="name" v-model="name" placeholder="Username" />
+                                    @* <span class="placeholder" data-placeholder="Username"></span>*@
+                                </div>
+                                <div class="col-md-5 form-group p_star">
+                                    <input type="text" class="form-control" name="phone" v-model="phone" placeholder="Phone number" />
+                                    @* <span class="placeholder" data-placeholder="Phone number"></span> *@
+                                </div>
+                                <div class="col-md-5 form-group p_star">
+                                    <input type="text" class="form-control" name="nickname" v-model="nickname" placeholder="nickname" />
+                                    @* <span class="placeholder" data-placeholder="nickname"></span> *@
+                                </div>
+                                <div class="col-md-10 form-group p_star">
+                                    <select class="country_select" name="sex" v-model="sex">
+=======
+                                    <input type="text" class="form-control" v-model="name" placeholder="Username" />
+                                    @* <span class="placeholder" data-placeholder="Username"></span>*@
+                                </div>
+                                <div class="col-md-5 form-group p_star">
+                                    <input type="text" class="form-control" v-model="phone" placeholder="Phone number" />
+                                    @* <span class="placeholder" data-placeholder="Phone number"></span> *@
+                                </div>
+                                <div class="col-md-5 form-group p_star">
+                                    <input type="text" class="form-control" v-model="nickname" placeholder="nickname" />
+                                    @* <span class="placeholder" data-placeholder="nickname"></span> *@
+                                </div>
+                                <div class="col-md-10 form-group p_star">
+                                    <select class="country_select" v-model="sex">
+>>>>>>> origin/Sam
+                                        <option :value="true">Male</option>
+                                        <option :value="false">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-10 form-group p_star">
+<<<<<<< HEAD
+                                    <input placeholder="Birthday" type="text" name="birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="birthday" />
+=======
+                                    <input placeholder="Birthday" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="birthday" />
+>>>>>>> origin/Sam
+                                </div>
+                                <div class="col-md-10 form-group">
+                                    <textarea class="form-control" name="message" id="message" rows="1" placeholder="Edit Your Own Signature"
+                                              v-model="signature"></textarea>
+                                </div>
+                                <div style="margin-top: 20px; display: flex; justify-content: center;">
+<<<<<<< HEAD
+                                    <button id="saveEdit" type="button" class="btn btn-primary" @@click="editInfo">Save</button>
+=======
+                                    <button id="saveEdit" class="submit-btn" @@click="editInfo(item)">Save</button>
+>>>>>>> origin/Sam
+                                </div>
+                                <div style="margin-top: 20px; display: flex; justify-content: center;">
+                                    <button class="btn btn-primary" @@click="cancel">Cancel</button>
+                                </div>
+                                @* </form> *@
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="order_box">                                    
+                                    <h3 style="margin-bottom: 10px;">Recently Post</h3>
+                                    <ul class="list">
+                                        <li>
+                                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                        </li>
+                                    </ul>
+                                    <a href="#" style="font-size: 16px; color: blue;">Show More</a>
+                                    <h3 style="margin-bottom: 10px; margin-top:20px;">Articles</h3>
+                                    <ul class="list">
+                                        <li>
+                                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                        </li>
+                                    </ul>
+                                    <a href="#" style="font-size: 16px; color: blue;">Show More</a>
+                                </div>
+                            </div>
+                        </form>
+                    </template>
+                    <template v-else>
+                        <div class="col-lg-3" align="center">
+                            <!-- 大頭貼 -->
+                            <div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
+                                <img class="img-fluid" :src=`/api/User/GetPhoto?id=${item.userId}&?v=${rand}` :title="item.name" />
+                            </div>
+                            <div v-for="item in userstatus">
+                                <h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
+                            </div>
+                            <div>
+                                <p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Achievement</p>
+                            </div>
+                            @* <div> *@
+                            @*     <button class="submit-btn3" style="width: 160px;height: 60px; font-size: 16px; background-color:rgb(255, 22, 22); border: 0px; padding: 10px 20px;">Add User on WormHole</button> *@
+                            @* </div> *@
+                        </div>
+                        <div class="col-lg-5">
+                            <h3>User Profile</h3>
+                            <div class="row contact_form">
+                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                                    <label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
+                                    <label class="col-md-10" style="font-size: 16px;">{{item.name}}</label>
+                                </div>
+                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                                    <label for="" class="col-md-10" style="font-size: 16px;">性別</label>
+                                    <label for="" class="col-md-10" style="font-size: 16px;">{{item.sex}}</label>
+                                </div>
+                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                                    <label for="" class="col-md-10" style="font-size: 16px;">生日</label>
+                                    <label for="" class="col-md-10" style="font-size: 16px;">{{item.brithday}}</label>
+                                </div>
+                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                                    <label for="" class="col-md-10" style="font-size: 16px;">簽名檔</label>
+                                    <label for="" class="col-md-10" style="font-size: 16px;">{{item.signatureLine}}</label>
+                                </div>
+                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                                    @* <a class="nav-link text-dark" asp-controller="User" asp-action="Index">編輯資訊</a> *@
+                                    <button class="btn btn-primary" @@click="edit(item.userId)">編輯資訊</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="order_box">
+                                <div style="border-bottom:1px solid #333;">
+                                    <label class="col-md-12" style="font-size: 20px;">Wallet</label>
+                                    <a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
+                                </div>
+                                <h3 style="margin-bottom: 10px;">Recently Post</h3>
+                                <ul class="list">
+                                    <li>
+                                        <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                    </li>
+                                </ul>
+                                <a href="#" style="font-size: 16px; color: blue;">Show More</a>
+                                <h3 style="margin-bottom: 10px; margin-top:20px;">Articles</h3>
+                                <ul class="list">
+                                    <li>
+                                        <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                                    </li>
+                                </ul>
+                                <a href="#" style="font-size: 16px; color: blue;">Show More</a>
+                            </div>
+                        </div>                        
+                    </template>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--End Checkout Area -->
+
+</main>
+
+<script>
+    
+    Vue.createApp({
+        data(){
+            return {
+                userinfo:[],
+                userstatus:[],                
+                name:"",
+                userId:5,
+                phone:"",
+                nickname:"",  
+                birthday:"",
+                //photo:"",
+                signature:"",
+                sex:true,
+                rand:1,
+            };
+        },
+        methods: {
+            getAll(id) {
+                let self = this;
+                
+                fetch('/api/User/updateCoins'+'?id='+id).then(x => x.json()).then(res => res);
+
+                fetch('/api/User/Get'+'?id='+id)
+                .then(x => x.json())
+                .then(res => {
+                    self.userinfo = res;                     
+                    var item=self.userinfo[0];
+                    if(item.sex==true){
+                        item.sex="男性";
+                    }
+                    else{
+                        item.sex="女性";
+                    }
+                    item.edit=false;                    
+                });
+                fetch('/api/User/GetStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res);
+                
+            },
+            edit(userid){                
+                let self = this;
+                var item=self.userinfo[0];
+                //alert(JSON.stringify(item));                
+                if(item.userId== userid){
+                    item.edit=true;                    
+                };                
+            },
+                cancel(){
+                let self = this;
+                var item=self.userinfo[0];
+                //alert(JSON.stringify(item));
+                if(item.edit==true){
+                    item.edit=false;
+                };
+            },
+            editInfo(){
+                let self=this;
+                var data=new FormData();
+				data.append("userId",self.userId);
+                data.append("name",self.name);
+				data.append("phone",self.phone);
+				data.append("nickname",self.nickname);
+				data.append("birthday",self.birthday);
+				data.append("signature",self.signature);
+                data.append("sex",self.sex);
+				data.append("photo",document.querySelector("#editFile").files[0]);
+                //alert(JSON.stringify(data))
+                fetch('/api/User/Edit',{
+                    body:data,
+                    // headers:{
+                    //     "content-type":"multipart/form-data",
+                    // },
+                    method:"POST",
+<<<<<<< HEAD
+                }).then(res=>{
+                    if(res){                        
+                        //alert('Ok: '+res.data); 
+                        self.getAll(self.userId);
+                        self.rand=new Date().getTime(); //用時間控制rand擷取版本
+                        self.userinfo[0].edit=false;
+=======
+                }).then((response)=>response.json()).then(res=>{
+                    if(res){                        
+                        alert('Ok: '+res.data); 
+                        self.getAll(self.userId);
+                        self.rand=new Date().getTime(); //用時間控制rand擷取版本
+>>>>>>> origin/Sam
+                    }else{
+                        alert('Not ok')
+                    }
+                });
+                
+            },
+            readURL(inputTypeFile,img,btn){
+                if(inputTypeFile.files[0]!=null){
+					var file=inputTypeFile.files[0];
+                    var allowType="image.*";
+                    if(file.type.match(allowType)){
+                        btn.prop("disabled",false);
+                        var reader=new FileReader();
+                        reader.onload=function(e){
+                            img.src=e.target.result;
+                            img.title=file.name;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    else
+                    {
+						alert("請選擇圖片檔案");
+						btn.prop("disabled",true);
+                        inputTypeFile.value="";
+                    }
+                }                
+            },
+
+            editFileChange(inputTypeFile){
+					//alert(`Change:${inputTypeFile.name}`);
+					let self=this;                    
+					//alert(`Change: ${fileInput.value?.name}`)
+                    self.readURL(inputTypeFile,inputTypeFile.parentElement.previousElementSibling.firstElementChild,$("#saveEdit"));
+			},
+
+        },
+        mounted() {
+            this.getAll(5);
+        }
+    }).mount("#app");
+</script>
