@@ -9,11 +9,12 @@
         
         public string Birthday { get; set; }
 
-        public byte[]? Photo { get; set; }
+        public IFormFile? Photo { get; set; }
 
         public string? Signature { get; set; }
 
-        //public bool Sex { get; set; }
+        public bool Sex { get; set; }
+        public int? Wallet { get; set; }
 
     }
 }

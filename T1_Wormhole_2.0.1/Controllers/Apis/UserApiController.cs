@@ -5,6 +5,7 @@ using System.Text.Json;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.Models.DTOs;
 
+
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
     [Route("api/User/[Action]")]
@@ -12,13 +13,17 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
     public class UserApiController : ControllerBase
     {
         private readonly WormHoleContext _db;
-        public UserApiController(WormHoleContext db)
+        //private readonly IWebHostEnvironment _env;
+
+        public UserApiController(WormHoleContext db) //IWebHostEnvironment env
         {
             _db = db;
+            //_env = env;
         }
 
+        //4/15 晚上改動
         [HttpGet]
-        public IEnumerable<UserInfo> Get(int id)
+        public async Task<IEnumerable<UserInfo>> Get(int id)
         {
 
             //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
@@ -26,31 +31,57 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             //    Id = x.UserId,
             //    Name = x.Name,
             //}).ToList();
-
-            var result = _db.UserInfos.Where(x => x.UserId == id);
-            var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
-            return result ;
+            
+            //---------sam變更(封存)----------
+            //amy:看起來寫到相同userCoin功能
+            // var result = _db.UserInfos.Where(x => x.UserId == id);
+            // var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
+            // return result ;
+            //---------sam變更(封存)----------
+            
+            //await updateCoins(id);
+            var result = _db.UserInfos.Where(x => x.UserId == id)
+                .Select(e => new UserInfo
+                {
+                    UserId = e.UserId,
+                    Name = e.Name,
+                    Nickname = e.Nickname,
+                    Phone = e.Phone,
+                    Brithday = e.Brithday,
+                    SignatureLine = e.SignatureLine,
+                    Sex = e.Sex,
+                    Photo = null,
+                    Wallet = e.Wallet,
+                });
+            return result;
         }
         [HttpGet]
-        public IEnumerable<UserStatus> GetStatus(int id)
+        public async Task<IEnumerable<UserStatus>> GetStatus(int id)
         {
             var result = _db.UserStatuses.Where(x => x.Id == id);
             return result;
         }
+
+        //---------sam變更(封存)----------
+            //amy:看起來寫到相同userCoin功能
         [HttpGet]
         public  int GetCoins(int id)
         {
-
+            return -1;
             //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
             //{
             //    Id = x.UserId,
             //    Name = x.Name,
             //}).ToList();
 
+            
             //var result = _db.UserInfos.Where(x => x.UserId == id);
-            var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
-            return usercoins;
+            // var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
+            // return usercoins;
+            
         }
+        //---------sam變更(封存)----------
+
         //[HttpGet]
         //public string Get(int id)
         //{
@@ -58,102 +89,61 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         //    string? imageUrl = p?.Photo;
         //    return imageUrl;
         //}
+        [HttpGet]
+        public async Task<int?> updateCoins(int id)
+        {
+            var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放"));                
+            var totalCoins = result.Sum(x => x.CoinAmount);
+            var user =await _db.UserInfos.FindAsync(id);            
+            
+            if (user != null)
+            {                                
+                user.Wallet = totalCoins;
+                await _db.SaveChangesAsync();
+                return user.Wallet;
+            }
+            else
+            {
+                return null;
+            }          
+        }
+
+        [HttpGet]
+        public async Task<FileResult> GetPhoto(int id)
+        {
+            string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
+            UserInfo e = await _db.UserInfos.FindAsync(id);
+            byte[] ImageContent = e?.Photo != null ? e.Photo : System.IO.File.ReadAllBytes(fileName);
+            return File(ImageContent, "image/jpeg");
+        }
 
         [HttpPost]
-        public bool Edit(UserInfoDto model)
+        public async Task<string> Edit(UserInfoDto model)
         {
-            var data = _db.UserInfos.FirstOrDefault(x => x.UserId == model.UserId);
+            UserInfo data = await _db.UserInfos.FindAsync(model.UserId);
             if (data == null)
             {
-                return false;
+                return "找不到會員資料";
             }
             data.Name = model.Name;
             data.Nickname = model.Nickname;
-            data.Phone = model.Phone;
             data.Brithday = DateOnly.Parse(model.Birthday);
             data.SignatureLine = model.Signature;
-            //data.Sex = model.Sex;
-            //_db.Update(data);
-            _db.SaveChanges();
-            return true;
-
-            //try
-            //{
-            //    _db.UserInfos.Add(new UserInfo
-            //    {
-            //        Name = model.Name
-            //    });
-            //    _db.SaveChanges();
-            //    return true;
-            //}
-            //catch (Exception)
-            //{
-            //    return false;
-            //}
-        }
-
-        //public bool AddPhoto(int id,[Bind("Photo")] UserInfo userInfo) {
-        //    if (ModelState.IsValid) {
-        //        try
-        //        {
-        //            UserInfo? p = _db.UserInfos.Find(id);
-        //            if (p.Photo != null)
-        //            {
-        //                ReadUploadImage(userInfo);
-
-        //            }
-        //            else
-        //            {
-        //                userInfo.Photo = p.Photo;
-        //            }
-        //            _db.Entry(p).State = EntityState.Detached;
-        //            _db.Update(userInfo);
-        //            _db.SaveChanges();
-        //            return true;
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!UserInfoExists(userInfo.UserId))
-        //            {
-        //                return false;
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-
-        //    }
-        //    return false;
-        //}
-
-        //private bool UserInfoExists(int id)
-        //{
-        //    return _db.UserInfos.Any(e => e.UserId == id); ;
-        //}
-
-        //private void ReadUploadImage(UserInfo userInfo)
-        //{
-        //    if (Request.Form.Files["Photo"] != null)
-        //    {
-        //        using (BinaryReader br=new BinaryReader(
-        //            Request.Form.Files["Photo"].OpenReadStream()))
-        //        {
-        //            userInfo.Photo = br.ReadBytes((int)Request.Form.Files["Photo"].Length);
-        //        }
-        //    }
-        //}
-        [HttpPost]
-        public bool AddPhoto(UserInfoDto model)
-        {
-            var data = _db.UserInfos.FirstOrDefault(y => y.UserId == model.UserId);
-            if (data == null)
+            data.Sex = model.Sex;
+            //data.Phone = model.Phone;
+            if (model.Photo != null)
             {
-                return false;
+                using (BinaryReader br = new BinaryReader(model.Photo.OpenReadStream()))
+                {
+                    data.Photo = br.ReadBytes((int)model.Photo.Length);
+                }
             }
-            data.Photo = model.Photo;
-            _db.SaveChanges();
-            return true;
+
+            _db.Entry(data).State = EntityState.Modified;
+
+            //_db.Update(data);
+            await _db.SaveChangesAsync();
+            return (data.ToString());
         }
     }
 }

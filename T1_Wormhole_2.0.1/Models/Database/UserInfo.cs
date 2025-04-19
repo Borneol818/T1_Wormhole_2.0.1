@@ -62,6 +62,8 @@ public partial class UserInfo
     /// </summary>
     public int? Wallet { get; set; }
 
+    //public bool edit { get; set; } = false;
+
     public virtual ICollection<ArticleResponse> ArticleResponses { get; set; } = new List<ArticleResponse>();
 
     public virtual ICollection<Article> Articles { get; set; } = new List<Article>();

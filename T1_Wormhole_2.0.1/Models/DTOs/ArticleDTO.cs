@@ -10,6 +10,8 @@
         public int? WriterID { get; set; }
         public int? ReleaseBy { get; set;}
 
+        public IFormFile? ArticleCover { get; set; }
+
 
     }
 }

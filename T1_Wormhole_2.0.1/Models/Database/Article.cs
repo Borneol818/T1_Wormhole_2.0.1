@@ -44,6 +44,8 @@ public partial class Article
 
     public byte[] Picture { get; set; }
 
+    public byte[] ArticleCover { get; set; }
+
     public virtual ICollection<ArticleResponse> ArticleResponses { get; set; } = new List<ArticleResponse>();
 
     public virtual BoManager ReleaseByNavigation { get; set; }

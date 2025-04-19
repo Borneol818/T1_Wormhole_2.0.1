@@ -17,7 +17,7 @@
                     @* </div> *@
                     <div class="row">
                         <div class="form-group col-3">
-                            <button type="submit" class="btn_1 boxed-btn">討論版</button>
+                            <button @@click="jumpToDiscussArticleView" type="submit" class="btn_1 boxed-btn">討論版</button>
                         </div>
                     </div>
                 </div>
@@ -25,15 +25,24 @@
                 <div class="col-lg-9">
                     <div class="comment-form publishDiv">
                         <div class="row align-items-center">
-                            <h4 class="form-group col-9">發表文章</h4>
+                            <h4 class="form-group col-6">發表文章</h4>
                             <div class="form-group col-3">
-                                <button @@click="add" class="button button-contactForm btn_1 boxed-btn py-2 my-3">發表</button>
+                                <button @@click="jumpToDiscussArticleView" class="button button-contactForm btn_1 boxed-btn py-2 my-3 ">取消編輯</button>
+                            </div>
+                            
+                            <div class="form-group col-3">
+                                <button v-if="EditMode" @@click="putEditArticle" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+                                <button id="postNewArticle" v-else="EditMode" @@click="add" class="button button-contactForm btn_1 py-2 my-3">發表</button>
                             </div>
                         </div>
                         <form class="form-contact comment_form" action="#" id="commentForm">
                             <div class="row">
                                 <div class="col-12 pb-3 box">
-                                    <button type="submit" class="button button-contactForm btn_1 boxed-btn">上傳封面</button>
+                                    <h3>上傳封面</h3>
+                                    <div style="width:600px; border: 2px solid gray; overflow:hidden;">
+                                        <img id="PreViewCover" class="img-fluid" src=" ~/images/PhotoTest.jpg" title="待上傳" asp-append-version=true />
+                                    </div>
+                                    <input type="file" id="ArticleCoverFile" class="form-control" @@change="ArticleCoverFileChange($event.target)" accept="image/*">
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
@@ -54,6 +63,7 @@
                                     @* <input type="checkbox"  @@click="getSignature" class="button button-contactForm btn_1 boxed-btn"> *@
                                     @* <lable>加入簽名檔</lable> *@
                                 </div>
+                                
                             </div>
                         </form>
                     </div>
@@ -75,10 +85,71 @@
                 writerId:5,
                 signature:[],
                 signatureString:"",
+                EditMode:false,
+                EditId:0,
             }
         },
         methods:{
-            add() {
+            /*------------發表文章-----------*/
+			add() {
+				let self = this;
+				var data = new FormData();
+				data.append("title",self.posterTitle);
+				data.append("content",self.posterComment);
+				data.append("writerId",self.writerId);
+				data.append("signature",self.signatureString);
+                data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
+                alert(JSON.stringify(data));
+				fetch("/api/Poster/postArticle", {
+					body:data, // must match 'Content-Type' header
+					// headers: {
+					//     "content-type": "application/json",
+					// },
+					method: "POST",
+				}).then((response) => response.json()).then(res => {
+					if (res) {
+						alert('ok');
+						//self.rand=new Date().getTime(); //用時間控制rand擷取版本
+					} else {
+					  alert('Not ok')
+					}
+				}) 
+            },
+            /*------------發表文章-----------*/
+
+            /*------------編輯文章-----------*/
+            //得到編輯文章內容
+            async getEditArticle(){
+                var self=this;
+                if(localStorage.getItem("EditArticleId")!=null)//無對應id則不讀取資料
+                {
+                    //文章編輯模式
+                    // alert("編輯文章");
+                    var ArticleId=localStorage.getItem("EditArticleId");
+                    self.EditId=localStorage.getItem("EditArticleId");
+                    self.EditMode=true;
+                    try{
+                        var res=await fetch(`/api/Poster/GetEditArticle/${ArticleId}`,{method:"GET"})
+                            if(res.ok)
+                            {
+                                var data=await res.json();
+                                // alert(JSON.stringify(data));
+                                self.posterTitle=data.title;//雙向繫結，自動變化內文
+                                self.posterComment=data.content;
+                                localStorage.removeItem("EditArticleId");
+                            }
+                    }
+                    catch(err){
+                        alert("error");
+                    }
+                }
+                else
+                {
+                    self.EditMode=false;
+                }
+            },
+            //送出編輯文章
+            async putEditArticle(){
                 let self = this;
                 let data = {
                     title: self.posterTitle,
@@ -87,20 +158,24 @@
                     signature:self.signature
                 }
 
-                fetch("/api/Poster/postArticle", {
+                var res= await fetch(`/api/Poster/EditArticle/${self.EditId}`, {
                     body: JSON.stringify(data), // must match 'Content-Type' header
                     headers: {
                         "content-type": "application/json",
                     },
-                    method: "POST",
-                }).then((response) => response.json()).then(res => {
-                    if (res) {
-                        alert('ok');
-                    } else {
-                      alert('Not ok')
-                    }
-                }) // 輸出成 json
+                    method: "PUT",
+                });
+                if(res.ok)
+                {
+                    var message=await res.text();
+                    alert(message);
+                    self.EditMode=false;
+                    self.jumpToDiscussArticleView();
+                }
+
             },
+            /*------------編輯文章-----------*/
+
             getSignature()
             {
                 let self=this;
@@ -112,11 +187,43 @@
                 let self = this;
                 var output=JSON.parse(JSON.stringify(self.signature))
                 console.log(output);
-            }
+            },
+            jumpToDiscussArticleView(){
+                fetch('/DiscussArticleView/Index' , {
+                    method: 'GET'
+                }).then(() => {window.location.href="/DiscussArticleView";})
+            },
+            readURL(inputTypeFile,img,btn){
+                if(inputTypeFile.files[0]!=null){
+                    var file=inputTypeFile.files[0];
+                    var allowType="image.*";
+                    if(file.type.match(allowType)){
+                        btn.prop("disabled",false);
+                        var reader=new FileReader();
+                        reader.onload=function(e){
+                            img.src=e.target.result;
+                            img.title=file.name;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    else
+                    {
+                        alert("請選擇圖片檔案");
+                        btn.prop("disabled",true);
+                        inputTypeFile.value="";
+                    }
+                }
+            },
+            ArticleCoverFileChange(inputTypeFile){
+                    //alert(`Change:${inputTypeFile.name}`);
+                    let self=this;
+                    self.readURL(inputTypeFile,inputTypeFile.previousElementSibling.firstElementChild,$("#postNewArticle"));
+            },
         },
         mounted() {
             // this.getSignature();
             // this.transWords();
+                this.getEditArticle();
 
         }
     }).mount("#app");

@@ -24,7 +24,7 @@ var conStr = builder.Configuration.GetConnectionString("WormHole");
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
 
-
+//這裡寫一個判定用的方法並存入在這裡new的變數名稱，用來當作登入後的認證跟各項頁面功能的全域變數
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +39,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
