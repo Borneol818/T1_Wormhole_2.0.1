@@ -4,7 +4,8 @@ using T1_Wormhole_2._0._1.Models.Database;
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
-    [Route("api/[controller]")]
+    //修改API Controller的Route
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AccountApiController : ControllerBase
     {
