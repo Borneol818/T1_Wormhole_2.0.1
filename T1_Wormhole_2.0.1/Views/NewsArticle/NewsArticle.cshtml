@@ -47,73 +47,112 @@
         </div>
     </div>
 
-    </div>
-
-    <textarea type="inputtext" style="width:100%;   height:300px ;"></textarea>
+    
 
 </head>
-<h1>新聞</h1>
 
-<div class="comments-area">
-    <div class="comment-list" id="app">
-        <div class="single-comment justify-content-between d-flex">
-            <div class="user justify-content-between d-flex" v-for="Response in comments">
-                <div class="thumb">
-                    <img src="assets/img/blog/comment_1.png" alt="">
-                </div>
-                <div class="desc">
-                    <p class="comment">
-                        {{ Response.content }}
-                    </p>
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <h5>
-                                <a href="#">{{ Response.writer }}</a>
-                            </h5>
-                            <p class="date">時間{{ Response.date }}</p>
+<div id="app">
+    <h1>{{articles.title}}</h1>
+
+    <p>{{articles.content}}</p>
+    <div class="comments-area">
+        <div class="comment-list">
+            <p>喜歡:{{ ratingcount.positive }}</p>
+            <p>不喜歡:{{ ratingcount.negative }}</p>
+        </div>
+        <div>
+            <div class="single-comment justify-content-between d-flex">
+                <div class="user justify-content-between d-flex" v-for="Response in comments">
+                    <div class="thumb">
+                        <img src="assets/img/blog/comment_1.png" alt="">
+                    </div>
+                    <div class="desc">
+                        <p class="comment">
+                            {{ Response.content }}
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <h5>
+                                    <a href="#">{{ Response.writer }}</a>
+                                </h5>
+                                <p class="date">時間{{ Response.date }}</p>
+                            </div>
+
                         </div>
-                        
                     </div>
                 </div>
             </div>
-            <textarea v-model="textResponse" placeholder="輸入留言" ></textarea>
+            <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
             <div class="reply-btn">
-                <a href="#" class="btn-reply text-uppercase">reply</a>
+                <button href="#" class="btn-reply text-uppercase">reply</button>
             </div>
         </div>
-        
+
     </div>
+</div>
+
 <script>
 
-    
+
     Vue.createApp({
         data(){
             return {
-                comments:[]
+                comments:[],
+                articles:[],
+                ratingcount: {
+                positive: 0,
+                negative: 0
+                }
             }
         },
         methods:{
-            
+
             Comments(id){
-                    fetch('/api/comments/GetByArticleId'+'?articleId='+id)
+                    fetch('/api/Comments/GetByArticleId'+'?articleId='+id)
                     .then(response => response.json())
                     .then(data => {
                         this.comments = data;
-                    }) 
+                    })
             },
-            Response(){
 
-            }
+            getArticles(id) {
+            //let self = this;
+            fetch('/api/ArticlesApi/GetArticles')
+            .then(x => x.json())
+            .then(res => {
+                console.log(res);
+                this.articles = res.find(x => x.articleID == id);;
+            })
+
+
+            //alert(self.articles);
+                //self.articles = res.find(x=>x.articleID==parseInt(id)))
+        },
+
+        //取得好負評數量
+            getRatingcount(id){
+                fetch('/api/Comments/GetRating?articleid='+id)
+                .then(r => r.json())
+                .then(data => {
+                //console.log( data);
+                    this.ratingcount=data;
+                })
+
+            
+            //取得好負評數量
+            },
         },
         mounted() {
 
-                 let urlParams = new URLSearchParams(window.location.search);
-                    var id=urlParams.get('id') ;
+            // 修改抓取文章id方式
+            let urlParams = new URLSearchParams(window.location.search);
+            var id=urlParams.get('id') ;
+            // 修改抓取文章id方式
+            //alert(articleId[1]);
 
-                     //alert(articleId[1]);
-
-                 this.Comments(id);
-            
+            this.Comments(id);
+            this.getRatingcount(id);
+            this.getArticles(id);
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
         }
 
