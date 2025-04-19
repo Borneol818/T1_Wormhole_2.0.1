@@ -40,7 +40,11 @@
                 
                     <!-- form Footer -->
                     <div class="register-footer">
+<<<<<<< HEAD
                         <p> Already have an account? <a href="/Account/Login"> Login</a> here</p> @* 修改連結內容 *@
+=======
+                        <p> Already have an account? <a href="login.html"> Login</a> here</p>
+>>>>>>> origin/Sam
                         <button v-bind:disabled="!formIsValid" class="submit-btn3">Sign Up</button>
                     </div>
                 </form>

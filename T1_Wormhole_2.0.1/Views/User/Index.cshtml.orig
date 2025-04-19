@@ -15,7 +15,11 @@
                                 </div>
                                 <div>
                                     @* <input type="file" /> *@
+<<<<<<< HEAD
                                     <input id="editFile" type="file" class="form-control" name="photo" @@change="editFileChange($event.target)" style="width:200px;" accept="image/*" />
+=======
+                                    <input id="editFile" type="file" class="form-control" @@change="editFileChange($event.target)" style="width:200px;" accept="image/*" />
+>>>>>>> origin/Sam
                                 </div>
                                 <div v-for="item in userstatus">
                                     <h4 style="margin-top: 20px;">LV: {{item.level}}</h4>
@@ -28,6 +32,7 @@
                                 <h3>User Profile</h3>
                                 @* <form class="row contact_form" action="#" method="post" novalidate="novalidate" v-for="item in userinfo"> *@
                                 <div class="col-md-10 form-group p_star">
+<<<<<<< HEAD
                                     <input type="text" class="form-control" name="name" v-model="name" placeholder="Username" />
                                     @* <span class="placeholder" data-placeholder="Username"></span>*@
                                 </div>
@@ -41,19 +46,42 @@
                                 </div>
                                 <div class="col-md-10 form-group p_star">
                                     <select class="country_select" name="sex" v-model="sex">
+=======
+                                    <input type="text" class="form-control" v-model="name" placeholder="Username" />
+                                    @* <span class="placeholder" data-placeholder="Username"></span>*@
+                                </div>
+                                <div class="col-md-5 form-group p_star">
+                                    <input type="text" class="form-control" v-model="phone" placeholder="Phone number" />
+                                    @* <span class="placeholder" data-placeholder="Phone number"></span> *@
+                                </div>
+                                <div class="col-md-5 form-group p_star">
+                                    <input type="text" class="form-control" v-model="nickname" placeholder="nickname" />
+                                    @* <span class="placeholder" data-placeholder="nickname"></span> *@
+                                </div>
+                                <div class="col-md-10 form-group p_star">
+                                    <select class="country_select" v-model="sex">
+>>>>>>> origin/Sam
                                         <option :value="true">Male</option>
                                         <option :value="false">Female</option>
                                     </select>
                                 </div>
                                 <div class="col-md-10 form-group p_star">
+<<<<<<< HEAD
                                     <input placeholder="Birthday" type="text" name="birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="birthday" />
+=======
+                                    <input placeholder="Birthday" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="birthday" />
+>>>>>>> origin/Sam
                                 </div>
                                 <div class="col-md-10 form-group">
                                     <textarea class="form-control" name="message" id="message" rows="1" placeholder="Edit Your Own Signature"
                                               v-model="signature"></textarea>
                                 </div>
                                 <div style="margin-top: 20px; display: flex; justify-content: center;">
+<<<<<<< HEAD
                                     <button id="saveEdit" type="button" class="btn btn-primary" @@click="editInfo">Save</button>
+=======
+                                    <button id="saveEdit" class="submit-btn" @@click="editInfo(item)">Save</button>
+>>>>>>> origin/Sam
                                 </div>
                                 <div style="margin-top: 20px; display: flex; justify-content: center;">
                                     <button class="btn btn-primary" @@click="cancel">Cancel</button>
@@ -250,12 +278,20 @@
                     //     "content-type":"multipart/form-data",
                     // },
                     method:"POST",
+<<<<<<< HEAD
                 }).then(res=>{
                     if(res){                        
                         //alert('Ok: '+res.data); 
                         self.getAll(self.userId);
                         self.rand=new Date().getTime(); //用時間控制rand擷取版本
                         self.userinfo[0].edit=false;
+=======
+                }).then((response)=>response.json()).then(res=>{
+                    if(res){                        
+                        alert('Ok: '+res.data); 
+                        self.getAll(self.userId);
+                        self.rand=new Date().getTime(); //用時間控制rand擷取版本
+>>>>>>> origin/Sam
                     }else{
                         alert('Not ok')
                     }
