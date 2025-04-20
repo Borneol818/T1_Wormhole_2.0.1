@@ -136,6 +136,10 @@
                                 // alert(JSON.stringify(data));
                                 self.posterTitle=data.title;//雙向繫結，自動變化內文
                                 self.posterComment=data.content;
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/Sam
                                 localStorage.removeItem("EditArticleId");
                             }
                     }

@@ -49,7 +49,7 @@
     <div class="slider-area">
         <div class="container">
             <div class="row">
-                <div class="col-xl-12">
+                <div class="col-md-12">
                     <div class="slider">
                         <!-- Single Slider -->
                         <div class="single-slider slider-height slider-bg1 d-flex align-items-center">
@@ -83,12 +83,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="selling-active">
+            <div class="row  d-flex justify-content-center">
+                <div v-for="item in popularArticles" class="col-md-4" style="width:25%;margin:0 20px;">
+                    <div class="selling-active" >
                         <!-- Single -->
-                        <div class="col properties pb-20">
-                            <div v-for="item in popularArticles" class=" properties-card">
+                        <div  class="col properties pb-20">
+                            <div  class=" properties-card">
                                 <div class="properties-img">
                                     <a href="book-details.html"><img src="assets/img/gallery/most_popular1.jpg" alt=""></a>
                                 </div>

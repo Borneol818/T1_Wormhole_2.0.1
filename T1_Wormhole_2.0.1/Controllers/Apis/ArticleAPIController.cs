@@ -33,5 +33,20 @@ namespace T1_Wormhole_2._0._1.Controllers
 
             return Ok(comments);
         }
+        [HttpGet]
+        public IActionResult GetRating(int articleId)
+        {
+            
+            int? Ratingcount = _context.Ratings.Where(r => r.ArticleId == articleId).Select(x=>x.PositiveRating).Sum();
+            int? nRatingcount = _context.Ratings.Where(r => r.ArticleId == articleId).Select(x => x.NegativeRating).Sum();
+            //int?[] Total =new int?[] {Ratingcount, nRatingcount };
+            //Console.Write(Total);
+            return Ok(new
+            {
+                Positive = Ratingcount ?? 0,
+                Negative = nRatingcount ?? 0
+            });
+            
+        }
     }
 }

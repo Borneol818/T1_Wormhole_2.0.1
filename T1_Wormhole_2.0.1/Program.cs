@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using T1_Wormhole_2._0._1;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
+using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,14 @@ builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddOData(options => {
+    options.Select()//挑欄位
+           .Filter()//篩選
+           .OrderBy()//排序
+           .Expand()//關聯查詢
+           .SetMaxTop(100)//最多100筆
+           .Count();//計算數量
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
@@ -24,7 +32,7 @@ var conStr = builder.Configuration.GetConnectionString("WormHole");
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
 
-
+//這裡寫一個判定用的方法並存入在這裡new的變數名稱，用來當作登入後的認證跟各項頁面功能的全域變數
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -39,6 +47,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
