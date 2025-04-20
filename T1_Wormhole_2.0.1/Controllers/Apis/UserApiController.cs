@@ -60,35 +60,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         {
             var result = _db.UserStatuses.Where(x => x.Id == id);
             return result;
-        }
-
-        //---------sam變更(封存)----------
-            //amy:看起來寫到相同userCoin功能
-        [HttpGet]
-        public  int GetCoins(int id)
-        {
-            return -1;
-            //var result = _db.UserInfos.Where(x => x.Name == "林克").Select(x => new UserInfoDto
-            //{
-            //    Id = x.UserId,
-            //    Name = x.Name,
-            //}).ToList();
-
-            
-            //var result = _db.UserInfos.Where(x => x.UserId == id);
-            // var usercoins = _db.ObtainStatuses.Where(x => x.UserId == id).Sum(y => y.Count);
-            // return usercoins;
-            
-        }
-        //---------sam變更(封存)----------
-
-        //[HttpGet]
-        //public string Get(int id)
-        //{
-        //    UserInfo? p = _db.UserInfos.Find(id);
-        //    string? imageUrl = p?.Photo;
-        //    return imageUrl;
-        //}
+        }        
+        
         [HttpGet]
         public async Task<int?> updateCoins(int id)
         {
@@ -107,6 +80,25 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 return null;
             }          
         }
+
+        //Borneol 04/19 撈Obtain status 資料表中符合UserId的資料，再依照撈出的資料去撈Obtains中找到該Obtaib的圖片來顯示
+        [HttpGet]
+        public async Task<IEnumerable<ObtainStatus>> GetObtainStatus(int id)
+        {
+            var findUserObtain = _db.ObtainStatuses.Where(x => x.UserId == id).Select(y => y.ObtainId && y.Status.Contains("已選取"));
+            var getObtainId = _db.Obtains.FirstOrDefaultAsync(findUserObtain);
+            if (getObtainId != null) {
+                var result = ;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+            return result;
+        }
+
+        //Borneol 04/19 撈Obtain status 資料表中符合UserId的資料，再依照撈出的資料去撈Obtains中找到該Obtaib的圖片來顯示
 
         [HttpGet]
         public async Task<FileResult> GetPhoto(int id)
