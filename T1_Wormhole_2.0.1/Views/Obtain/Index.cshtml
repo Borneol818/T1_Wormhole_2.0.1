@@ -86,7 +86,7 @@
                                     <input v-model="obtain.name" class="form-control"/>
                                     <input v-model="obtain.condition" class="form-control" />
                                     <input v-model="obtain.price" class="form-control" />
-										<input v-bind:id="'editFile'+ obtain.obtainID" type="file" accept="image/*" v-on:change="editFileChange($event.target)" class="form-control" />
+									<input v-bind:id="'editFile'+ obtain.obtainID" type="file" accept="image/*" v-on:change="editFileChange($event.target)" class="form-control" />
                                 <div>
                                     <button id="update" class="btn btn-success" v-on:click="update(obtain)">更新</button>
                                     <button class="btn btn-info" v-on:click="cancel">取消</button>
@@ -153,12 +153,13 @@
 									</div>
                                     <div class="mb-3">
                                     <label for="typeSelect" class="form-label">類型</label>
-                                    <select class="form-select" aria-label=".form-select-lg example" v-model="type">
-                                        <option selected>請選擇類型</option>
-                                        <option value="1">成就達成</option>
-                                        <option value="2">活動</option>
-                                        <option value="3">蟲洞幣獲得</option>
+                                        <select class="form-select" aria-label=".form-select-lg example" v-model="type" required>
+                                        <option value="0">請選擇類型</option>
+                                            <option value="1">成就達成</option>
+                                            <option value="2">活動</option>
+                                            <option value="3">蟲洞幣獲得</option>
                                     </select>
+                                        <p>目前選擇的 type：{{ type }}</p>
                                     </div>
                                     <br>
                                     <div class="mb-3">
@@ -198,12 +199,17 @@
                 name:"",
                 condition:"",
                 price:"",
+                type:0,
+                rand:1,
                 coins:"",
-                
 
             }
         },
         methods: {
+                        logType() {
+              console.log("type:", this.type, "typeof:", typeof this.type);
+            },
+
             filterObtains:function(){
                 //alert("filterObtains");
                 let _this = this;
@@ -319,20 +325,22 @@
             insert:function(){
                 //alert("insert");
                 let _this=this;
+                console.log("typeof type:", typeof _this.type, "value:", _this.type);
+                        
                 var form=new FormData();
                 form.append("name",_this.name);
                 form.append("condition",_this.condition);
                 form.append("price",_this.price);
-                form.append("type",_this.type);
+                form.append("type",parseInt(_this.type));
                 let fileInput = document.querySelector("#insertFile");
                     if (fileInput && fileInput.files.length > 0) {
                         form.append("picture", fileInput.files[0]);
                     }
-                        axios.post("/api/ObtainsApi/",form,{}).then(response=>{
-                        alert(response.data);
-                        // _this.filterObtains();
-                        // _this.rand=new Date().getTime();
-                        // obtain.preview = null;
+                          axios.post("/api/ObtainsApi/",form,{}).then(response=>{
+                         alert(response.data);
+                         _this.filterObtains();
+                         document.querySelector("#insertFile").previousSibling.src="@Url.Content("~/images/noimage.jpg")";
+                         document.querySelector("#insertFile").previousSibling.title="待上傳";
                     }).catch(err=>{
                         alert(err.message);
                     });
