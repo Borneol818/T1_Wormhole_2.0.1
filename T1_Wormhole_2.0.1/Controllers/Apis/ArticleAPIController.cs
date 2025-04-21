@@ -49,5 +49,13 @@ namespace T1_Wormhole_2._0._1.Controllers
             });
             
         }
+        [HttpGet]
+        public async Task<FileResult> GetArticlePhoto(int articleId)
+        {
+            string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
+            Article e = await _context.Articles.FindAsync(articleId);
+            byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(fileName);
+            return File(ImageContent, "image/jpeg");
+        }
     }
 }
