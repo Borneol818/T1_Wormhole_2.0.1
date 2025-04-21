@@ -36,5 +36,26 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 Type=e.Type, 
             }).ToListAsync();
         }
+
+        //post:/api/EventObtain/joinEvent
+        [HttpPost]
+        public async Task<String> joinEvent(ParticipationDTO participationDTO) {
+            //複合主鍵必須傳入所有主鍵值進行搜尋，參數順序依照主鍵的定義順序填入
+            var joinData = await _db.Participations.FindAsync(participationDTO.EventId,participationDTO.UserId);
+            if (joinData != null)
+            {
+                return "活動已有參與資料";
+            }
+            Participation p=new Participation
+            {
+                EventId=participationDTO.EventId,
+                UserId=participationDTO.UserId,
+                JoinTime=DateTime.Now,
+                Status="參加中",
+            };
+            _db.Participations.Add(p);
+            await _db.SaveChangesAsync();
+            return "成功參與活動";
+        }
     }
 }

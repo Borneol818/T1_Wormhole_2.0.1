@@ -323,16 +323,16 @@ public partial class WormHoleContext : DbContext
 
         modelBuilder.Entity<Participation>(entity =>
         {
-            entity.HasKey(e => new { e.EventId, e.UersId }).HasName("PK_EventJoin");
+            entity.HasKey(e => new { e.EventId, e.UserId }).HasName("PK_EventJoin");
 
             entity.ToTable("Participation");
 
             entity.Property(e => e.EventId)
                 .HasComment("活動ID")
                 .HasColumnName("EventID");
-            entity.Property(e => e.UersId)
+            entity.Property(e => e.UserId)
                 .HasComment("使用者ID")
-                .HasColumnName("UersID");
+                .HasColumnName("UserID");
             entity.Property(e => e.JoinTime)
                 .HasComment("活動參與時間")
                 .HasColumnType("smalldatetime");
@@ -345,8 +345,8 @@ public partial class WormHoleContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_EventJoin_SiteEvent");
 
-            entity.HasOne(d => d.Uers).WithMany(p => p.Participations)
-                .HasForeignKey(d => d.UersId)
+            entity.HasOne(d => d.User).WithMany(p => p.Participations)
+                .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_EventJoin_User");
         });

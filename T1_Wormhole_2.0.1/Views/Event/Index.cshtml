@@ -23,6 +23,7 @@
         </ul>
     </div> *@
     @*Context*@
+    @* 活動列表(顯示活動詳細內容時隱藏) *@
     <div v-if="showDetail==false">
         <ul class="row p-5 align-items-center">
             <li v-for="event in events" class="col-3 event-box m-md-1">
@@ -34,6 +35,7 @@
         </ul>
     </div>
     
+    @* 活動詳細內容(返回活動列表時隱藏) *@
     <div v-else>
         <div class="container">
             <div class=" posts-list">
@@ -55,7 +57,7 @@
                         </p>
                         <div class="row-cols-5 d-flex justify-content-center">
                             <button @@click="showDetail=false" class="genric-btn primary-border radius">返回活動列表</button>
-                            <button class="genric-btn primary radius ml-10">參加活動</button>
+                            <button @@click="joinEvent(currentEvent)" class="genric-btn primary radius ml-10">參加活動</button>
                         </div>
                     </div>
                 </div>
@@ -72,6 +74,7 @@
                 events:[],
                 currentEvent:{},
                 showDetail:false,
+                testID:5,//測試用userID，完成測試後刪除
             }
         },
         methods:{
@@ -117,6 +120,33 @@
                 self.showDetail=true;
             },
             //----------讀取活動--------------
+            //----------參加活動--------------
+            //送出userID、活動ID、參加時間(後端)、狀態(參加中)
+            //(後端確認無參加資料)
+            async joinEvent(event){
+                let self=this;
+                //要包裝成後端dto可以接的data
+                let joinData=
+                {
+                    eventId:event.eventId,
+                    userId:self.testID,
+                };
+                await fetch("/api/EventObtain/joinEvent",{
+                    method:"POST",
+                    body:JSON.stringify(joinData),//傳送格式
+                    headers:{//headers:內容格式
+                        "content-type":"application/json"
+                    }
+                }).then(response=>{
+                    return response.text();
+                }).then(data=>{
+                    alert(data);
+                    self.showDetail=false;
+                }).catch(err=>{
+                    alert("活動參與失敗，請再次嘗試");
+                });
+            }
+            //----------參加活動--------------
         },
         mounted() {
            this.getAllEvent();
