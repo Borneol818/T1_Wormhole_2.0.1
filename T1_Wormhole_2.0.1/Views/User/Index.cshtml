@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-5">
-                                <h3>User Profile</h3>
+                                <h1 style="color:antiquewhite;">Edit Profile</h1>
                                 @* <form class="row contact_form" action="#" method="post" novalidate="novalidate" v-for="item in userinfo"> *@
                                 <div class="col-md-10 form-group p_star">
                                     <input type="text" class="form-control" name="name" v-model="name" placeholder="Username" />
@@ -93,23 +93,30 @@
                         </form>
                     </template>
                     <template v-else>
-                        <div class="col-lg-3" align="center">
+                        <div class="col-lg-3" align="center" style="color:antiquewhite;">
                             <!-- 大頭貼 -->
                             <div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
                                 <img class="img-fluid" :src=`/api/User/GetPhoto?id=${item.userId}&?v=${rand}` :title="item.name" />
                             </div>
                             <div v-for="item in userstatus">
                                 <h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
+                            </div>                            
+                            <div class="row" style="width: 200px;">
+                                <h3 style="margin:0px;">Badges</h3>
+                                <div class="col-4 m-md-1" style="width:30px;" v-for="(img,index) in badgeImg" :key="index">
+                                    <img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
+                                </div>
                             </div>
-                            <div>
-                                <p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Achievement</p>
+                            <div class="row" style="width: 200px;">
+                                <h3 style="margin:0px;">Achievements</h3>
+                                <div class="m-md-1" style="width:200px;" v-for="(img,index) in achievementImg" :key="index">
+                                    <img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
+                                </div>
                             </div>
-                            @* <div> *@
-                            @*     <button class="submit-btn3" style="width: 160px;height: 60px; font-size: 16px; background-color:rgb(255, 22, 22); border: 0px; padding: 10px 20px;">Add User on WormHole</button> *@
-                            @* </div> *@
+                            
                         </div>
-                        <div class="col-lg-5">
-                            <h3>User Profile</h3>
+                        <div class="col-lg-5" style="color:antiquewhite;">
+                            <h1 style="color:antiquewhite;">User Profile</h1>
                             <div class="row contact_form">
                                 <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
                                     <label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
@@ -127,8 +134,7 @@
                                     <label for="" class="col-md-10" style="font-size: 16px;">簽名檔</label>
                                     <label for="" class="col-md-10" style="font-size: 16px;">{{item.signatureLine}}</label>
                                 </div>
-                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                                    @* <a class="nav-link text-dark" asp-controller="User" asp-action="Index">編輯資訊</a> *@
+                                <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">                                    
                                     <button class="btn btn-primary" @@click="edit(item.userId)">編輯資訊</button>
                                 </div>
                             </div>
@@ -182,7 +188,9 @@
         data(){
             return {
                 userinfo:[],
-                userstatus:[],                
+                userstatus:[],  
+                badgeImg:[],
+                achievementImg:[],
                 name:"",
                 userId:5,
                 phone:"",
@@ -195,12 +203,12 @@
             };
         },
         methods: {
-            getAll(id) {
+            async getAll(id) {
                 let self = this;
                 
-                fetch('/api/User/updateCoins'+'?id='+id).then(x => x.json()).then(res => res);
+                await fetch('/api/User/updateCoins'+'?id='+id).then(x => x.json()).then(res => res);
 
-                fetch('/api/User/Get'+'?id='+id)
+                await fetch('/api/User/Get'+'?id='+id)
                 .then(x => x.json())
                 .then(res => {
                     self.userinfo = res;                     
@@ -213,7 +221,9 @@
                     }
                     item.edit=false;                    
                 });
-                fetch('/api/User/GetStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res);
+                await fetch('/api/User/GetStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res);
+                await fetch('/api/User/GetBadgePicture'+'?id='+id).then(x => x.json()).then(res => self.badgeImg = res);
+                await fetch('/api/User/GetAchievementPicture'+'?id='+id).then(x => x.json()).then(res => self.achievementImg = res);
                 
             },
             edit(userid){                
@@ -224,7 +234,7 @@
                     item.edit=true;                    
                 };                
             },
-                cancel(){
+            cancel(){
                 let self = this;
                 var item=self.userinfo[0];
                 //alert(JSON.stringify(item));
@@ -232,7 +242,7 @@
                     item.edit=false;
                 };
             },
-            editInfo(){
+            async editInfo(){
                 let self=this;
                 var data=new FormData();
 				data.append("userId",self.userId);
@@ -244,7 +254,7 @@
                 data.append("sex",self.sex);
 				data.append("photo",document.querySelector("#editFile").files[0]);
                 //alert(JSON.stringify(data))
-                fetch('/api/User/Edit',{
+                await fetch('/api/User/Edit',{
                     body:data,
                     // headers:{
                     //     "content-type":"multipart/form-data",
@@ -285,10 +295,10 @@
             },
 
             editFileChange(inputTypeFile){
-					//alert(`Change:${inputTypeFile.name}`);
-					let self=this;                    
-					//alert(`Change: ${fileInput.value?.name}`)
-                    self.readURL(inputTypeFile,inputTypeFile.parentElement.previousElementSibling.firstElementChild,$("#saveEdit"));
+			    //alert(`Change:${inputTypeFile.name}`);
+			    let self=this;                    
+			    //alert(`Change: ${fileInput.value?.name}`)
+                self.readURL(inputTypeFile,inputTypeFile.parentElement.previousElementSibling.firstElementChild,$("#saveEdit"));
 			},
 
         },

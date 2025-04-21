@@ -27,6 +27,8 @@ public partial class ObtainStatus
     /// </summary>
     public int Count { get; set; }
 
+    public string Status { get; set; }
+
     public virtual Obtain Obtain { get; set; }
 
     public virtual UserInfo User { get; set; }
