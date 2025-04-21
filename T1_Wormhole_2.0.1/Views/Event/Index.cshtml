@@ -3,7 +3,9 @@
 *@
 @{
 }
-
+<head>
+    <link href="~/assets/css/amy.css" rel="stylesheet" />
+</head>
 @*Tab Bar*@
 <div id="TabBar" class="TabBar">
     <ul class="row">
@@ -13,7 +15,7 @@
     </ul>
 </div>
 @*wraaper*@
-<div class="row mt-3 mb-5 wrapper">
+<div class="row mt-3 mb-5 wrapper" id="app">
     @*Sider*@
     @* <div id="SiderBar">
         <ul>
@@ -21,38 +23,104 @@
         </ul>
     </div> *@
     @*Context*@
-    <div id="Context">
+    <div v-if="showDetail==false">
         <ul class="row p-5 align-items-center">
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_1.jpg" />
-                    新手七日登入簽到
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_10.jpg" />
-                    每日小任務
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_9.jpg" />
-                    發文成就黨
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_7.jpg" />
-                    課長專屬
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_5.jpg" />
-                    潛水王
+            <li v-for="event in events" class="col-3 event-box m-md-1">
+                <a @@click.prevent="readEvent(event)" class="event-context">
+                <img class="event-img" :src="getEventImage(event.type)" />
+                    {{event.title}}
                 </a>
             </li>
         </ul>
     </div>
+    
+    <div v-else>
+        <div class="container">
+            <div class=" posts-list">
+                <div class="single-post">
+                    <div class="EventsPicture mt-5">
+						@* <img class="img-fluid" src="assets/img/blog/single_blog_1.jpg" alt=""> *@
+                        <img class="img-fluid" :src="getEventImage(currentEvent.type)" />
+                    </div>
+                    <div class="blog_details">
+                        <h2 style="color: #2d2d2d;">
+                            {{currentEvent.title}}
+                        </h2>
+                        <ul class="blog-info-link mt-3 mb-4">
+                            <li><i class="fa fa-user"></i> {{currentEvent.eventTimeStrat}}</li>
+                            <li><i class="fa fa-comments"></i>{{currentEvent.EventTimeEnd}}</li>
+                        </ul>
+                        <p class="excert">
+                            {{currentEvent.eventContent}}
+                        </p>
+                        <div class="row-cols-5 d-flex justify-content-center">
+                            <button @@click="showDetail=false" class="genric-btn primary-border radius">返回活動列表</button>
+                            <button class="genric-btn primary radius ml-10">參加活動</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<script>
+    Vue.createApp({
+        data(){
+            return{
+                events:[],
+                currentEvent:{},
+                showDetail:false,
+            }
+        },
+        methods:{
+            //----------顯示活動列表----------
+            async getAllEvent(){
+                // alert("抓取活動列表");
+                let self=this;
+                await fetch("/api/EventObtain/getAllEvent",{
+                    method:"GET",
+                }).then(response=>{
+                    if(response.ok){
+                       return response.json();
+                    }
+                }).then(data=>{
+                    // alert(JSON.stringify(data));
+                    self.events=data;
+                }).catch(err=>{
+                    alert(err);
+                });
+            },
+            //----------顯示活動列表----------
+            //依照類型切換顯示圖片
+            getEventImage(type)
+            {
+				switch(type) {
+			        case '徵文活動':
+                        return '/images/events/articleEvent.png';
+			        case '留言活動':
+                        return '/images/events/discussEvent.png';
+			        default:
+                        return '/images/events/defaultEvent.png';
+
+		        }
+            },
+            //----------顯示活動列表----------
+            //----------讀取活動--------------
+            readEvent(event)
+            {
+                let self=this;
+                // alert(JSON.stringify(event));
+                self.currentEvent=event;
+                // alert(self.currentEvent);
+                self.showDetail=true;
+            },
+            //----------讀取活動--------------
+        },
+        mounted() {
+           this.getAllEvent();
+        }
+    }).mount("#app");
+</script>
+
