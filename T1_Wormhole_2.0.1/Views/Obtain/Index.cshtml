@@ -1,62 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@*Tab Bar*@
-@* <div id="TabBar" class="TabBar">
-    <ul class="row">
-        <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Obtain" asp-action="Index">Obtain</a></li>
-
-    </ul>
-</div> *@
-@*wraaper*@
-@*<div class="row mt-3 mb-5 wrapper">*@
-@*Sider*@
-@* <div id="siderbar">
-        <ul>
-
-        </ul>
-    </div> *@
-@*Context*@
-@* <div id="Context">
-        <ul class="row p-5 align-items-center">
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_1.jpg" />
-                    新手七日登入簽到
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_10.jpg" />
-                    每日小任務
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_9.jpg" />
-                    發文成就黨
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_7.jpg" />
-                    課長專屬
-                </a>
-            </li>
-            <li class="col-3 event-box">
-                <a class="event-context" asp-controller="Home" asp-action="Index">
-                    <img class="event-img" src="~/assets/img/post/post_5.jpg" />
-                    潛水王
-                </a>
-            </li>
-        </ul>
-    </div> 
-</div>*@
-
-<div class="wrapper ">
+﻿<div class="wrapper ">
 
     <div class="content " id="app">
         <div class="catgory">
@@ -68,9 +10,9 @@
                 <h1 style="font-size:30px">Wallet</h1>
                 <h2 style="text-align:right"><i class="fa-solid fa-coins fa-beat"></i>{{coins}}</h2>
 
-            </div>
-            <ul class="chatRoom">
-                <h1>打工人~打工魂!!</h1>
+			</div>
+			<h1>打工人~打工魂!!</h1>
+			<ul class="chatRoom">
                 <li>
                     <a href="">
                         <h1>邀請好友註冊獲得蟲洞碧</h1>
@@ -104,90 +46,334 @@
             </ul>
 
         </div>
+        <div class="mb-3">
+           
         <div class="foremost">
-            <div style="border-bottom: 3px solid #fff; padding-bottom:10px;">
-                <ul class="recommended">
-                    <h1>成就徽章</h1>
-                    <li>
-                        <img src="~/img/貓1.jpg" alt="">
-                        <h1>聖騎士團徽章</h1>
-                        <p>評論同一個玩家的討論版10次</p>
-                        <a asp-controller="User" asp-action="ViewProfile">Get</a>
-                    </li>
+                <table style="width:100%">
+                    <tr>
+                        @* 僅管理者可以新增 尚未對user隱藏 *@
+                        <td>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#insertmodal" class="btn btn-primary">新增</button>
+                        </td>
+                        <td>
+                            <div class="row" style="width:50%;margin-left:auto;margin-right:0">
+                                <input class="col-md-8 form-control" v-model="filter" v-on:keyup="filterObtains" placeholder="請輸入欲搜尋之關鍵字" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+    @*         <div style="border-bottom: 3px solid #fff; padding-bottom:10px;"> *@
+				@* <h1>成就徽章</h1> *@
+				@*     <ul class="recommended"> *@
+    @*                 <li> *@
+    @*                     <img src="~/img/貓1.jpg" alt=""> *@
+    @*                     <h1>聖騎士團徽章</h1> *@
+    @*                     <p>評論同一個玩家的討論版10次</p> *@
+    @*                     <a asp-controller="User" asp-action="ViewProfile">Get</a> *@
+    @*                 </li> *@
 
-                </ul>
-            </div>
+    @*             </ul> *@
+    @*         </div> *@
             <div style="border-bottom: 3px solid #fff; padding-bottom:10px;">
                 <h1>稱號</h1>
                 <ul class="recommended">
-                    <li v-for="obtain in obtains">
-                        <img src="~/img/貓1.jpg" alt="" />
 
-                        <h1>{{obtain.name}}</h1>
-                        <p>{{obtain.condition}}</p>
-                        <p>蟲洞幣：{{obtain.price}}</p>
-                        <a href="#">Get</a>
+                    <li v-for="obtain in obtains">
+                        <template v-if="obtain.Edit==true">
+                            <div>
+                                <img v-bind:src=`/api/ObtainsApi/GetPicture/${obtain.obtainID}?v=${rand}` v-bind:title="obtain.name" />
+                            <div>
+                                    <input v-model="obtain.name" class="form-control"/>
+                                    <input v-model="obtain.condition" class="form-control" />
+                                    <input v-model="obtain.price" class="form-control" />
+									<input v-bind:id="'editFile'+ obtain.obtainID" type="file" accept="image/*" v-on:change="editFileChange($event.target)" class="form-control" />
+                                <div>
+                                    <button id="update" class="btn btn-success" v-on:click="update(obtain)">更新</button>
+                                    <button class="btn btn-info" v-on:click="cancel">取消</button>
+                                    <a href="#">Get</a>
+                                </div>
+							</div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div>
+                                <img v-bind:src=`/api/ObtainsApi/GetPicture/${obtain.obtainID}?v=${rand}` v-bind:title="obtain.name" />
+                                <div>
+                                    <h1>{{obtain.name}}</h1>
+                                    <p>{{obtain.condition}}</p>
+                                    <p>蟲洞幣：{{obtain.price}}</p>
+							
+                                <div>
+                                    <button class="btn btn-warning" v-on:click="edit(obtain.obtainID)">編輯</button> 
+                                    <button class="btn btn-danger" v-on:click="deleteobtain(obtain.obtainID)">刪除</button>
+								    <a href="#">Get</a>
+							    </div>
+							    </div>
+							</div>
+                        </template>
                     </li>
-                    @* <li> *@
-                    @*     <img src="~/img/貓2.jpg" alt=""> *@
-                    @*     <h1>全球第一輔助</h1> *@
-                    @*     <p>幫助最多新的使用者完成七日任務</p>    *@
-                    @*     <a href="#">Get</a> *@
-                    @* </li> *@
-                    @* <li> *@
-                    @*     <img src="~/img/貓3.jpg" alt=""> *@
-                    @*     <h1>卍宇宙最專一純情a煞氣寶卍</h1> *@
-                    @*     <p>只按過一個使用者的好評，且超過500次</p>  *@
-                    @*     <a href="#">Get</a> *@
-                    @* </li> *@
-                    @* <li> *@
-                    @*     <img src="~/img/貓4.jpg" alt=""> *@
-                    @*     <h1>開膛手傑克的手</h1> *@
-                    @*     <p>檢舉成功超過99次</p>      *@
-                    @*     <a href="#">Get</a> *@
-                    @* </li> *@
-                    @* <li> *@
-                    @*     <img src="~/img/貓5.jpg" alt=""> *@
-                    @*     <h1>別拿你的身家跟我比零用錢</h1> *@
-                    @*     <p>此稱號由官方認證</p> *@
-                    @*     <a href="#">Get</a> *@
-                    @* </li> *@
+                    
 
                 </ul>
             </div>
+            @* 新增頁面 *@
+                <div class="modal fade"
+                     id="insertmodal"
+                     tabindex="-1"
+                     data-bs-backdrop="static"
+                     data-bs-keyboard="false"
+                     role="dialog"
+                     aria-labelledby="modalTitleId"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                         role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">
+                                    新增稱號
+                                </h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="floatingName" placeholder="稱號" v-model="name" maxlength="30">
+                                        <label for="floatingName">稱號</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="floatingCondition" placeholder="達成條件" v-model="condition" maxlength="50">
+                                        <label for="floatingCondition">達成條件</label>
+                                    </div>
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floatingPrice" placeholder="蟲洞幣" v-model="price">
+										<label for="floatingPrice">蟲洞幣價格</label>
+									</div>
+                                    <div class="mb-3">
+                                    <label for="typeSelect" class="form-label">類型</label>
+                                        <select class="form-select" aria-label=".form-select-lg example" v-model="type" required>
+                                        <option value="0">請選擇類型</option>
+                                            <option value="1">成就達成</option>
+                                            <option value="2">活動</option>
+                                            <option value="3">蟲洞幣獲得</option>
+                                    </select>
+                                        <p>目前選擇的 type：{{ type }}</p>
+                                    </div>
+                                    <br>
+                                    <div class="mb-3">
+                                        <label class="form-label">圖片:</label>
+                                        <img src="~/images/noimage.jpg" id="insertPreview" title="待上傳" class="form-control" />
+                                        <input id="insertFile" type="file" accept="image/*" v-on:change="insertFileChange($event.target)" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="button" class="btn btn-primary" v-on:click="insert" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         </div>
 
 
     </div>
 </div>
 
+@section Scripts
+{
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     Vue.createApp({
         data() {
             return {
                 obtains:[],
+                filter:"",
+                name:"",
+                condition:"",
+                price:"",
+                type:0,
+                rand:1,
                 coins:"",
 
             }
         },
         methods: {
+                        logType() {
+              console.log("type:", this.type, "typeof:", typeof this.type);
+            },
 
-            getObtains() {
-                let self = this;
-                fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
+            filterObtains:function(){
+                //alert("filterObtains");
+                let _this = this;
+                var request={};
+                request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                request.type = isNaN(Number(_this.filter)) ? 0 : Number(_this.filter);
+                request.price = isNaN(Number(_this.filter)) ? 0 : Number(_this.filter);
+                request.name=_this.filter;
+                request.condition=_this.filter;
+                request.picture=null;
+                    axios.post("api/ObtainsApi/Filter",request).then(response=>{
+                    _this.obtains=response.data;
+                             for(var i=0;i<_this.obtains.length;i++){
+                             _this.obtains[i].Edit=false;
+                             }
+                }).catch(err=>{
+                    alert("Error");
+                });
+            },
+            edit:function(obtainID){
+                    // alert(`編輯:${obtainID}`);
+					let _this=this;
+                    for(let i = 0; i < _this.obtains.length; i++){
+                    _this.obtains[i].Edit = false;
+            }
+                    for(var i=0;i<_this.obtains.length;i++){
+                        var obtain=_this.obtains[i];
+                        if(obtain.obtainID==obtainID){
+                            obtain.Edit= true;
+                            obtain.backup = {
+                                name: obtain.name,
+                                condition: obtain.condition,
+                                price: obtain.price
+                            };
+						}
+					}
+			},
+            cancel:function(){
+                // alert("cancel");
+                let _this=this;
+                for(var i=0;i<_this.obtains.length;i++){
+                    var obtain=_this.obtains[i];
+                    if(obtain.Edit== true){
+                       obtain.Edit= false;
+                        obtain.name = obtain.backup.name;
+                        obtain.condition = obtain.backup.condition;
+                        obtain.price = obtain.backup.price;
+
+                        delete obtain.backup;
+                       
+                    }
+                }
+            },
+            readURL:function(inputTypeFile,img,btn){
+                    if(inputTypeFile.files[0]!=null){
+                        var file=inputTypeFile.files[0];
+                        var allowTypes="image.*";
+                        if (file.type.match(allowTypes)){
+                            btn.disabled = false;
+                            var reader=new FileReader();
+                            reader.onload=function(e){
+                                img.src=e.target.result;
+                                img.title=file.name;
+                            };
+                            reader.readAsDataURL(file);
+
+                        }
+                        else{
+                            alert("不允許的檔案上傳類型！");
+                            btn.disabled = true;
+                            inputTypeFile.value="";
+                        }
+                    }
+                },
+            editFileChange:function(inputTypeFile){
+                //alert(`Change:${inputTypeFile.files[0].name}`);
+                let _this=this;
+                 _this.readURL(inputTypeFile,inputTypeFile.parentElement.previousSibling,$("#update"));
+                },
+            insertFileChange:function(inputTypeFile){
+                //alert(`Change:${inputTypeFile.files[0].name}`);
+                let _this=this;
+                _this.readURL(inputTypeFile,inputTypeFile.previousSibling,$("#insert"));
+            },
+            update:function(obtain){
+                // alert(`update:${obtain.obtainId}`);
+                let _this=this;
+                    var form=new FormData();
+                    form.append("obtainID",obtain.obtainID);
+                    form.append("name",obtain.name);
+                    form.append("condition",obtain.condition);
+                    form.append("price",obtain.price);
+                    form.append("type",obtain.type);
+                    let fileInput = document.querySelector(`#editFile${obtain.obtainID}`);
+                    if (fileInput && fileInput.files.length > 0) {
+                        form.append("picture", fileInput.files[0]);
+                    }
+                        axios.put(`/api/ObtainsApi/${obtain.obtainID}`,form,{
+                        headers:{
+                            "content-type":"multipart/form-data"
+                        }
+                    }).then(response=>{
+                        alert(response.data);
+                        _this.filterObtains();
+                        _this.rand=new Date().getTime();
+                        obtain.preview = null;
+                    }).catch(err=>{
+                        alert("error");
+                    });
+
+            },
+            
+            insert:function(){
+                //alert("insert");
+                let _this=this;
+                console.log("typeof type:", typeof _this.type, "value:", _this.type);
+                        
+                var form=new FormData();
+                form.append("name",_this.name);
+                form.append("condition",_this.condition);
+                form.append("price",_this.price);
+                form.append("type",parseInt(_this.type));
+                let fileInput = document.querySelector("#insertFile");
+                    if (fileInput && fileInput.files.length > 0) {
+                        form.append("picture", fileInput.files[0]);
+                    }
+                          axios.post("/api/ObtainsApi/",form,{}).then(response=>{
+                         alert(response.data);
+                         _this.filterObtains();
+                         document.querySelector("#insertFile").previousSibling.src="@Url.Content("~/images/noimage.jpg")";
+                         document.querySelector("#insertFile").previousSibling.title="待上傳";
+                    }).catch(err=>{
+                        alert(err.message);
+                    });
+
+
+            },
+            deleteobtain:function(obtainID){
+                //alert(`刪除:${obtainID}`);
+                var ret=confirm("確定要刪除嗎?")
+                if (ret==true){
+                    let _this=this;
+                    axios.delete(`/api/ObtainsApi/${obtainID}`).then(response=>{
+                        alert(response.data)
+                        _this.filterObtains();
+                    }).catch(err=>{
+                        alert("Error");
+                    });
+                }
             },
             getCoins(id){
                 let self = this;
                 fetch("/api/ObtainsApi/GetCoins?Userid="+id).then(x => x.json()).then(coins => self.coins = coins)
 
-            }
-            
+            },
+        },
+        mounted:function() {
+            let _this=this;
+            _this.filterObtains();
+            _this.getCoins(3);
 
         },
-        mounted() {
-            this.getObtains();
-            this.getCoins(3);
-        }
+        
     }).mount("#app")
 
 </script>
+}
