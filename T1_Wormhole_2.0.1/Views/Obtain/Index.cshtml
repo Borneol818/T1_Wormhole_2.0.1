@@ -160,13 +160,14 @@
 
     </div>
 </div>
+</div>
 
 <script>
     Vue.createApp({
         data() {
             return {
                 obtains:[],
-                coins:"",
+                coins:0,
 
             }
         },
@@ -176,9 +177,10 @@
                 let self = this;
                 fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
             },
-            getCoins(id){
-                let self = this;
-                fetch("/api/ObtainsApi/GetCoins?Userid="+id).then(x => x.json()).then(coins => self.coins = coins)
+                    //查使用者的wallet
+                    getCoins(id){
+                        let self = this;
+                         fetch("/api/User/GetUserCoins?id="+id).then(x => x.json()).then(coins => self.coins = coins)
 
             }
             

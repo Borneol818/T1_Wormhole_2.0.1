@@ -69,7 +69,18 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         }
 
         [HttpGet]
-        public async Task<FileResult> GetPhoto(int id)
+        public IActionResult GetUserCoins(int id)
+        {
+
+            int? Wallet = _db.ObtainStatuses.Where(x => x.UserId == id).Select(x => x.Count).Sum();
+            
+            return Ok(Wallet);
+
+        }
+
+
+        [HttpGet]
+        public async Task<FileResult> GetPhoto(int id) //這是撈使用者頭像的(傳回的是單個檔案用File)
         {
             string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
             UserInfo e = await _db.UserInfos.FindAsync(id);
