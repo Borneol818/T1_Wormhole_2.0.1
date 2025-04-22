@@ -22,5 +22,31 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var ExistAccount = _context.Logins.FirstOrDefault(x => x.Account == Account);
             return (ExistAccount == null);
         }
+
+        [HttpGet]
+        public string GetLoginName()
+        {
+            var userIdentifier = HttpContext.Request.Cookies["LoginName"];
+
+            if (string.IsNullOrEmpty(userIdentifier))
+            {
+                return "";
+            }
+            var UserIdentifier = userIdentifier;
+            return UserIdentifier;
+        }
+
+        [HttpGet]
+        public string GetPassword()
+        {
+            var pwd = HttpContext.Request.Cookies["LoginPassword"];
+
+            if (string.IsNullOrEmpty(pwd))
+            {
+                return "";
+            }
+            var Password = pwd;
+            return Password;
+        }
     }
 }
