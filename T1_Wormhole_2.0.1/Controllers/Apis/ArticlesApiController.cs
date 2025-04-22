@@ -26,14 +26,16 @@ namespace T1_Wormhole_2._0._1.Controllers
         
         public async Task<IEnumerable<ArticleDTO>> GetArticles()
         {
-           return _context.Articles.Select(e => new ArticleDTO
+            var UserInfo = _context.UserInfos;
+            return _context.Articles.Select(e => new ArticleDTO
             {
                 ArticleID = e.ArticleId,
                 Title = e.Title,
                 Type = e.Type,
                 CreateTime = e.CreateTime,
                 Content = e.Content,
-                WriterID = e.WriterId,
+                WriterID=e.WriterId,
+                //Writer = UserInfo.Where(s => s.UserId==e.WriterId).Select(s=>s.Nickname).Single(),
                 ReleaseBy = e.ReleaseBy,
 
             });
@@ -54,6 +56,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             });
 
         }
+
         // GET: api/ArticlesApi/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Article>> GetArticle(int id)

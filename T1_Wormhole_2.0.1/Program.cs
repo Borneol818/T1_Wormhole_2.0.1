@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using T1_Wormhole_2._0._1;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
+using Microsoft.AspNetCore.OData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,14 @@ builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddOData(options => {
+    options.Select()//挑欄位
+           .Filter()//篩選
+           .OrderBy()//排序
+           .Expand()//關聯查詢
+           .SetMaxTop(100)//最多100筆
+           .Count();//計算數量
+});
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
