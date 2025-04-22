@@ -89,7 +89,9 @@
                 <div class="row">
                     <article class="blog_item">
                         @* {{article.Picture}} *@
+                        @* 依照type篩選為新聞文章 *@
                         <div v-for="article in articles.filter(a => a.type === false)" :key="article.articleID" class="blog_details">
+                            @* 依文章ID跳選到該文章內容 *@
                             <a :href="'/NewsArticle/NewsArticle?id=' + article.articleID">
                                 <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
                             </a>
@@ -111,10 +113,10 @@
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a href="#" class="page-link">1</a>
+                                <button onclick="nextpage()" class="page-link">1</button>
                             </li>
                             <li class="page-item active">
-                                <a href="#" class="page-link">2</a>
+                                <button onclick="nextpage()" class="page-link">2</button>
                             </li>
                             <li class="page-item">
                                 <a href="#" class="page-link" aria-label="Next">
@@ -168,7 +170,23 @@
     <script src="./assets/js/plugins.js"></script>
     <script src="./assets/js/main.js"></script>
 </body>
+
+@section Scripts
+{
 <script>
+        // 下一頁功能 尚未改成odata
+        var skipCount=0;
+        var pageCount=2;
+            
+        function nextpage(){
+                alert("next");
+                // skipCount=localStorage.getItem("SkipCount");
+                // skipCount=skipCount==null? 0: Number(skipCount);
+                // getArticles();
+                // skipCount+=pageCount;
+                // localStorage.setItem("SkipCount",skipCount);
+            }
+
     Vue.createApp({
         data() {
             return {
@@ -199,3 +217,4 @@
         text-overflow: ellipsis;
     }
 </style>
+}
