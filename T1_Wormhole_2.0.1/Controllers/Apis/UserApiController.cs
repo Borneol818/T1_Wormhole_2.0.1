@@ -128,7 +128,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             ObtainID = y.ObtainId,
                             Type = y.Type,
                             Name = y.Name,
-                            Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
+                            //Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
@@ -162,7 +162,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             ObtainID = y.ObtainId,
                             Type = y.Type,
                             Name = y.Name,
-                            Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
+                            //Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
