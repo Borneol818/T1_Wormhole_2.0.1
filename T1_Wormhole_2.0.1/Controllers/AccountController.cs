@@ -63,7 +63,7 @@ namespace T1_Wormhole_2._0._1.Controllers
 
                 await _emailSender.SendEmailAsync(user.Email,
                     "Verify Your Email",emailMessage);
-
+                TempData["Email"] = user.Email;
                 return RedirectToAction("RegisterConfirmation");
             }
             return View(model);
@@ -119,11 +119,12 @@ namespace T1_Wormhole_2._0._1.Controllers
             return RedirectToAction("Login");
         }
 
-        //重送Email, 大致完成但還沒辦法用
+        //重送Email
         [HttpGet]
         public async Task<IActionResult> ResendConfirmationEmail(string email)
         {
-            email = TempData["Email"]?.ToString(); //
+            email = TempData["Email"]?.ToString(); //用TempData把Email帶過來
+            TempData.Keep("Email");
             var user = _userService.FindByEmail(email);
 
             if (user != null && !user.EmailConfirmed)
