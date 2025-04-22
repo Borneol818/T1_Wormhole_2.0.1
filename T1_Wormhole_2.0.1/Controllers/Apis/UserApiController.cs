@@ -132,7 +132,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
-                        obtains.Add($"data:image/jpeg;base64,{obtain.Picture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
+                        obtains.Add($"data:image/jpeg;base64,{obtain.ShowPicture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
                     }
 
                 }
@@ -166,7 +166,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
-                        obtains.Add($"data:image/jpeg;base64,{obtain.Picture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
+                        obtains.Add($"data:image/jpeg;base64,{obtain.ShowPicture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
                     }
 
                 }
