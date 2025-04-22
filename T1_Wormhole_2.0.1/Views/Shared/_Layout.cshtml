@@ -37,33 +37,55 @@
         <div class="header-area">
             <div class="main-header ">
                 <div class="header-top ">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="d-flex justify-content-between align-items-center flex-sm">
-                                    <div class="header-info-left d-flex align-items-center">
-                                        <!-- logo -->
-                                        <div class="logo">
-                                            <a class="nav-link" asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
-                                        </div>
-                                        <!-- Search Box -->
-                                        <form action="#" class="form-box">
-                                            <input type="text" name="Search" placeholder="Search book by author or publisher">
-                                            <div class="search-icon">
-                                                <i class="ti-search"></i>
+                    <div id="onlyLayout">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="d-flex justify-content-between align-items-center flex-sm">
+                                        <div class="header-info-left d-flex align-items-center">
+                                            <!-- logo -->
+                                            <div class="logo">
+                                                <a class="nav-link" asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="header-info-right d-flex align-items-center">
-                                        <ul>
-                                            <li><a href="#">FAQ</a></li>
-                                            <li><a href="#">Track Order</a></li>
-                                            <li class="shopping-card">
-                                                <a asp-controller="User" asp-action="Index"><img src="assets/img/icon/cart.svg" alt=""></a>
-                                            </li>
-                                            <li><a href="/Account/Login" class="btn header-btn">Login</a></li>
-                                            <li><a href="/Account/Register" class="btn header-btn">Sign in</a></li>
-                                        </ul>
+                                            <!-- Search Box -->
+                                            <form action="#" class="form-box">
+                                                <input type="text" name="Search" placeholder="Search book by author or publisher">
+                                                <div class="search-icon">
+                                                    <i class="ti-search"></i>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="header-info-right d-flex align-items-center">
+                                            <ul>
+                                                @* <li><a href="#">FAQ</a></li> *@
+                                                @* <li><a href="#">Track Order</a></li>*@
+                                                <li class="nav-item dropdown">
+                                                    <a class="nav-link dropdown-toggle"
+                                                       href="#"
+                                                       id="dropdownId"
+                                                       data-bs-toggle="dropdown"
+                                                       aria-haspopup="true"
+                                                       aria-expanded="false">Dropdown</a>
+                                                    @* <div class="shopping-card"> *@
+                                                    <a class="shopping-card" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" src="~/images/phototest.jpg" alt=""></a>
+                                                    @* </div> *@
+                                                    <div class="dropdown-menu "
+                                                         aria-labelledby="dropdownId">
+                                                        <div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" v-for="item in userInfo">
+														    <h3>My Account</h3>
+														    <label>User Name</label>
+                                                            <p>{{item.name}}</p>
+                                                            <label>Nickname</label>
+                                                            <p>{{item.nickname}}</p>
+                                                        </div>
+                                                        <a class="dropdown-item" href="#">使用者設定</a>
+                                                        <a class="dropdown-item" href="#">登出</a>
+                                                    </div>                                            
+                                                </li>                                            
+                                                <li><a href="/Account/Login" class="btn header-btn">Login</a></li>
+                                                <li><a href="/Account/Register" class="btn header-btn">Sign in</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -110,8 +132,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+		</div>		
     </header>
     <div class="container">
         <main role="main" class="ph-3"></main>
@@ -200,6 +222,24 @@
     </div>
 
     <!-- JS here -->
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    userInfo:[],
+                };
+            },
+            methods:{
+                async getForLayout(id){
+                    var self = this;
+                    await fetch('/api/User/Get'+'?id='+id).then(x => x.json()).then(res => self.userInfo = res);
+                },
+            },
+            mounted(){
+                this.getForLayout(5);
+            }
+        }).mount("#onlyLayout");
+    </script>
     <!-- Jquery, Popper, Bootstrap -->
     <script src="~/assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
