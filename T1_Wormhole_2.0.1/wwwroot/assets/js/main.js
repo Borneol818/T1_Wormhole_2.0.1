@@ -207,11 +207,12 @@
       ]
     });
 
-/* 6. Nice Selectorp  */
-  var nice_Select = $('select');
-    if(nice_Select.length){
-      nice_Select.niceSelect();
-    }
+    /* 6. Nice Selectorp  */
+//todo obtainºÙ¸¹·s¼WType®É½Ä¬ð
+  //var nice_Select = $('select');
+  //  if(nice_Select.length){
+  //    nice_Select.niceSelect();
+  //  }
 
 /* 7. data-background */
     $("[data-background]").each(function () {

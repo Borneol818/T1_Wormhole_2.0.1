@@ -254,7 +254,7 @@
                 data.append("sex",self.sex);
 				data.append("photo",document.querySelector("#editFile").files[0]);
                 //alert(JSON.stringify(data))
-                fetch('/api/User/Edit',{
+                await fetch('/api/User/Edit',{
                     body:data,
                     // headers:{
                     //     "content-type":"multipart/form-data",
