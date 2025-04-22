@@ -195,7 +195,7 @@
 					price:"",
 					type:"0",
 					rand:1,
-					coins:"",
+                			coins:0,
 
 				}
 			},
@@ -204,6 +204,11 @@
 				  console.log("type:", this.type, "typeof:", typeof this.type);
 				},
 
+            getObtains() {
+                let self = this;
+                fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
+            },
+	    //查使用者的wallet
 				filterObtains:function(){
 					//alert("filterObtains");
 					let _this = this;
@@ -354,9 +359,9 @@
 						});
 					}
 				},
-				getCoins(id){
-					let self = this;
-					fetch("/api/ObtainsApi/GetCoins?Userid="+id).then(x => x.json()).then(coins => self.coins = coins)
+                    getCoins(id){
+                        let self = this;
+                         fetch("/api/User/GetUserCoins?id="+id).then(x => x.json()).then(coins => self.coins = coins)
 
 				},
 			},
