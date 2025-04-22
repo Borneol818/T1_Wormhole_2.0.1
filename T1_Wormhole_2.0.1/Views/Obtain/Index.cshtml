@@ -209,8 +209,8 @@
 					let _this = this;
 					var request={};
 					request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.type = isNaN(Number(_this.filter)) ? 0 : Number(_this.filter);
-					request.price = isNaN(Number(_this.filter)) ? 0 : Number(_this.filter);
+					request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+					request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
 					request.name=_this.filter;
 					request.condition=_this.filter;
 					request.picture=null;
