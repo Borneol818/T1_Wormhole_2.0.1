@@ -10,5 +10,5 @@
         public DateTime CreateTime{ get; set; }
 
         public string[]? Signature { get; set; }
-}
+    }
 }
