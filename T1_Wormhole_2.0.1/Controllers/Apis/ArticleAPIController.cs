@@ -28,6 +28,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                  writer = r.User.Nickname,
                  content = r.Comment,
                 date = r.CreateTime.ToString("yyyy年MM月dd日 HH點mm分ss秒")
+                
             }).ToList();
 
 
@@ -47,6 +48,14 @@ namespace T1_Wormhole_2._0._1.Controllers
                 Negative = nRatingcount ?? 0
             });
             
+        }
+        [HttpGet]
+        public async Task<FileResult> GetArticlePhoto(int articleId)
+        {
+            string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
+            Article e = await _context.Articles.FindAsync(articleId);
+            byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(fileName);
+            return File(ImageContent, "image/jpeg");
         }
     }
 }

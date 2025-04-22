@@ -1,6 +1,6 @@
 ﻿<body>
     <!-- header end -->
-    <main class="login-bg">
+    <main class="login-bg" style="height: 180vh;">
         <!-- Register Area Start -->
         <div class="register-form-area" id="app">
             <div class="register-form text-center">
@@ -35,6 +35,36 @@
                             <input type="password" name="ConfirmPassword" v-model="ConfirmPassword" @@input="checkConfirmPassword" placeholder="Confirm Password" style="margin-bottom: 10px;">
                             <label v-show="isMatchPassword" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Password Match</label>
                             <label v-show="isNotMatchPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Password Is Not Match</label>
+                        </div>
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>Name</label>
+                            <input type="text" name="Name" v-model="Name" @@input="checkName" placeholder="Enter Your Name" style="margin-bottom: 10px;" minlength="3" maxlength="20">
+                            <label v-show="isName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        </div>
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>NickName</label>
+                            <input type="text" name="Nickname" v-model="Nickname" @@input="checkNickname" placeholder="Enter Your Nickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
+                            <label v-show="isNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        </div>
+                        <div class="single-input-fields" style="overflow: hidden;">
+                            <label>Phone</label>
+                            <input type="text" name="Phone" v-model="Phone" @@input="checkPhone" placeholder="09XXXXXXXX" style="margin-bottom: 10px;" minlength="10" maxlength="10">
+                            <label v-show="isPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        </div>
+                        <div class="row">
+                            <div class="single-input-fields col-6" style="margin-left: 10px; margin-right:20px;">
+                                <label>Birthday</label>
+                                <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" @@input="checkBirthday" placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
+                                <label v-show="isBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            </div>
+                            <div class="single-input-fields col-5">
+                                <label>Sex</label>
+                                <select class="country_select">
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                </select>
+                                <label v-show="isSex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            </div>
                         </div>
                     </div>
                 

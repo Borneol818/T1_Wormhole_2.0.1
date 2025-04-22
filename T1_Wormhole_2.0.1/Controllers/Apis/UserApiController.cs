@@ -43,7 +43,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             return result;
         }
         [HttpGet]
-        public async Task<IEnumerable<UserStatus>> GetStatus(int id) //這是撈使用者狀態的
+        public async Task<IEnumerable<UserStatus>> GetStatus(int id)
         {
             var result = _db.UserStatuses.Where(x => x.Id == id);
             return result;
@@ -52,12 +52,12 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [HttpGet]
         public async Task<int?> updateCoins(int id) //這是計算使用者的錢包餘額的
         {
-            var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放"));
+            var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放"));                
             var totalCoins = result.Sum(x => x.CoinAmount);
-            var user = await _db.UserInfos.FindAsync(id);
-
+            var user =await _db.UserInfos.FindAsync(id);            
+            
             if (user != null)
-            {
+            {                                
                 user.Wallet = totalCoins;
                 await _db.SaveChangesAsync();
                 return user.Wallet;
@@ -65,10 +65,19 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             else
             {
                 return null;
-            }
+            }          
         }
 
-        
+        [HttpGet]
+        public IActionResult GetUserCoins(int id)
+        {
+
+            int? Wallet = _db.ObtainStatuses.Where(x => x.UserId == id).Select(x => x.Count).Sum();
+            
+            return Ok(Wallet);
+
+        }
+
 
         [HttpGet]
         public async Task<FileResult> GetPhoto(int id) //這是撈使用者頭像的(傳回的是單個檔案用File)
@@ -80,7 +89,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         }
 
         [HttpPost]
-        public async Task<string> Edit(UserInfoDto model) //這是使用者資料編輯
+        public async Task<string> Edit(UserInfoDto model)
         {
             UserInfo data = await _db.UserInfos.FindAsync(model.UserId);
             if (data == null)
@@ -128,11 +137,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             ObtainID = y.ObtainId,
                             Type = y.Type,
                             Name = y.Name,
-                            //Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
+                            ShowPicture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
-                        obtains.Add($"data:image/jpeg;base64,{obtain.Picture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
+                        obtains.Add($"data:image/jpeg;base64,{obtain.ShowPicture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
                     }
 
                 }
@@ -162,11 +171,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             ObtainID = y.ObtainId,
                             Type = y.Type,
                             Name = y.Name,
-                            //Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
+                            ShowPicture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
-                        obtains.Add($"data:image/jpeg;base64,{obtain.Picture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
+                        obtains.Add($"data:image/jpeg;base64,{obtain.ShowPicture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
                     }
 
                 }
