@@ -11,3 +11,12 @@
 .writer{
     background-color: #fff;
 }
+
+.Events {
+    margin:10px;
+    padding:30px;
+}
+.EventsPicture {
+    width:500px;
+    margin:0 auto;
+}

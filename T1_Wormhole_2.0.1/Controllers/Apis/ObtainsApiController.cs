@@ -30,7 +30,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                 ObtainID = e.ObtainId,
                 Type = e.Type,
                 Name = e.Name,
-                Picture = e.Picture,
+                Picture = Convert.ToBase64String(e.Picture),
                 Price = e.Price,
                 Condition = e.Condition,
 

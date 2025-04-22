@@ -15,7 +15,7 @@ public partial class Participation
     /// <summary>
     /// 使用者ID
     /// </summary>
-    public int UersId { get; set; }
+    public int UserId { get; set; }
 
     /// <summary>
     /// 活動參與時間
@@ -29,5 +29,5 @@ public partial class Participation
 
     public virtual Event Event { get; set; }
 
-    public virtual UserInfo Uers { get; set; }
+    public virtual UserInfo User { get; set; }
 }
