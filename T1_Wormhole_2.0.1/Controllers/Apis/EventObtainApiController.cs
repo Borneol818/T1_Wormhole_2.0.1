@@ -57,5 +57,14 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             await _db.SaveChangesAsync();
             return "成功參與活動";
         }
+
+        public void giveReward() 
+        {
+            //使用者點選參加活動之後登陸到資料庫(v)
+            //達成獎勵條件發放獎勵
+            //有留言活動、貼文活動，依照活動不同判斷邏輯不同
+            //活動頁生成專屬連結，點連結進去後的po文或留言才算獎勵
+            //or特定文章有在資料庫紀錄參與的活動，使用者貼文可以選擇參與哪些活動
+        }
     }
 }
