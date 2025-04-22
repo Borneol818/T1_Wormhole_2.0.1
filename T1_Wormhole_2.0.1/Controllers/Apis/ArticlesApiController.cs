@@ -52,7 +52,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                 Content = e.Content,
                 WriterID = e.WriterId,
                 ReleaseBy = e.ReleaseBy,
-
+                //Photo = e.Picture,
             });
 
         }
