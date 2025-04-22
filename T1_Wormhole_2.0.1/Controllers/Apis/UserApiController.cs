@@ -128,11 +128,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             ObtainID = y.ObtainId,
                             Type = y.Type,
                             Name = y.Name,
-                            //Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
+                            ShowPicture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
-                        obtains.Add($"data:image/jpeg;base64,{obtain.Picture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
+                        obtains.Add($"data:image/jpeg;base64,{obtain.ShowPicture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
                     }
 
                 }
@@ -162,11 +162,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                             ObtainID = y.ObtainId,
                             Type = y.Type,
                             Name = y.Name,
-                            //Picture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
+                            ShowPicture = Convert.ToBase64String(y.Picture), //因為要傳回多個圖片不能用File，所以將其轉型為Base64
                         }).FirstOrDefaultAsync();
                     if (obtain != null)
                     {
-                        obtains.Add($"data:image/jpeg;base64,{obtain.Picture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
+                        obtains.Add($"data:image/jpeg;base64,{obtain.ShowPicture}"); //把Base64的圖片加上data:image/jpeg;base64,這個前綴，並依次塞入obtains
                     }
 
                 }
