@@ -11,6 +11,8 @@ namespace T1_Wormhole_2._0._1.LoginScripts
 
         [Required]
         public string Password { get; set; }
-        
+
+        public string? KeepLog { get; set; }
+
     }
 }
