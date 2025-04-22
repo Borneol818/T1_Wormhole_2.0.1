@@ -53,7 +53,7 @@
 						</td>
 						<td>
 							<div class="row" style="width:50%;margin-left:auto;margin-right:0">
-								<input class="col-md-8 form-control" v-model="filter" v-on:keyup="filterObtains" placeholder="請輸入欲搜尋之關鍵字" />
+								<input class="col-md-8 form-control" v-model.lazy="filter"  placeholder="請輸入欲搜尋之關鍵字" />
 							</div>
 						</td>
 					</tr>
@@ -153,7 +153,7 @@
 											<option value="2">活動</option>
 											<option value="3">蟲洞幣獲得</option>
 										</select>
-										<p>目前選擇的 type：{{ type }}</p>
+										@* <p>目前選擇的 type：{{ type }}</p>  為了檢視type的值是否修正成功*@
 									</div>
 									<br>
 									<div class="mb-3">
@@ -199,18 +199,38 @@
 
 				}
 			},
+			watch:{
+			filter(){
+				let _this = this;
+					var request={};
+					request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+					request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+					request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+					request.name=_this.filter;
+					request.condition=_this.filter;
+					request.picture=null;
+						axios.post("api/ObtainsApi/Filter",request).then(response=>{
+						_this.obtains=response.data;
+								 for(var i=0;i<_this.obtains.length;i++){
+								 _this.obtains[i].Edit=false;
+								 }
+					}).catch(err=>{
+						alert("Error");
+					});
+				}
+			},
 			methods: {
-							logType() {
-				  console.log("type:", this.type, "typeof:", typeof this.type);
-				},
+				// logType() {
+				// console.log("type:", this.type, "typeof:", typeof this.type);
+				// },為了檢視type回傳值
 
 				filterObtains:function(){
-					//alert("filterObtains");
+					// alert("filterObtains");
 					let _this = this;
 					var request={};
 					request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.type = isNaN(Number(_this.filter)) ? 0 : Number(_this.filter);
-					request.price = isNaN(Number(_this.filter)) ? 0 : Number(_this.filter);
+					request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+					request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
 					request.name=_this.filter;
 					request.condition=_this.filter;
 					request.picture=null;
@@ -359,6 +379,7 @@
 					fetch("/api/ObtainsApi/GetCoins?Userid="+id).then(x => x.json()).then(coins => self.coins = coins)
 
 				},
+
 			},
 			mounted:function() {
 				let _this=this;
