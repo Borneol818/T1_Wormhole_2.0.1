@@ -189,7 +189,7 @@ namespace T1_Wormhole_2._0._1.Controllers
 
                     var authProperties = new AuthenticationProperties 
                     {
-                        //IsPersistent = true //保持登入,還沒啟用(因為前端還沒改好)
+                        IsPersistent = model.KeepLog == null ? false : true //保持登入
                     };
 
                     await HttpContext.SignInAsync(
