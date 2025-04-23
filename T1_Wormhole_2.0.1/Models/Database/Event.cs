@@ -62,6 +62,8 @@ public partial class Event
     /// </summary>
     public string Type { get; set; }
 
+    public int EventTarget { get; set; }
+
     public virtual ICollection<EventObtain> EventObtains { get; set; } = new List<EventObtain>();
 
     public virtual BoManager Manager { get; set; }

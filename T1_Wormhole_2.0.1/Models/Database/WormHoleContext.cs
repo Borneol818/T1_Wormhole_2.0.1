@@ -65,6 +65,7 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.WriterId)
                 .HasComment("文章創作者ID")
                 .HasColumnName("WriterID");
+            entity.Property(e => e.ArticleCover);
 
             entity.HasOne(d => d.ReleaseByNavigation).WithMany(p => p.Articles)
                 .HasForeignKey(d => d.ReleaseBy)

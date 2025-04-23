@@ -15,13 +15,15 @@ namespace T1_Wormhole_2._0._1.Controllers
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
+        private readonly WormHoleContext _context;
 
-        public AccountController(IUserService userService, IPasswordHasher passwordHasher, IEmailSender emailSender, IConfiguration configuration)
+        public AccountController(IUserService userService, IPasswordHasher passwordHasher, IEmailSender emailSender, IConfiguration configuration, WormHoleContext context)
         {
             _userService = userService;
             _passwordHasher = passwordHasher;
             _emailSender = emailSender;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpGet]
@@ -31,28 +33,42 @@ namespace T1_Wormhole_2._0._1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(Login model)
+        public async Task<IActionResult> Register(Login model1, UserInfo model2)
         {
-            var ExistUser = _userService.FindByUsername(model.Account);
-            if (model.Password != model.ConfirmPassword || (ExistUser != null))
+            var ExistUser = _userService.FindByUsername(model1.Account);
+            if (model1.Password != model1.ConfirmPassword || (ExistUser != null))
             {
                 ModelState.AddModelError("ConfirmPassword", "The password and confirmation password do not match.");
                 Console.WriteLine("帳號創建失敗");
-                return View(model);
+                return View("Register");
             }
             
             if (ModelState.IsValid)
             {
                 var user = new Login
                 {
-                    Account = model.Account,
-                    Email = model.Email,
+                    Account = model1.Account,
+                    Email = model1.Email,
                     EmailConfirmed = false,
                     EmailVerificationToken = Guid.NewGuid().ToString("N")
                 };
-                user.Password = _passwordHasher.HashPassword(model.Password);
+                user.Password = _passwordHasher.HashPassword(model1.Password);
 
                 _userService.CreateUser(user);
+                //新增UserInfo
+                var userInfo = new UserInfo
+                {
+                    UserId = 0,
+                    Name = model2.Name,
+                    Email = model1.Email,
+                    Nickname = model2.Nickname,
+                    Sex = model2.Sex,
+                    Brithday = model2.Brithday,
+                    Phone = model2.Phone,
+                    Status = false
+                };
+                _context.UserInfos.Add(userInfo);
+                _context.SaveChanges();
                 var baseUrl = _configuration["AppSettings:BaseUrl"];
                 var verificationLink = $"{baseUrl}/Account/VerifyEmail?token={user.EmailVerificationToken}&email={user.Email}";
 
@@ -66,12 +82,13 @@ namespace T1_Wormhole_2._0._1.Controllers
                 TempData["Email"] = user.Email;
                 return RedirectToAction("RegisterConfirmation");
             }
-            return View(model);
+            return View("Register");
         }
 
         [HttpGet]
         public IActionResult RegisterConfirmation() 
         {
+            TempData.Keep("Email");
             return View(); 
         }
 
@@ -169,13 +186,16 @@ namespace T1_Wormhole_2._0._1.Controllers
                     user = _userService.FindByUsername(model.UserIdentifier);
                 }
                 Console.WriteLine($"User found: {user != null}");
+                string email = user != null ? user.Email : string.Empty;
+                var userInfo = _context.UserInfos.FirstOrDefault(u => u.Email == email);
+                string userId = userInfo.UserId != null ? userInfo.UserId.ToString() : string.Empty;
                 if (user != null && _passwordHasher.VerifyPassword(user.Password, model.Password) && user.EmailConfirmed)
                 {
    
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.Email),
-                        new Claim(ClaimTypes.NameIdentifier, user.Account),
+                        new Claim(ClaimTypes.Name, user.Account),
+                        new Claim(ClaimTypes.NameIdentifier, userId),
                         new Claim(ClaimTypes.Role, "User"),
                     };
 
@@ -193,11 +213,26 @@ namespace T1_Wormhole_2._0._1.Controllers
                         IsPersistent = model.KeepLog == null ? false : true //保持登入
                     };
 
+                    if (model.RememberMe != null)
+                    {
+                        CookieOptions options = new CookieOptions
+                        {
+                            Expires = DateTime.Now.AddDays(10),
+                            HttpOnly = true,
+                            Secure = true,
+                            SameSite = SameSiteMode.Strict
+                        };
+                        HttpContext.Response.Cookies.Append("LoginName", model.UserIdentifier, options);
+                        HttpContext.Response.Cookies.Append("LoginPassword", model.Password, options);
+                    }
+
                     await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         claimsPrincipal,
                         authProperties);
 
+                    userInfo.Status = true;
+                    _context.SaveChanges();
                     return RedirectToAction("Index", "Home");
 
                 }
@@ -215,6 +250,10 @@ namespace T1_Wormhole_2._0._1.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            var userId = Convert.ToInt32(HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
+            var user = _context.UserInfos.FirstOrDefault(u => u.UserId == userId);
+            user.Status = false;
+            _context.SaveChanges();
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }

@@ -2,7 +2,7 @@
 
 <body>
 
-    <main class="login-bg">
+    <main class="login-bg" style="height: 140vh;">
         <!-- login Area Start -->
         <div class="login-form-area" id="app">
             <form action="/Account/Login" method="post">
@@ -17,11 +17,11 @@
 
                         <div class="single-input-fields">
                             <label>Username or Email Address</label>
-                            <input type="text" name="UserIdentifier" placeholder="Username or Email address">
+                            <input type="text" v-model="UserIdentifier" name="UserIdentifier" placeholder="Username or Email address">
                         </div>
                         <div class="single-input-fields">
                             <label>Password</label>
-                            <input type="password" name="Password" placeholder="Enter Password">
+                            <input type="password" v-model="Password" name="Password" placeholder="Enter Password">
                         </div>
                         <div class="single-input-fields login-check">
                             <a href="/Account/ForgotPassword" style="margin-bottom: 20px">Forgot Password?</a> @* 修改連結內容 *@
@@ -53,3 +53,44 @@
 
 
 </body>
+<script>
+     Vue.createApp({
+        data() {
+            return {
+                    UserIdentifier: "",
+                    Password:""
+            };
+        },
+        methods: {
+            GetAccount(){
+                let self = this;
+                fetch("/api/AccountApi/GetLoginName")
+                .then(response => response.text())
+                .then(data => {
+                    self.UserIdentifier = data;
+                })
+                .catch(error => {
+                    console.log('Error in Getting Account Info', error);
+                });
+            },
+            GetPassword(){
+                let self = this;
+                fetch("/api/AccountApi/GetPassword")
+                .then(response => response.text())
+                .then(data => {
+                    self.Password = data;
+                })
+                .catch(error => {
+                    console.log('Error in Getting Password', error);
+                });
+            }
+        },
+        computed:{
+
+        },
+        mounted() {
+            this.GetAccount();
+            this.GetPassword();
+        }
+    }).mount("#app")
+</script>
