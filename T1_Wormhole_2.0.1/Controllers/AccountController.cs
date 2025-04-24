@@ -5,20 +5,23 @@ using Microsoft.AspNetCore.Mvc;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
 using T1_Wormhole_2._0._1.Models.DTOs;
+using Microsoft.AspNetCore.DataProtection;
 
 
 namespace T1_Wormhole_2._0._1.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IDataProtectionProvider _dataProtectionProvider;
         private readonly IUserService _userService;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
         private readonly WormHoleContext _context;
 
-        public AccountController(IUserService userService, IPasswordHasher passwordHasher, IEmailSender emailSender, IConfiguration configuration, WormHoleContext context)
+        public AccountController(IDataProtectionProvider dataProtectionProvider, IUserService userService, IPasswordHasher passwordHasher, IEmailSender emailSender, IConfiguration configuration, WormHoleContext context)
         {
+            _dataProtectionProvider = dataProtectionProvider;
             _userService = userService;
             _passwordHasher = passwordHasher;
             _emailSender = emailSender;
@@ -215,6 +218,10 @@ namespace T1_Wormhole_2._0._1.Controllers
 
                     if (model.RememberMe != null)
                     {
+                        var NameProtector = _dataProtectionProvider.CreateProtector("LoginNameCookie");
+                        string encryptedUserIdentifier = NameProtector.Protect(model.UserIdentifier);
+                        var PWDProtector = _dataProtectionProvider.CreateProtector("LoginPWDCookie");
+                        string encryptedPWD = PWDProtector.Protect(model.Password);
                         CookieOptions options = new CookieOptions
                         {
                             Expires = DateTime.Now.AddDays(10),
@@ -222,8 +229,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                             Secure = true,
                             SameSite = SameSiteMode.Strict
                         };
-                        HttpContext.Response.Cookies.Append("LoginName", model.UserIdentifier, options);
-                        HttpContext.Response.Cookies.Append("LoginPassword", model.Password, options);
+                        HttpContext.Response.Cookies.Append("LoginName", encryptedUserIdentifier, options);
+                        HttpContext.Response.Cookies.Append("LoginPassword", encryptedPWD, options);
                     }
 
                     await HttpContext.SignInAsync(

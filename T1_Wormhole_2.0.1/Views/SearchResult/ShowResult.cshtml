@@ -1,0 +1,118 @@
+﻿<style>
+    .ellipsis-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* 顯示幾行 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<div id="showResult" class="container">
+	<div class="row">
+        <div class="col-3">
+            <div class="card mr-10" style="width: 18rem; height:20rem; background-color:black" v-for="user in searchResultU" :key="user.resultUserId">
+                <a :href="'/User/ViewProfile?id=' + user.resultUserId">
+                    <img class="card-img-top" alt="" :src="'/api/Search/GetUserPhoto?id='+user.resultUserId" :title=" user.name" />
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #999999;">{{user.userNickname}}</h5>
+                        <p class="card-text" style="color: #666666;">{{user.userSignature}}</p>
+                    </div>
+                </a>
+            </div>
+        </div>        
+
+        <article class="blog_item col-9">
+
+            <div v-for="article in searchResultA" :key="article.resultArticleId" class="blog_details">
+                <a :href="'/DiscussArticleView/DiscussArticle?id=' + article.resultArticleId">
+					<div class="blog-img">
+                        <img class="blog-img" alt="" style="width: 100%; height: 100%;" :src="'/api/Search/GetArtCover?id='+article.resultArticleId" :title=" article.name" />
+					</div>
+                    <h2 class="blog-head" style="color: #999999;">{{article.articleTitle}}</h2>
+                </a>
+                <p class="ellipsis-text" style="color: #666666;">
+                    {{article.articleContent}}
+                </p>
+                <ul class="blog-info-link">
+                    @* <li><a href="#"><i class="fa fa-user"></i> {{article.articleWriterId}}</a></li> *@
+                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                </ul>
+            </div>
+        </article>
+
+        <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a href="#" class="page-link" aria-label="Previous">
+                        <i class="ti-angle-left"></i>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a href="#" class="page-link">1</a>
+                </li>
+                <li class="page-item active">
+                    <a href="#" class="page-link">2</a>
+                </li>
+                <li class="page-item">
+                    <a href="#" class="page-link" aria-label="Next">
+                        <i class="ti-angle-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+	</div>
+</div>
+
+<script>
+    Vue.createApp({
+        data(){
+            return{
+                searchResultU: [],
+                searchResultA:[],
+            };
+        },
+		methods:{
+            getSearchResult(keyword){
+				let self=this;
+				var request={};
+					request.resultUserId=isNaN(Number(keyword)) ? -1 : Number(keyword);
+					request.resultArticleId = isNaN(Number(keyword)) ? -1 : Number(keyword);
+					request.articleTitle = keyword;
+					request.articleContent=keyword;
+					request.userName=keyword;
+					request.userNickname=keyword;
+					request.userSignature=keyword;
+					request.articleCover=null;
+					request.userPhoto=null;
+
+				fetch("/api/Search/TestU",{
+					body:JSON.stringify(request),
+					headers:{
+						"Content-Type":"application/json",
+						// "Accept":"application/json",
+					},
+					method:"POST",
+				})
+				.then(x=>x.json())
+				.then(res=>self.searchResultU=res);
+
+				fetch("/api/Search/TestA",{
+					body:JSON.stringify(request),
+					headers:{
+						"Content-Type":"application/json",
+						// "Accept":"application/json",
+					},
+					method:"POST",
+				})
+				.then(x=>x.json())
+				.then(res=>self.searchResultA=res);
+			},		   			
+        },        
+		mounted(){
+            let urlParams = new URLSearchParams(window.location.search);
+            var keyword=decodeURIComponent(urlParams.get('keyword')) ;
+            this.getSearchResult(keyword);
+		},
+    }).mount("#showResult")
+</script>
