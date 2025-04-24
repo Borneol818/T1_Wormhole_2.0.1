@@ -14,5 +14,6 @@ namespace T1_Wormhole_2._0._1.LoginScripts
 
         public string? KeepLog { get; set; }
 
+        public string? RememberMe { get; set; }
     }
 }
