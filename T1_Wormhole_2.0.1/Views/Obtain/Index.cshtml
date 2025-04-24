@@ -53,7 +53,7 @@
 						</td>
 						<td>
 							<div class="row" style="width:50%;margin-left:auto;margin-right:0">
-								<input class="col-md-8 form-control" v-model.lazy="filter"  placeholder="請輸入欲搜尋之關鍵字" />
+								<input class="col-md-8 form-control" v-model.lazy="filter" placeholder="請輸入欲搜尋之關鍵字" />
 							</div>
 						</td>
 					</tr>
@@ -85,7 +85,7 @@
 										<div>
 											<button id="update" class="btn btn-success" v-on:click="update(obtain)">更新</button>
 											<button class="btn btn-info" v-on:click="cancel">取消</button>
-											<a href="#">Get</a>
+											
 										</div>
 									</div>
 								</div>
@@ -101,7 +101,7 @@
 										<div>
 											<button class="btn btn-warning" v-on:click="edit(obtain.obtainID)">編輯</button>
 											<button class="btn btn-danger" v-on:click="deleteobtain(obtain.obtainID)">刪除</button>
-											<a href="#">Get</a>
+											<button v-if="obtain.price > 0" class="btn btn-outline-secondary" v-on:click="buyObtain(obtain.obtainID)">Get</button>
 										</div>
 									</div>
 								</div>
@@ -153,7 +153,7 @@
 											<option value="2">活動</option>
 											<option value="3">蟲洞幣獲得</option>
 										</select>
-										@* <p>目前選擇的 type：{{ type }}</p>  為了檢視type的值是否修正成功*@
+										@* <p>目前選擇的 type：{{ type }}</p>  //為了檢視type的值是否修正成功*@
 									</div>
 									<br>
 									<div class="mb-3">
@@ -182,7 +182,7 @@
 	</div>
 </div>
 @section Scripts
- {
+{
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		Vue.createApp({
@@ -195,7 +195,7 @@
 					price:"",
 					type:"0",
 					rand:1,
-                			coins:0,
+							coins:0,
 
 				}
 			},
@@ -224,15 +224,14 @@
 				// console.log("type:", this.type, "typeof:", typeof this.type);
 				// },為了檢視type回傳值
 
-            getObtains() {
-                let self = this;
-                fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
-            },
-	    //查使用者的wallet
-				filterObtains:function(){
-					// alert("filterObtains");
-					let _this = this;
-					var request={};
+			getObtains() {
+				let self = this;
+				fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
+			},
+			filterObtains:function(){
+				// alert("filterObtains");
+				let _this = this;
+				var request={};
 					request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
 					request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
 					request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
@@ -247,7 +246,7 @@
 					}).catch(err=>{
 						alert("Error");
 					});
-				},
+			},
 				edit:function(obtainID){
 						// alert(`編輯:${obtainID}`);
 						let _this=this;
@@ -379,10 +378,28 @@
 						});
 					}
 				},
-                    getCoins(id){
-                        let self = this;
-                         fetch("/api/User/GetUserCoins?id="+id).then(x => x.json()).then(coins => self.coins = coins)
-
+				//查使用者的wallet
+				getCoins(id){
+					let self = this;
+					fetch("/api/User/GetUserCoins?id="+id).then(x => x.json()).then(coins => self.coins = coins)
+				},
+				buyObtain(obtainID){
+					//alert("buyObtain");
+					var ret=confirm("確定要購買此稱號嗎?")
+					if (ret==true){
+						let _this=this;
+						axios.post(`/api/ObtainsApi/${obtainID}`).then(response=>{
+							console.log(response.data);
+							alert(response.data.message)
+							_this.filterObtains();
+						}).catch(err=>{
+							if (err.response){
+								alert(err.response.data);
+							}else{
+								alert("購買失敗");
+							}
+						});
+					}
 				},
 
 			},

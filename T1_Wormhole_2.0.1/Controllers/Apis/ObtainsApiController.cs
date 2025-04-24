@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreGeneratedDocument;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -161,6 +162,43 @@ namespace T1_Wormhole_2._0._1.Controllers
             _context.Obtains.Add(obt);
             await _context.SaveChangesAsync();
             return $"Obtain編號:{obt.ObtainId}";
+        }
+
+        // POST: api/ObtainsApi/3
+        [HttpPost("{id}")]
+        //[Authorize]
+        public async Task<IActionResult> Buy(int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
+            if (userIdClaim == null)
+                return Unauthorized("無法取得使用者資訊");
+            int userID = int.Parse(userIdClaim.Value);
+
+            var user = await _context.UserInfos.FindAsync(userID);
+            if (user == null)
+                return NotFound("使用者不存在");
+
+            var obtain = await _context.Obtains.FindAsync(id);
+            if (obtain == null)
+                return NotFound("稱號不存在");
+
+            if (user.Wallet < obtain.Price)
+                return BadRequest("餘額不足");
+
+            bool alreadyOwned = _context.ObtainStatuses.Any(x => x.UserId == userID && x.ObtainId == id);
+            if (alreadyOwned)
+                return BadRequest("您已擁有此稱號");
+            user.Wallet -= obtain.Price;
+            var status = new ObtainStatus
+            {
+                UserId = userID,
+                ObtainId = id,
+                Time = DateTime.Now
+            };
+            _context.ObtainStatuses.Add(status);
+
+            await _context.SaveChangesAsync();
+            return Ok("購買成功");
         }
 
         // DELETE: api/ObtainsApi/5
