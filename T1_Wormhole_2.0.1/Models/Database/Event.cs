@@ -62,7 +62,9 @@ public partial class Event
     /// </summary>
     public string Type { get; set; }
 
-    public int EventTarget { get; set; }
+    public int? EventTarget { get; set; }
+
+    public string? KeyWord { get; set; }
 
     public virtual ICollection<EventObtain> EventObtains { get; set; } = new List<EventObtain>();
 
