@@ -47,13 +47,14 @@
                                             <div class="logo">
                                                 <a class="nav-link" asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
                                             </div>
-                                            <!-- Search Box -->
-                                            <form action="#" class="form-box">
-                                                <input type="text" name="Search" placeholder="Search book by author or publisher">
+                                            <!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
+                                            <div class="form-box">
+                                                <input class="form-control" type="text" name="Search" placeholder="Search book by author or publisher" v-model="keyword" @@keyup.enter="sendSearchText" />
                                                 <div class="search-icon">
                                                     <i class="ti-search"></i>
                                                 </div>
-                                            </form>
+                                            </div>
+                                            <!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
                                         </div>
                                         <div class="header-info-right d-flex align-items-center">
                                             <ul>
@@ -71,12 +72,12 @@
                                                     @* </div> *@
                                                     <div class="dropdown-menu "
                                                          aria-labelledby="dropdownId">
-                                                        <div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" v-for="item in userInfo">
+                                                        <div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" v-for="layoutItem in userInfoForLayout">
 														    <h3>My Account</h3>
 														    <label>User Name</label>
-                                                            <p>{{item.name}}</p>
+                                                            <p>{{layoutItem.name}}</p>
                                                             <label>Nickname</label>
-                                                            <p>{{item.nickname}}</p>
+                                                            <p>{{layoutItem.nickname}}</p>
                                                         </div>
                                                         <a class="dropdown-item" href="#">使用者設定</a>
                                                         <a class="dropdown-item" href="#">登出</a>
@@ -136,85 +137,88 @@
 		</div>		
     </header>
     <div class="container">
-        <main role="main" class="ph-3"></main>
+        <main role="main" class="ph-3">
         @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        @* <div class="container"> *@
-        @*     &copy; 2025 - t1_tmpcut - <a asp-area="" asp-controller="home" asp-action="privacy">privacy</a> *@
-        @* </div> *@
-        <div class="footer-wrappper section-bg">
-        <div class="footer-area footer-padding">
-        <div class="container">
-        <div class="row justify-content-between">
-        <div class="col-xl-3 col-lg-5 col-md-4 col-sm-6">
-        <div class="single-footer-caption mb-50">
-        <div class="single-footer-caption mb-30">
-        <!-- logo -->
-        <div class="footer-logo mb-25">
-        <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
-        </div>
-        <div class="footer-tittle">
-        <div class="footer-pera">
-        <p>Get the breathing space now, and we’ll extend your term at the other end year for go.</p>
-        </div>
-        </div>
-        <!-- social -->
-        <div class="footer-social">
-        <a href="https://bit.ly/sai4ull"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-5">
-        <div class="single-footer-caption mb-50">
-        <div class="footer-tittle">
-        @* <h4>Book Category</h4> *@
-        @* <ul> *@
-        @* <li><a href="#">History</a></li> *@
-        @* <li><a href="#">Horror - Thriller</a></li> *@
-        @* <li><a href="#">Love Stories</a></li> *@
-        @* <li><a href="#">Science Fiction</a></li> *@
-        @* <li><a href="#">Business</a></li> *@
-        @* </ul> *@
-        @* </div> *@
-        @* </div> *@
-        @* </div> *@
-        @* <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6"> *@
-        @* <div class="single-footer-caption mb-50"> *@
-        @* <div class="footer-tittle"> *@
-        @* <h4>&nbsp;</h4> *@
-        @* <ul> *@
-        @* <li><a href="#">Biography</a></li> *@
-        @* <li><a href="#">Astrology</a></li> *@
-        @* <li><a href="#">Digital Marketing</a></li> *@
-        @* <li><a href="#">Software Development</a></li> *@
-        @* <li><a href="#">Ecommerce</a></li> *@
-        </ul>
-        </div>
-        </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-        <div class="single-footer-caption mb-50">
-        <div class="footer-tittle">
-        <h4>Site Map</h4>
-        <ul class="mb-20">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">FAQs</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Contact</a></li>
-        </ul>
-        </div>
-        </div>
-        </div>
-        </div>
-    </footer>
+	<footer class="border-top footer text-muted">
+		@* <div class="container"> *@
+		@*     &copy; 2025 - t1_tmpcut - <a asp-area="" asp-controller="home" asp-action="privacy">privacy</a> *@
+		@* </div> *@
+		<div class="footer-wrappper section-bg">
+			<div class="footer-area footer-padding">
+				<div class="container">
+					<div class="row justify-content-between">
+						<div class="col-xl-3 col-lg-5 col-md-4 col-sm-6">
+							<div class="single-footer-caption mb-50">
+								<div class="single-footer-caption mb-30">
+									<!-- logo -->
+									<div class="footer-logo mb-25">
+										<a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+									</div>
+									<div class="footer-tittle">
+										<div class="footer-pera">
+											<p>Get the breathing space now, and we’ll extend your term at the other end year for go.</p>
+										</div>
+									</div>
+									<!-- social -->
+									<div class="footer-social">
+										<a href="https://bit.ly/sai4ull"><i class="fab fa-facebook"></i></a>
+										<a href="#"><i class="fab fa-instagram"></i></a>
+										<a href="#"><i class="fab fa-linkedin-in"></i></a>
+										<a href="#"><i class="fab fa-youtube"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-5">
+							<div class="single-footer-caption mb-50">
+								<div class="footer-tittle">
+									<h4>Book Category</h4>
+									<ul>
+										<li><a href="#">History</a></li>
+										<li><a href="#">Horror - Thriller</a></li>
+										<li><a href="#">Love Stories</a></li>
+										<li><a href="#">Science Fiction</a></li>
+										<li><a href="#">Business</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+							<div class="single-footer-caption mb-50">
+								<div class="footer-tittle">
+									<h4>&nbsp;</h4>
+									<ul>
+										<li><a href="#">Biography</a></li>
+										<li><a href="#">Astrology</a></li>
+										<li><a href="#">Digital Marketing</a></li>
+										<li><a href="#">Software Development</a></li>
+										<li><a href="#">Ecommerce</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
+							<div class="single-footer-caption mb-50">
+								<div class="footer-tittle">
+									<h4>Site Map</h4>
+									<ul class="mb-20">
+										<li><a href="#">Home</a></li>
+										<li><a href="#">About Us</a></li>
+										<li><a href="#">FAQs</a></li>
+										<li><a href="#">Blog</a></li>
+										<li><a href="#">Contact</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 
     <!-- Scroll Up -->
     <div id="back-top">
@@ -222,24 +226,48 @@
     </div>
 
     <!-- JS here -->
+    <!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
     <script>
         Vue.createApp({
             data(){
                 return{
-                    userInfo:[],
+                    userInfoForLayout:[],					
+                    keyword:"",
                 };
             },
+            watch:{
+                
+            },
             methods:{
+                // 4/20 Borneol getForLayout() Layout使用者下拉選單
                 async getForLayout(id){
                     var self = this;
-                    await fetch('/api/User/Get'+'?id='+id).then(x => x.json()).then(res => self.userInfo = res);
+                    await fetch('/api/User/Get'+'?id='+id).then(x => x.json()).then(res => self.userInfoForLayout = res);
                 },
+                // 4/20 Borneol getForLayout() Layout使用者下拉選單
+
+                //Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
+                sendSearchText(){
+					let self = this;
+                    //alert("Enter key pressed: " + self.keyword);
+                    fetch('/SearchResult/ShowResult').then(res=>{
+                        if(res){
+                            window.location.href="/SearchResult/ShowResult?keyword="+encodeURIComponent(self.keyword);
+                            //alert("The Keyword is : "+self.keyword+");
+                        }
+                        else{
+                                alert("No result found");
+                        }
+                    });                    						
+                },
+                //Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
             },
             mounted(){
                 this.getForLayout(5);
             }
         }).mount("#onlyLayout");
     </script>
+    <!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
     <!-- Jquery, Popper, Bootstrap -->
     <script src="~/assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
