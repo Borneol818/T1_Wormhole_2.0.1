@@ -43,7 +43,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         {
                             using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
                             {
-                                Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
+                                Art.ArticelCover = br.ReadBytes((int)DTOModel.ArticleCover.Length); //4/24 Borneol 配合資料庫欄位打錯字修改
                             }
                         }
                         _db.Articles.Add(Art);
@@ -175,7 +175,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         {
             string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
             Article e = await _db.Articles.FindAsync(id);
-            byte[] ImageContent = e?.ArticleCover != null ? e.ArticleCover : System.IO.File.ReadAllBytes(fileName);
+            byte[] ImageContent = e?.ArticelCover != null ? e.ArticelCover : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
     }
