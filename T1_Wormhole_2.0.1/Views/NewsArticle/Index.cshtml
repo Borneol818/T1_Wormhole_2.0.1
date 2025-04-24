@@ -89,8 +89,7 @@
                 <div class="row">
                     <article class="blog_item">
                         @* {{article.Picture}} *@
-                        @* 依照type篩選為新聞文章 *@
-                        <div v-for="article in articles.filter(a => a.type === false)" :key="article.articleID" class="blog_details">
+                        <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
                             @* 依文章ID跳選到該文章內容 *@
                             <a :href="'/NewsArticle/NewsArticle?id=' + article.articleID">
                                 <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
@@ -107,19 +106,16 @@
 
                     <nav class="blog-pagination justify-content-center d-flex">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a href="#" class="page-link" aria-label="Previous">
+                            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                                <a href="#" class="page-link" @@click.prevent="goToPage(currentPage - 1)" aria-label="Previous">
                                     <i class="ti-angle-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item">
-                                <button onclick="nextpage()" class="page-link">1</button>
+                            <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                                <a href="#" class="page-link" @@click.prevent="goToPage(page)">{{page}}</a>
                             </li>
-                            <li class="page-item active">
-                                <button onclick="nextpage()" class="page-link">2</button>
-                            </li>
-                            <li class="page-item">
-                                <a href="#" class="page-link" aria-label="Next">
+                            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                                <a href="#" class="page-link" @@click.prevent="goToPage(currentPage + 1)" aria-label="Next">
                                     <i class="ti-angle-right"></i>
                                 </a>
                             </li>
@@ -174,24 +170,12 @@
 @section Scripts
 {
 <script>
-        // 下一頁功能 尚未改成odata
-        var skipCount=0;
-        var pageCount=2;
-            
-        function nextpage(){
-                alert("next");
-                // skipCount=localStorage.getItem("SkipCount");
-                // skipCount=skipCount==null? 0: Number(skipCount);
-                // getArticles();
-                // skipCount+=pageCount;
-                // localStorage.setItem("SkipCount",skipCount);
-            }
-
-    Vue.createApp({
+     Vue.createApp({
         data() {
             return {
                 articles:[],
-
+                currentPage: 1,
+                pageSize: 5,
             }
         },
         methods: {
@@ -200,8 +184,25 @@
                 let self = this;
                 fetch("/api/ArticlesApi/GetArticles").then(x => x.json()).then(res => self.articles = res)
             },
-
+            goToPage(page) {
+                if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+                }
+            },
         },
+        computed:{
+            nowArticles() {
+                const start = (this.currentPage - 1) * this.pageSize;
+                const end = start + this.pageSize;
+                return this.articles
+                    .filter(a => a.type === false)
+                    .slice(start, end);
+            },
+            totalPages() {
+                const filteredArticles = this.articles.filter(a => a.type === false);
+                return Math.ceil(filteredArticles.length / this.pageSize);
+                },
+         },
         mounted() {
             this.getArticles();
         }

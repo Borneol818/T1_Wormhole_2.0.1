@@ -390,7 +390,7 @@
 						let _this=this;
 						axios.post(`/api/ObtainsApi/${obtainID}`).then(response=>{
 							console.log(response.data);
-							alert(response.data.message)
+							alert(response.data)
 							_this.filterObtains();
 						}).catch(err=>{
 							if (err.response){

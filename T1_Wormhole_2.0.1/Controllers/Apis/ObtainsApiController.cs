@@ -166,7 +166,7 @@ namespace T1_Wormhole_2._0._1.Controllers
 
         // POST: api/ObtainsApi/3
         [HttpPost("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Buy(int id)
         {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
@@ -181,6 +181,9 @@ namespace T1_Wormhole_2._0._1.Controllers
             var obtain = await _context.Obtains.FindAsync(id);
             if (obtain == null)
                 return NotFound("稱號不存在");
+
+            if (obtain.Price == 0)
+                return BadRequest("此稱號無法購買");
 
             if (user.Wallet < obtain.Price)
                 return BadRequest("餘額不足");
