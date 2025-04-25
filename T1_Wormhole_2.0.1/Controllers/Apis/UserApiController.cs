@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text.Json;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.Models.DTOs;
@@ -23,10 +25,16 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             //_env = env;
         }
 
+        [Authorize]
         //4/15 晚上改動
         [HttpGet]
         public async Task<IEnumerable<UserInfo>> Get(int id) //這是撈使用者資料的
         {
+            var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (currentUserId != id)
+            {
+                return Enumerable.Empty<UserInfo>(); //先回傳空列舉,看要回傳自己的資料還是怎麼樣
+            }
             var result = _db.UserInfos.Where(x => x.UserId == id)
                 .Select(e => new UserInfo
                 {
