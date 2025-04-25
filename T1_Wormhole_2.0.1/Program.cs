@@ -29,16 +29,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.LoginPath = "/Account/Login";
     });
 
+
+
+var conStr = builder.Configuration.GetConnectionString("WormHole");
+
 // 加入 Hangfire 服務
-builder.Services.AddHangfire(configuration => configuration
+builder.Services.AddHangfire(config => config
     .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+    .UseSqlServerStorage(conStr));
 // 加入 Hangfire Server
 builder.Services.AddHangfireServer();
-
-var conStr = builder.Configuration.GetConnectionString("WormHole");
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
 
