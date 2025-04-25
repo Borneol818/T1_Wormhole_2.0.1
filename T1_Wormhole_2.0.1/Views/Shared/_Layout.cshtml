@@ -1,107 +1,107 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    @* <meta charset="utf-8" />
+	@* <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - T1_TmpCut</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/T1_TmpCut.styles.css" asp-append-version="true" /> *@
 
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>WormHole</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>WormHole</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
 
-    <!-- CSS here -->
-    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
-    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="~/assets/css/slicknav.css">
-    <link rel="stylesheet" href="~/assets/css/animate.min.css">
-    <link rel="stylesheet" href="~/assets/css/price_rangs.css">
-    <link rel="stylesheet" href="~/assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="~/assets/css/themify-icons.css">
-    <link rel="stylesheet" href="~/assets/css/slick.css">
-    <link rel="stylesheet" href="~/assets/css/nice-select.css">
-    <link rel="stylesheet" href="~/assets/css/style.css">
+	<!-- CSS here -->
+	<link rel="stylesheet" href="~/assets/css/bootstrap.css">
+	<link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="~/assets/css/slicknav.css">
+	<link rel="stylesheet" href="~/assets/css/animate.min.css">
+	<link rel="stylesheet" href="~/assets/css/price_rangs.css">
+	<link rel="stylesheet" href="~/assets/css/magnific-popup.css">
+	<link rel="stylesheet" href="~/assets/css/fontawesome-all.min.css">
+	<link rel="stylesheet" href="~/assets/css/themify-icons.css">
+	<link rel="stylesheet" href="~/assets/css/slick.css">
+	<link rel="stylesheet" href="~/assets/css/nice-select.css">
+	<link rel="stylesheet" href="~/assets/css/style.css">
 	<link href="~/css/borneol.css" rel="stylesheet" />
 	<link href="~/assets/css/amy.css" rel="stylesheet" />
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	@* <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
 </head>
 <body>
-    <header>
-        <div class="header-area">
-            <div class="main-header ">
-                <div class="header-top ">
-                    <div id="onlyLayout">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-xl-12">
-                                    <div class="d-flex justify-content-between align-items-center flex-sm">
-                                        <div class="header-info-left d-flex align-items-center">
-                                            <!-- logo -->
-                                            <div class="logo">
-                                                <a class="nav-link" asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
-                                            </div>
-                                            <!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
-                                            <div class="form-box">
-                                                <input class="form-control" type="text" name="Search" placeholder="Search book by author or publisher" v-model="keyword" @@keyup.enter="sendSearchText" />
-                                                <div class="search-icon">
-                                                    <i class="ti-search"></i>
-                                                </div>
-                                            </div>
-                                            <!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
-                                        </div>
-                                        <div class="header-info-right d-flex align-items-center">
-                                            <ul>
-                                                @* <li><a href="#">FAQ</a></li> *@
-                                                @* <li><a href="#">Track Order</a></li>*@
-                                                <li class="nav-item dropdown">
-                                                    <a class="nav-link dropdown-toggle"
-                                                       href="#"
-                                                       id="dropdownId"
-                                                       data-bs-toggle="dropdown"
-                                                       aria-haspopup="true"
-                                                       aria-expanded="false">Dropdown</a>
-                                                    @* <div class="shopping-card"> *@
-                                                    <a class="shopping-card" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" src="~/images/phototest.jpg" alt=""></a>
-                                                    @* </div> *@
-                                                    <div class="dropdown-menu "
-                                                         aria-labelledby="dropdownId">
-                                                        <div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" v-for="layoutItem in userInfoForLayout">
-														    <h3>My Account</h3>
-														    <label>User Name</label>
-                                                            <p>{{layoutItem.name}}</p>
-                                                            <label>Nickname</label>
-                                                            <p>{{layoutItem.nickname}}</p>
-                                                        </div>
-                                                        <a class="dropdown-item" href="#">使用者設定</a>
-                                                        <a class="dropdown-item" href="#">登出</a>
-                                                    </div>                                            
-                                                </li>                                            
-                                                <li><a href="/Account/Login" class="btn header-btn">Login</a></li>
-                                                <li><a href="/Account/Register" class="btn header-btn">Sign in</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="header-bottom  header-sticky">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-xl-12">
-                                <!-- logo 2 -->
-                                <div class="logo2">
-                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
-                                </div>
-                                @* <!-- Main-menu -->
+	<header>
+		<div class="header-area">
+			<div class="main-header ">
+				<div class="header-top ">
+					<div id="onlyLayout">
+						<div class="container">
+							<div class="row">
+								<div class="col-xl-12">
+									<div class="d-flex justify-content-between align-items-center flex-sm">
+										<div class="header-info-left d-flex align-items-center">
+											<!-- logo -->
+											<div class="logo">
+												<a class="nav-link" asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
+											</div>
+											<!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
+											<div class="form-box">
+												<input class="form-control" type="text" name="Search" placeholder="Search book by author or publisher" v-model="keyword" @@keyup.enter="sendSearchText" />
+												<div class="search-icon">
+													<i class="ti-search"></i>
+												</div>
+											</div>
+											<!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
+										</div>
+										<div class="header-info-right d-flex align-items-center">
+											<ul>
+												@* <li><a href="#">FAQ</a></li> *@
+												@* <li><a href="#">Track Order</a></li>*@
+												<li class="nav-item dropdown">
+													<a class="nav-link dropdown-toggle"
+													   href="#"
+													   id="dropdownId"
+													   data-bs-toggle="dropdown"
+													   aria-haspopup="true"
+													   aria-expanded="false">Dropdown</a>
+													@* <div class="shopping-card"> *@
+													<a class="shopping-card" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" src="~/images/phototest.jpg" alt=""></a>
+													@* </div> *@
+													<div class="dropdown-menu "
+														 aria-labelledby="dropdownId">
+														<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" v-for="layoutItem in userInfoForLayout">
+															<h3>My Account</h3>
+															<label>User Name</label>
+															<p>{{layoutItem.name}}</p>
+															<label>Nickname</label>
+															<p>{{layoutItem.nickname}}</p>
+														</div>
+														<a class="dropdown-item" href="#">使用者設定</a>
+														<a class="dropdown-item" href="#">登出</a>
+													</div>
+												</li>
+												<li><a href="/Account/Login" class="btn header-btn">Login</a></li>
+												<li><a href="/Account/Register" class="btn header-btn">Sign in</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="header-bottom  header-sticky">
+					<div class="container">
+						<div class="row align-items-center">
+							<div class="col-xl-12">
+								<!-- logo 2 -->
+								<div class="logo2">
+									<a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+								</div>
+								@* <!-- Main-menu -->
                                 <div class="main-menu text-center d-none d-lg-block">
                                 <nav>
                                 <ul id="navigation">
@@ -129,18 +129,18 @@
                                 <div class="col-xl-12">
                                 <div class="mobile_menu d-block d-lg-none"></div>
                                 </div> *@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-		</div>		
-    </header>
-    <div class="container">
-        <main role="main" class="ph-3">
-        @RenderBody()
-        </main>
-    </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="container">
+		<main role="main" class="ph-3">
+			@RenderBody()
+		</main>
+	</div>
 
 	<footer class="border-top footer text-muted">
 		@* <div class="container"> *@
@@ -220,88 +220,90 @@
 		</div>
 	</footer>
 
-    <!-- Scroll Up -->
-    <div id="back-top">
-        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-    </div>
+	<!-- Scroll Up -->
+	<div id="back-top">
+		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+	</div>
 
-    <!-- JS here -->
-    <!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
-    <script>
-        Vue.createApp({
-            data(){
-                return{
-                    userInfoForLayout:[],					
-                    keyword:"",
-                };
-            },
-            watch:{
-                
-            },
-            methods:{
-                // 4/20 Borneol getForLayout() Layout使用者下拉選單
-                async getForLayout(id){
-                    var self = this;
-                    await fetch('/api/User/Get'+'?id='+id).then(x => x.json()).then(res => self.userInfoForLayout = res);
-                },
-                // 4/20 Borneol getForLayout() Layout使用者下拉選單
+	<!-- JS here -->
+	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
+	<script>
+		Vue.createApp({
+			data(){
+				return{
+					userInfoForLayout:[],
+					keyword:"",
+				};
+			},
+			watch:{
 
-                //Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
-                sendSearchText(){
+			},
+			methods:{
+				// 4/20 Borneol getForLayout() Layout使用者下拉選單
+				async getForLayout(){
+					var self = this;
+					await fetch('/api/User/Get',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.userInfoForLayout = res);
+				},
+				// 4/20 Borneol getForLayout() Layout使用者下拉選單
+
+				//Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
+				sendSearchText(){
 					let self = this;
-                    //alert("Enter key pressed: " + self.keyword);
-                    fetch('/SearchResult/ShowResult').then(res=>{
-                        if(res){
-                            window.location.href="/SearchResult/ShowResult?keyword="+encodeURIComponent(self.keyword);
-                            //alert("The Keyword is : "+self.keyword+");
-                        }
-                        else{
-                                alert("No result found");
-                        }
-                    });                    						
-                },
-                //Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
-            },
-            mounted(){
-                this.getForLayout(5);
-            }
-        }).mount("#onlyLayout");
-    </script>
-    <!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="~/assets/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="~/assets/js/popper.min.js"></script>
-    <script src="~/assets/js/bootstrap.min.js"></script>
+					//alert("Enter key pressed: " + self.keyword);
+					fetch('/SearchResult/ShowResult').then(res=>{
+						if(res){
+							window.location.href="/SearchResult/ShowResult?keyword="+encodeURIComponent(self.keyword);
+							//alert("The Keyword is : "+self.keyword+");
+						}
+						else{
+								alert("No result found");
+						}
+					});
+				},
+				//Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
+			},
+			mounted(){
+				this.getForLayout();
+			}
+		}).mount("#onlyLayout");
+	</script>
+	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
+	<!-- Jquery, Popper, Bootstrap -->
+	<script src="~/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+	<script src="~/assets/js/vendor/jquery-1.12.4.min.js"></script>
+	<script src="~/assets/js/popper.min.js"></script>
+	<script src="~/assets/js/bootstrap.min.js"></script>
 
-    <!-- Slick-slider , Owl-Carousel ,slick-nav -->
-    <script src="~/assets/js/owl.carousel.min.js"></script>
-    <script src="~/assets/js/slick.min.js"></script>
-    <script src="~/assets/js/jquery.slicknav.min.js"></script>
+	<!-- Slick-slider , Owl-Carousel ,slick-nav -->
+	<script src="~/assets/js/owl.carousel.min.js"></script>
+	<script src="~/assets/js/slick.min.js"></script>
+	<script src="~/assets/js/jquery.slicknav.min.js"></script>
 
-    <!--wow , counter , waypoint, Nice-select -->
-    <script src="~/assets/js/wow.min.js"></script>
-    <script src="~/assets/js/jquery.magnific-popup.js"></script>
-    <script src="~/assets/js/jquery.nice-select.min.js"></script>
-    <script src="~/assets/js/jquery.counterup.min.js"></script>
-    <script src="~/assets/js/waypoints.min.js"></script>
-    <script src="~/assets/js/price_rangs.js"></script>
+	<!--wow , counter , waypoint, Nice-select -->
+	<script src="~/assets/js/wow.min.js"></script>
+	<script src="~/assets/js/jquery.magnific-popup.js"></script>
+	<script src="~/assets/js/jquery.nice-select.min.js"></script>
+	<script src="~/assets/js/jquery.counterup.min.js"></script>
+	<script src="~/assets/js/waypoints.min.js"></script>
+	<script src="~/assets/js/price_rangs.js"></script>
 
-    <!-- contact js -->
-    <script src="~/assets/js/contact.js"></script>
-    <script src="~/assets/js/jquery.form.js"></script>
-    <script src="~/assets/js/jquery.validate.min.js"></script>
-    <script src="~/assets/js/mail-script.js"></script>
-    <script src="~/assets/js/jquery.ajaxchimp.min.js"></script>
+	<!-- contact js -->
+	<script src="~/assets/js/contact.js"></script>
+	<script src="~/assets/js/jquery.form.js"></script>
+	<script src="~/assets/js/jquery.validate.min.js"></script>
+	<script src="~/assets/js/mail-script.js"></script>
+	<script src="~/assets/js/jquery.ajaxchimp.min.js"></script>
 
-    <!--  Plugins, main-Jquery -->
-    <script src="~/assets/js/plugins.js"></script>
-    <script src="~/assets/js/main.js"></script>
+	<!--  Plugins, main-Jquery -->
+	<script src="~/assets/js/plugins.js"></script>
+	<script src="~/assets/js/main.js"></script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

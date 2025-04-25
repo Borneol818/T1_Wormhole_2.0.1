@@ -33,6 +33,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var conStr = builder.Configuration.GetConnectionString("WormHole");
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
+// 添加 Hangfire 服務
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(conStr));
+
+builder.Services.AddHangfireServer();
 
 
 // 添加 Hangfire 服務
@@ -62,6 +70,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+// 啟用 Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire");
 
 // 啟用 Hangfire Dashboard
 app.UseHangfireDashboard("/hangfire");

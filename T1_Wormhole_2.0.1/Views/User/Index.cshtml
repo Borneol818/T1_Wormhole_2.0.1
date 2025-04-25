@@ -202,12 +202,16 @@
 			};
 		},
 		methods: {
-			async getAll(id) {
+			async getAll() {
 				let self = this;
 
-				await fetch('/api/User/updateCoins'+'?id='+id).then(x => x.json()).then(res => res);
+				await fetch('/api/User/updateCoins',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => res);
 
-				await fetch('/api/User/Get'+'?id='+id)
+				await fetch('/api/User/Get',{
+					credentials: 'include',
+				})
 				.then(x => x.json())
 				.then(res => {
 					self.userinfo = res;
@@ -220,9 +224,15 @@
 					}
 					item.edit=false;
 				});
-				await fetch('/api/User/GetStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res);
-				await fetch('/api/User/GetBadgePicture'+'?id='+id).then(x => x.json()).then(res => self.badgeImg = res);
-				await fetch('/api/User/GetAchievementPicture'+'?id='+id).then(x => x.json()).then(res => self.achievementImg = res);
+				await fetch('/api/User/GetStatus',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.userstatus = res);
+				await fetch('/api/User/GetBadgePicture',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.badgeImg = res);
+				await fetch('/api/User/GetAchievementPicture',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.achievementImg = res);
 
 			},
 			edit(userid){
@@ -302,7 +312,7 @@
 
 		},
 		mounted() {
-			this.getAll(5);
+			this.getAll();
 		}
 	}).mount("#MyProfile");
 </script>
