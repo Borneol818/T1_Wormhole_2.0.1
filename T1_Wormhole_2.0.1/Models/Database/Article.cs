@@ -26,7 +26,7 @@ public partial class Article
     /// 文章創建時間
     /// </summary>
     public DateTime CreateTime { get; set; }
- 
+
     /// <summary>
     /// 文章內容
     /// </summary>

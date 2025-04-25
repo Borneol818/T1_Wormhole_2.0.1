@@ -1,0 +1,14 @@
+diff a/T1_Wormhole_2.0.1/appsettings.json b/T1_Wormhole_2.0.1/appsettings.json	(rejected hunks)
+@@ -6,9 +6,9 @@
+         }
+     },
+     "AllowedHosts": "*",
+-    "ConnectionStrings": {
+-        "Wormhole": "Data Source=LAPTOP-E6T9QUMT;Initial Catalog=WormHole;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;"
+-    },
++  "ConnectionStrings": {
++    "Wormhole": "Data Source=PCFIX2580;Initial Catalog=WormHole;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;"
++  },
+     "AppSettings": {
+         "BaseUrl": "https://localhost:7053"
+     },
