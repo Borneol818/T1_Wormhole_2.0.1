@@ -186,5 +186,68 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         }
 
         //Borneol 04/19 撈Obtain status 資料表中符合UserId的資料，再依照撈出的資料去撈Obtains中找到該Obtaib的圖片來顯示
+
+        //Borneol 04/24 使用者升級判定-製作中
+        //依照瀏覽文章次數、註冊天數、評論數量、發文數量等決定user等級
+        //(等級如何評斷可以自己設計，不一定這邊舉例都要用到)
+        public void UserLevelUp() {
+            int level = 0;
+            var levelExp = EachLevelExp(); // 產生等級門檻，例如第 N 級需要 N^2 * 10
+            var userStatus = _db.UserStatuses.ToList();
+            foreach (var item in userStatus)
+            {
+                //這是我初建時跑邏輯的參考而已
+                //if (item.ReadCount >= 5 && item.PostCount >= 1 || item.CommentCount >= 3 && item.PostCount >= 1)
+                //{
+                //    level = 5;
+                //}
+                //else if (item.ReadCount >= 1 && item.PostCount >= 1 && item.CommentCount >= 1)
+                //{
+                //    level = 4;
+                //}
+                //else if (item.ReadCount >= 1 && item.PostCount >= 1 || item.CommentCount >= 1 && item.PostCount >= 1)
+                //{
+                //    level = 3;
+                //}
+                //else if (item.ReadCount >= 1 || item.CommentCount >= 1 || item.PostCount >= 1)
+                //{
+                //    level = 2;
+                //}
+                //else
+                //{
+                //    level = 1;
+                //}
+                //這是我初建時跑邏輯的參考而已
+
+                //這邊是計算經驗值的
+                int? exp = item.ReadCount * 1 + item.PostCount * 5 + item.CommentCount * 2;
+                //這邊是計算經驗值的
+
+                //這邊是計算等級的
+                for (int i = levelExp.Count - 1; i >= 0; i--)
+                {
+                    if (exp >= levelExp[i])
+                    {
+                        level = i + 1;
+                        break;
+                    }
+                }
+                //這邊是計算等級的
+                item.Level = level;
+                _db.Entry(item).State = EntityState.Modified;                
+                //這邊可以加入升級的通知或其他操作
+            }
+            _db.SaveChanges();
+        }
+        private List<int> EachLevelExp(int maxLevel = 99) //這邊是計算每個等級所需的經驗值(最高99)
+        {
+            var eachLevelExp = new List<int>();
+            for (int i = 1; i <= maxLevel; i++)
+            {
+                eachLevelExp.Add((int)Math.Pow(i, 2) * 3); //等級= i, Math.Pow=i², 經驗值=(i² × 10), e.g. Lv2 = 3, Lv3 = 12, Lv4 = 27, ...
+            }
+            return eachLevelExp;
+        }
+        //Borneol 04/24 使用者升級判定-製作中
     }
 }
