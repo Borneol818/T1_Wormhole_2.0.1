@@ -4,6 +4,7 @@ using T1_Wormhole_2._0._1;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
 using Microsoft.AspNetCore.OData;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.LoginPath = "/Account/Login";
     });
 
+// 加入 Hangfire 服務
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+// 加入 Hangfire Server
+builder.Services.AddHangfireServer();
 
 var conStr = builder.Configuration.GetConnectionString("WormHole");
 
@@ -51,6 +60,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+// 啟用 Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire");
 
 app.MapControllerRoute(
     name: "default",
