@@ -4,6 +4,7 @@ using T1_Wormhole_2._0._1;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
 using Microsoft.AspNetCore.OData;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var conStr = builder.Configuration.GetConnectionString("WormHole");
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
+// 添加 Hangfire 服務
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(conStr));
+
+builder.Services.AddHangfireServer();
 
 //這裡寫一個判定用的方法並存入在這裡new的變數名稱，用來當作登入後的認證跟各項頁面功能的全域變數
 var app = builder.Build();
@@ -51,6 +60,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+// 啟用 Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire");
 
 app.MapControllerRoute(
     name: "default",
