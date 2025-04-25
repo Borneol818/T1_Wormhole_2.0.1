@@ -65,6 +65,7 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.WriterId)
                 .HasComment("文章創作者ID")
                 .HasColumnName("WriterID");
+            entity.Property(e => e.ArticleCover);
 
             entity.HasOne(d => d.ReleaseByNavigation).WithMany(p => p.Articles)
                 .HasForeignKey(d => d.ReleaseBy)
@@ -186,6 +187,11 @@ public partial class WormHoleContext : DbContext
                 .IsRequired()
                 .HasMaxLength(10)
                 .HasComment("活動類別");
+            entity.Property(e => e.EventTarget)
+                .HasComment("活動目標");
+            entity.Property(e => e.KeyWord)
+                .HasMaxLength(20)
+                .HasComment("過濾是否符合活動條件用，目前用在篩選標題是否含有關鍵字");
 
             entity.HasOne(d => d.Manager).WithMany(p => p.Events)
                 .HasForeignKey(d => d.ManagerId)
