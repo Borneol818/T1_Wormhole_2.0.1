@@ -11,6 +11,8 @@
         public int? ReleaseBy { get; set;}
 
         public IFormFile? ArticleCover { get; set; }
+        public string WriterNickname { get; set; }
+        public string ReleaseByName { get; set; }
 
 
     }
