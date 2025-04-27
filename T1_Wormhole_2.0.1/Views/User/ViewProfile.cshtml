@@ -1,113 +1,132 @@
-﻿<main>
-    <!-- Hero area Start-->
+﻿    <!-- Hero area Start-->
     <!--  Hero area End -->
     <!--? Checkout Area Start-->
-    <section class="checkout_area section-padding">
-        <div class="container">
-            <div class="billing_details">
-                <div id="app" class="row">
-                    <div class="col-lg-3" align="center">
-                        <!-- 大頭貼 -->
-                        <div v-for="item in userinfo" style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
-                            <img :src="item.photo" alt="" style="display: block; width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div v-for="item in userstatus">
-                            <h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
-                        </div>
-                        <div>
-                            <p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Achievement</p>
-                        </div>
-                        <div>
-                            <button class="submit-btn3" style="width: 160px;height: 60px; font-size: 16px; background-color:rgb(255, 22, 22); border: 0px; padding: 10px 20px;">Add User on WormHole</button>
-                        </div>
+<section class="checkout_area section-padding">
+    <div id="viewProfile">
+        <div class="row" v-for="item in userinfo">
+            <div class="col-lg-3" align="center" style="color:antiquewhite;">
+                <!-- 大頭貼 -->
+                <div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
+                    <img class="img-fluid" :src="'/api/ViewOthers/GetPhoto?id='+item.userId+'&?v='+rand" :title="item.name" />
+                </div>
+                <div v-for="item in userstatus">
+                    <h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
+                </div>
+                <div class="row" style="width: 200px;">
+                    <h3 style="margin:0px;">Badges</h3>
+                    <div class="col-4 m-md-1" style="width:30px;" v-for="(img,index) in badgeImg" :key="index">
+                        <img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
                     </div>
-                    <div class="col-lg-5">
-                        <h3>User Profile</h3>
-                        <div v-for="item in userinfo" class="row contact_form">
-                            <div  class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                                <label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
-                                <label class="col-md-10" style="font-size: 16px;">{{item.name}}</label>
-                            </div>
-                            <div  class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                                <label for="" class="col-md-10" style="font-size: 16px;">性別</label>
-                                <label for="" class="col-md-10" style="font-size: 16px;">{{item.sex}}</label>
-                            </div>
-                            <div  class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                                <label for="" class="col-md-10" style="font-size: 16px;">生日</label>
-                                <label for="" class="col-md-10" style="font-size: 16px;">{{item.brithday}}</label>
-                            </div>
-                            <div  class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                                <label for="" class="col-md-10" style="font-size: 16px;">簽名檔</label>                                
-                                <label for="" class="col-md-10" style="font-size: 16px;">{{item.signatureLine}}</label>
-                            </div>
-                            <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-                                <a class="nav-link text-dark" asp-controller="User" asp-action="Index">編輯資訊</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="order_box">
-                            <h3 style="margin-bottom: 10px;">Recently Post</h3>
-                            <ul class="list">
-                                <li>
-                                    <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-                                </li>
-                                <li>
-                                    <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-                                </li>
-                                <li>
-                                    <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-                                </li>
-                            </ul>
-                            <a href="#" style="font-size: 16px; color: blue;">Show More</a>
-                            <h3 style="margin-bottom: 10px; margin-top:20px;">Articles</h3>
-                            <ul class="list">
-                                <li>
-                                    <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-                                </li>
-                                <li>
-                                    <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-                                </li>
-                                <li>
-                                    <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-                                </li>
-                            </ul>
-                            <a href="#" style="font-size: 16px; color: blue;">Show More</a>
-                        </div>
+                </div>
+                <div class="row" style="width: 200px;">
+                    <h3 style="margin:0px;">Achievements</h3>
+                    <div class="m-md-1" style="width:200px;" v-for="(img,index) in achievementImg" :key="index">
+                        <img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
                     </div>
                 </div>
             </div>
+            <div class="col-lg-5" style="color:antiquewhite;">
+                <h1 style="color:antiquewhite;">User Profile</h1>
+                <div class="row contact_form">
+                    <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                        <label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
+                        <label class="col-md-10" style="font-size: 16px;">{{item.name}}</label>
+                    </div>
+                    <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                        <label for="" class="col-md-10" style="font-size: 16px;">性別</label>
+                        <label for="" class="col-md-10" style="font-size: 16px;">{{item.sex}}</label>
+                    </div>
+                    <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                        <label for="" class="col-md-10" style="font-size: 16px;">生日</label>
+                        <label for="" class="col-md-10" style="font-size: 16px;">{{item.brithday}}</label>
+                    </div>
+                    <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+                        <label for="" class="col-md-10" style="font-size: 16px;">簽名檔</label>
+                        <label for="" class="col-md-10" style="font-size: 16px;">{{item.signatureLine}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="order_box">
+                    @* <div style="border-bottom:1px solid #333;"> *@
+                    @* 	<label class="col-md-12" style="font-size: 20px;">Wallet</label> *@
+                    @* 	<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a> *@
+                    @* </div> *@
+                    <h3 style="margin-bottom: 10px;">Recently Post</h3>
+                    <ul class="list">
+                        <li>
+                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                        </li>
+                        <li>
+                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                        </li>
+                        <li>
+                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                        </li>
+                    </ul>
+                    <a href="#" style="font-size: 16px; color: blue;">Show More</a>
+                    <h3 style="margin-bottom: 10px; margin-top:20px;">Articles</h3>
+                    <ul class="list">
+                        <li>
+                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                        </li>
+                        <li>
+                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                        </li>
+                        <li>
+                            <a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
+                        </li>
+                    </ul>
+                    <a href="#" style="font-size: 16px; color: blue;">Show More</a>
+                </div>
+            </div>
         </div>
-    </section>
-    <!--End Checkout Area -->
 
-</main>
+    </div>
+</section>
+<!--End Checkout Area -->
+
+
 
 <script>
     Vue.createApp({
         data(){
             return {
-                userinfo:[],
-                userstatus:[],
+				userinfo:[],
+				userstatus:[],
+				badgeImg:[],
+				achievementImg:[],				
             }
         },
         methods: {
-            getAll(id) {
-                let self = this;
-                fetch('/api/User/Get'+'?id='+id).then(x => x.json()).then(res => self.userinfo = res)
-                fetch('/api/User/GetStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res)
-            },
-            editInfo(id){
+			 async getOthers(id) {
+				let self = this;
+				 await fetch('/api/ViewOthers/GetOther'+'?id='+id)
+				.then(x => x.json())
+				.then(res => {
+					self.userinfo = res;
+					var item=self.userinfo[0];
+					if(item.sex==true){
+						item.sex="男性";
+					}
+					else{
+						item.sex="女性";
+					}
+					// item.edit=false;
+				});
+				 await fetch('/api/ViewOthers/GetOtherStatus'+'?id='+id).then(x => x.json()).then(res => self.userstatus = res);
+				 await fetch('/api/ViewOthers/GetOtheradgePicture'+'?id='+id).then(x => x.json()).then(res => self.badgeImg = res);
+				 await fetch('/api/ViewOthers/GetOtherAchievementPicture'+'?id='+id).then(x => x.json()).then(res => self.achievementImg = res);
 
-            },
-            addPhoto(id){
-
-            },
+			},
             
         },
         mounted() {
-            this.getAll(5);
+			 let urlParams = new URLSearchParams(window.location.search);
+			 var id=urlParams.get('id');
+
+			 this.getOthers(id);
         }
-    }).mount("#app");
+	 }).mount("#viewProfile");
 </script>
 

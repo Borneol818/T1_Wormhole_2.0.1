@@ -3,223 +3,113 @@
 }
 
 <main>
-    <div class="header-bottom  header-sticky">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-12">
-                    <!-- Main-menu -->
-                    <div class="main-menu text-center d-none d-lg-block">
-                        <nav>
-                            <ul id="navigation">
-                                
-                                <li><a class="nav-link text-dark" asp-controller="Event" asp-action="Index">Event</a></li>
-                                <li><a class="nav-link text-dark" asp-controller="Obtain" asp-action="Index">Obtain</a></li>
-                                
-                                <li>
-                                    <a href="#">Pages</a>
-                                    <ul class="submenu">
-                                        <li><a href="login.html">login</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="book-details.html">book Details</a></li>
-                                        <li><a href="blog_details.html">Blog Details</a></li>
-                                        <li><a href="elements.html">Element</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contect</a></li>
-                                <li>
-                                    <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
-                                </li>
-                                <li>
-                                    <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Mobile Menu -->
-    <div class="col-xl-12">
-        <div class="mobile_menu d-block d-lg-none"></div>
-    </div>
-    <!-- slider Area Start-->
-    <div class="slider-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="slider">
-                        <!-- Single Slider -->
-                        <div class="single-slider slider-height slider-bg1 d-flex align-items-center">
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
-                                        <div class="hero-caption text-center">
-                                            @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
-                                            @* <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1> *@
-                                            @* <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s">Browse Store</a> *@
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- slider Area End-->
-    <!-- Best Selling start -->
-    <div id="app" class="most-popular section-bg">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-xl-7 col-lg-8">
-                    <div class="section-tittle text-center mb-55">
-                        <h2>熱門文章</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row  d-flex justify-content-center">
-                <div v-for="item in popularArticles" class="col-md-4" style="width:25%;margin:0 20px;">
-                    <div class="selling-active" >
-                        <!-- Single -->
-                        <div  class="col properties pb-20">
-                            <div  class=" properties-card">
-                                <div class="properties-img">
-                                    <a href="book-details.html"><img src="assets/img/gallery/most_popular1.jpg" alt=""></a>
-                                </div>
-                                <div class="properties-caption">
-                                    <h3><a href="book-details.html">{{item.articleTitle}}</a></h3>
-                                    <p>{{item.name}}</p>
-                                    <div class="properties-footer d-flex justify-content-between align-items-center">
-                                        <div class="review">
-                                            @* <div class="rating"> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star-half-alt"></i> *@
-                                            @* </div> *@
-                                            <p>(<span>{{item.popularCount}}</span> Ratings)</p>
-                                        </div>
-                                        @* <div class="price"> *@
-                                        @*     <span>$50</span> *@
-                                        @* </div> *@
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Best Selling End -->
-    <!--  services-area start-->
-    <div class="services-area2 top-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-8">
-                    <div class="row">
-                        <!-- tittle -->
-                        <div class="col-xl-12">
-                            <div class="section-tittle d-flex justify-content-between align-items-center mb-40">
-                                <h2 class="mb-0">熱門新聞</h2>
-                                <a href="#" class="browse-btn">View All</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="services-active">
-                                <!-- Single -->
-                                <div class="single-services d-flex align-items-center">
-                                    <div class="features-img">
-                                        <img src="assets/img/gallery/best-books1.jpg" alt="">
-                                    </div>
-                                    <div class="features-caption">
-                                        <img src="assets/img/icon/logo.svg" alt="">
-                                        <h3>新聞標題</h3>
-                                        <p>發布者</p>
-                                        @* <div class="price"> *@
-                                        @*     <span>$50.00</span> *@
-                                        @* </div> *@
-                                        <div class="review">
-                                            @* <div class="rating"> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star"></i> *@
-                                            @*     <i class="fas fa-star-half-alt"></i> *@
-                                            @* </div> *@
-                                            <p>(120 Review)</p>
-                                        </div>
-                                        <a href="book-details.html" class="border-btn">View Details</a>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+    <!--管理員介面區開始-->
+    @* <template v-if=""> *@
+        
+    @* </template>     *@
+    <!--管理員介面區結束-->
 
-                </div>
-               @*  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-9">
-                    <!-- Google Addd -->
-                    <div class="google-add">
-                        <img src="assets/img/gallery/ad.jpg" alt="" class="w-100">
+    <!--使用者介面區開始-->
+    @* <template v-else> *@
+        <div class="header-bottom  header-sticky">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12">
+                        <!-- Main-menu -->
+                        <div class="main-menu text-center d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+
+                                    <li><a class="nav-link text-dark" asp-controller="Event" asp-action="Index">Event</a></li>
+                                    <li><a class="nav-link text-dark" asp-controller="Obtain" asp-action="Index">Obtain</a></li>
+
+                                    <li>
+                                        <a href="#">Pages</a>
+                                        <ul class="submenu">
+                                            <li><a href="login.html">login</a></li>
+                                            <li><a href="cart.html">Cart</a></li>
+                                            <li><a href="checkout.html">Checkout</a></li>
+                                            <li><a href="book-details.html">book Details</a></li>
+                                            <li><a href="blog_details.html">Blog Details</a></li>
+                                            <li><a href="elements.html">Element</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="blog.html">Blog</a></li>
+                                    <li><a href="contact.html">Contect</a></li>
+                                    <li>
+                                        <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
-                </div> *@
+                </div>
             </div>
         </div>
-    </div>
-    <!-- services-area End-->
-    <!-- Latest-items Start -->
-    <section class="our-client section-padding best-selling">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-xl-5 col-lg-5 col-md-12">
-                    <!-- Section Tittle -->
-                    <div class="section-tittle  mb-40">
-                        <h2>媒體評分</h2>
-                    </div>
-                </div>
-                <div class="col-xl-7 col-lg-7 col-md-12">
-                    <div class="nav-button mb-40">
-                        <!--Nav Button  -->
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-link active" id="nav-one-tab" data-bs-toggle="tab" href="#nav-one" role="tab" aria-controls="nav-one" aria-selected="true">All</a>
-                                <a class="nav-link" id="nav-two-tab" data-bs-toggle="tab" href="#nav-two" role="tab" aria-controls="nav-two" aria-selected="false">分類1</a>
-                                <a class="nav-link" id="nav-three-tab" data-bs-toggle="tab" href="#nav-three" role="tab" aria-controls="nav-three" aria-selected="false">分類2</a>
-                                <a class="nav-link" id="nav-four-tab" data-bs-toggle="tab" href="#nav-four" role="tab" aria-controls="nav-four" aria-selected="false">分類3</a>
-                                <a class="nav-link" id="nav-five-tab" data-bs-toggle="tab" href="#nav-five" role="tab" aria-controls="nav-five" aria-selected="false">分類4</a>
-                            </div>
-                        </nav>
-                        <!--End Nav Button  -->
-                    </div>
-                </div>
-            </div>
+        <!-- Mobile Menu -->
+        <div class="col-xl-12">
+            <div class="mobile_menu d-block d-lg-none"></div>
         </div>
-        <div class="container">
-            <!-- Nav Card -->
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
-                    <!-- Tab 1 -->
-                    <div class="row">
-                        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-                            <div class="properties pb-30">
-                                <div class="properties-card">
-                                    <div class="properties-img">
-                                        <a href="book-details.html"><img src="assets/img/gallery/best_selling7.jpg" alt=""></a>
+        <!-- slider Area Start-->
+        <div class="slider-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="slider">
+                            <!-- Single Slider -->
+                            <div class="single-slider slider-height slider-bg1 d-flex align-items-center">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
+                                            <div class="hero-caption text-center">
+                                                @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
+                                                @* <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1> *@
+                                                @* <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s">Browse Store</a> *@
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="properties-caption properties-caption2">
-                                        <h3><a href="book-details.html">媒體評分文章1</a></h3>
-                                        <p>發文者</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- slider Area End-->
+        <!-- Best Selling start -->
+        <div id="app" class="most-popular section-bg">
+        <div class="marquee">
+            <div class="marquee-content">
+                <span v-for="item in popularArticles" :key="item.id" class="marquee-item">
+                    {{ item.articleTitle }}
+                </span>
+            </div>
+        </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <div class="section-tittle text-center mb-55">
+                            <h2>熱門文章</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row  d-flex justify-content-center">
+                    <div v-for="item in popularArticles" class="col-md-4" style="width:25%;margin:0 20px;">
+                        <div class="selling-active">
+                            <!-- Single -->
+                            <div class="col properties pb-20">
+                                <div class=" properties-card">
+                                    <div class="properties-img">
+                                        <a href="book-details.html"><img src="assets/img/gallery/most_popular1.jpg" alt=""></a>
+                                    </div>
+                                    <div class="properties-caption">
+                                        <h3><a href="book-details.html">{{item.articleTitle}}</a></h3>
+                                        <p>{{item.name}}</p>
                                         <div class="properties-footer d-flex justify-content-between align-items-center">
                                             <div class="review">
                                                 @* <div class="rating"> *@
@@ -229,7 +119,7 @@
                                                 @*     <i class="fas fa-star"></i> *@
                                                 @*     <i class="fas fa-star-half-alt"></i> *@
                                                 @* </div> *@
-                                                <p>(<span>120</span> Review)</p>
+                                                <p>(<span>{{item.popularCount}}</span> Ratings)</p>
                                             </div>
                                             @* <div class="price"> *@
                                             @*     <span>$50</span> *@
@@ -238,41 +128,167 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                        
-                    </div>
-                 </div>
-             </div>
-         
-        </div>
-                <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab">
-                    
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="more-btn text-center mt-15">
-                        <a href="#" class="border-btn border-btn2 more-btn2">Browse More</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Latest-items End -->
-    <!-- Want To work -->
-    <section class="container">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-xl-6 col-lg-6">
-                <div class="wantToWork-area w-padding2 mb-30" data-background="assets/img/gallery/wants-bg1.jpg">
-                    <h2>活動<br> 推播</h2>
-                    <div class="linking">
-                        <a href="#" class="btn wantToWork-btn">View Details</a>
+        <!-- Best Selling End -->
+        <!--  services-area start-->
+        <div class="services-area2 top-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-8">
+                        <div class="row">
+                            <!-- tittle -->
+                            <div class="col-xl-12">
+                                <div class="section-tittle d-flex justify-content-between align-items-center mb-40">
+                                    <h2 class="mb-0">熱門新聞</h2>
+                                    <a href="#" class="browse-btn">View All</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="services-active">
+                                    <!-- Single -->
+                                    <div class="single-services d-flex align-items-center">
+                                        <div class="features-img">
+                                            <img src="assets/img/gallery/best-books1.jpg" alt="">
+                                        </div>
+                                        <div class="features-caption">
+                                            <img src="assets/img/icon/logo.svg" alt="">
+                                            <h3>新聞標題</h3>
+                                            <p>發布者</p>
+                                            @* <div class="price"> *@
+                                            @*     <span>$50.00</span> *@
+                                            @* </div> *@
+                                            <div class="review">
+                                                @* <div class="rating"> *@
+                                                @*     <i class="fas fa-star"></i> *@
+                                                @*     <i class="fas fa-star"></i> *@
+                                                @*     <i class="fas fa-star"></i> *@
+                                                @*     <i class="fas fa-star"></i> *@
+                                                @*     <i class="fas fa-star-half-alt"></i> *@
+                                                @* </div> *@
+                                                <p>(120 Review)</p>
+                                            </div>
+                                            <a href="book-details.html" class="border-btn">View Details</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    @*  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-9">
+                    <!-- Google Addd -->
+                    <div class="google-add">
+                        <img src="assets/img/gallery/ad.jpg" alt="" class="w-100">
+                    </div>
+                </div> *@
+                </div>
+            </div>
+        </div>
+        <!-- services-area End-->
+        <!-- Latest-items Start -->
+        <section class="our-client section-padding best-selling">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-xl-5 col-lg-5 col-md-12">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle  mb-40">
+                            <h2>媒體評分</h2>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-7 col-md-12">
+                        <div class="nav-button mb-40">
+                            <!--Nav Button  -->
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-link active" id="nav-one-tab" data-bs-toggle="tab" href="#nav-one" role="tab" aria-controls="nav-one" aria-selected="true">All</a>
+                                    <a class="nav-link" id="nav-two-tab" data-bs-toggle="tab" href="#nav-two" role="tab" aria-controls="nav-two" aria-selected="false">分類1</a>
+                                    <a class="nav-link" id="nav-three-tab" data-bs-toggle="tab" href="#nav-three" role="tab" aria-controls="nav-three" aria-selected="false">分類2</a>
+                                    <a class="nav-link" id="nav-four-tab" data-bs-toggle="tab" href="#nav-four" role="tab" aria-controls="nav-four" aria-selected="false">分類3</a>
+                                    <a class="nav-link" id="nav-five-tab" data-bs-toggle="tab" href="#nav-five" role="tab" aria-controls="nav-five" aria-selected="false">分類4</a>
+                                </div>
+                            </nav>
+                            <!--End Nav Button  -->
+                        </div>
                     </div>
                 </div>
             </div>
-           
-        </div>
-    </section>
-    <!-- Want To work End -->
-    
+            <div class="container">
+                <!-- Nav Card -->
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
+                        <!-- Tab 1 -->
+                        <div class="row">
+                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                                <div class="properties pb-30">
+                                    <div class="properties-card">
+                                        <div class="properties-img">
+                                            <a href="book-details.html"><img src="assets/img/gallery/best_selling7.jpg" alt=""></a>
+                                        </div>
+                                        <div class="properties-caption properties-caption2">
+                                            <h3><a href="book-details.html">媒體評分文章1</a></h3>
+                                            <p>發文者</p>
+                                            <div class="properties-footer d-flex justify-content-between align-items-center">
+                                                <div class="review">
+                                                    @* <div class="rating"> *@
+                                                    @*     <i class="fas fa-star"></i> *@
+                                                    @*     <i class="fas fa-star"></i> *@
+                                                    @*     <i class="fas fa-star"></i> *@
+                                                    @*     <i class="fas fa-star"></i> *@
+                                                    @*     <i class="fas fa-star-half-alt"></i> *@
+                                                    @* </div> *@
+                                                    <p>(<span>120</span> Review)</p>
+                                                </div>
+                                                @* <div class="price"> *@
+                                                @*     <span>$50</span> *@
+                                                @* </div> *@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab">
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="more-btn text-center mt-15">
+                            <a href="#" class="border-btn border-btn2 more-btn2">Browse More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Latest-items End -->
+        <!-- Want To work -->
+        <section class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-xl-6 col-lg-6">
+                    <div class="wantToWork-area w-padding2 mb-30" data-background="assets/img/gallery/wants-bg1.jpg">
+                        <h2>活動<br> 推播</h2>
+                        <div class="linking">
+                            <a href="#" class="btn wantToWork-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- Want To work End -->
+    @* </template> *@
+    <!--使用者介面區結束-->
 </main>
 
 <script>
