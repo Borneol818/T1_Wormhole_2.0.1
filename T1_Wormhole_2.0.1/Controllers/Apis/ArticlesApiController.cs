@@ -32,15 +32,17 @@ namespace T1_Wormhole_2._0._1.Controllers
             return  _context.Articles
                 .Include(a => a.Writer)
                 .Include(a => a.ReleaseByNavigation)
+                .Include(a => a.ArticleResponses)
                 .Select(e => new ArticleDTO
-            {
+                {
                 ArticleID = e.ArticleId,
                 Title = e.Title,
                 Type = e.Type,
                 CreateTime = e.CreateTime,
                 Content = e.Content,
                 WriterNickname = e.Writer.Nickname,
-                ReleaseByName = e.ReleaseByNavigation.Name
+                ReleaseByName = e.ReleaseByNavigation.Name,
+                CommentCount= e.ArticleResponses.Count()
                 });
 
         }
