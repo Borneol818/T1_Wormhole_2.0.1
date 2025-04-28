@@ -1,13 +1,13 @@
 ﻿@{
-	ViewData["Title"] = "討論版";
+    ViewData["Title"] = "討論版";
 }
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>討論版</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>討論版</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
 
 </head>
 
@@ -50,7 +50,7 @@
         </div>
     </div>
     <h1>{{articles.title}}</h1>
-   
+
     <p>{{articles.content}}</p>
 
 
@@ -87,7 +87,7 @@
             </div>
             <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
             <div class="reply-btn">
-                <button href="#" class="btn-reply text-uppercase">reply</button>
+                <button href="#" class="btn-reply text-uppercase" v-on:click="submitResponse">reply</button>
             </div>
         </div>
     </div>
@@ -104,8 +104,8 @@
 
                 articles:[],
                 ratingcount: {
-                positive: 0,
-                negative: 0
+                    positive: 0,
+                    negative: 0
                 }
             }
         },
@@ -141,7 +141,7 @@
 
             //alert(self.articles);
                 //self.articles = res.find(x=>x.articleID==parseInt(id)))
-        },
+            },
 
         //取得好負評數量
             getRatingcount(id){
@@ -152,8 +152,60 @@
                         this.ratingcount=data;
                     })
 
-            }
+            },
             //取得好負評數量
+            //留言
+            submitResponse(id){
+                
+
+                if (!self.textResponse.trim()) {
+                    alert("請輸入留言內容");
+                    return;
+                }
+
+                // 組留言物件
+                let response = {
+                    ArticleId: articleId,
+                    Comment: self.textResponse,
+                    Id: 0, // 或可以不給，後端自己產生
+                    UserId: 1, // 這邊要用真實登入使用者ID，這裡假設測試用
+                    CreateTime: new Date().toISOString()
+                };
+
+                fetch('/api/Respones/ArticleResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(response)
+                }).then(r => {
+                   if(r.ok){
+                       return r.json();
+                   }
+                   else{
+                       throw new Error("留言失敗");
+                   }
+                }).then(res => {
+                    if(res.success){
+                        // 新增留言到最上面
+            
+                        self.comments.unshift({
+                        writer: "我自己", // 這裡之後要改成登入者名字
+                        content: self.textResponse,
+                        date: new Date().toLocaleString('zh-TW', { hour12: false })
+                });
+                    self.textResponse = "";
+                } 
+                else 
+                {
+                    alert("留言失敗");
+                }
+            })
+                .catch(error => {
+                    console.error(error);
+                    alert("留言失敗");
+                })
+            },
         },
         mounted() {
             // var url=location.href;
