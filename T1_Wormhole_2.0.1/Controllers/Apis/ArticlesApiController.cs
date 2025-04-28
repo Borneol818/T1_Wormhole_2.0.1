@@ -42,7 +42,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                 Content = e.Content,
                 WriterNickname = e.Writer.Nickname,
                 ReleaseByName = e.ReleaseByNavigation.Name,
-                CommentCount= e.ArticleResponses.Count()
+                CommentCount= e.ArticleResponses.Count(),
+                ArticleCover=null
                 });
 
         }
@@ -56,11 +57,12 @@ namespace T1_Wormhole_2._0._1.Controllers
                 CreateTime = e.CreateTime,
                 Content = e.Content,
                 WriterNickname = e.Writer.Nickname,
-                ReleaseByName = e.ReleaseByNavigation.Name
-                //Photo = e.Picture,
+                ReleaseByName = e.ReleaseByNavigation.Name,
+                ArticleCover = null
             });
 
         }
+
 
         // GET: api/ArticlesApi/5
         [HttpGet("{id}")]
@@ -76,8 +78,17 @@ namespace T1_Wormhole_2._0._1.Controllers
             return article;
         }
 
-     
-        
+        //GET: api/ArticlesApi/GetPhoto/1
+        [HttpGet("GetPicture/{id}")]
+        public async Task<FileResult> GetPicture(int id)
+        {
+            string Filename = Path.Combine("wwwroot", "images", "noimages.jpg");
+            Article e = await _context.Articles.FindAsync(id);
+            byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(Filename); //e有值取picture 沒有值就取null
+
+            return File(ImageContent, "image/jpeg");
+        }
+
 
         private bool ArticleExists(int id)
         {

@@ -3,28 +3,7 @@
 }
 
 
-<head>
-﻿                                                                                                                                                                                                                                                                                                                                                                                   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>討論版</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
 
-    <!-- CSS here -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/price_rangs.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/slick.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
 <body>
     <header>
         <div class="header-area">
@@ -98,6 +77,7 @@
                     <article class="blog_item">
 
                         <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
+                            <img class="img-fluid" v-bind:src="'/api/ArticlesApi/GetPicture/'+article.articleID+'?v='+rand" />
                             <a :href="'/DiscussArticleView/DiscussArticle?id=' + article.articleID">
                                 <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
                             </a>
