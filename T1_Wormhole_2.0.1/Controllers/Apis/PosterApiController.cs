@@ -117,7 +117,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 CreateTime = Article.CreateTime,
                 Content = Article.Content,
                 WriterID=Article.WriterId,
-              
             };
 
             
@@ -141,7 +140,14 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 Article.Title = DTOModel.Title;
                 Article.Content= DTOModel.Content;
             }
-               
+            if (DTOModel.ArticleCover != null)
+            {
+                using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
+                {
+                    Article.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
+                }
+            }
+
 
             _db.Entry(Article).State = EntityState.Modified;
 

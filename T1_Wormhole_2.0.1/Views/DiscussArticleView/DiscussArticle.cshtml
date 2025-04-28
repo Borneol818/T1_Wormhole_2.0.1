@@ -100,7 +100,7 @@
         data(){
             return {
                 comments:[],
-                testID:6,//測試用id，功能建置完成後刪除
+                currentArticleID:0,
 
                 articles:[],
                 ratingcount: {
@@ -122,7 +122,7 @@
             /*--------------進行文章編輯--------------*/
             ArticleEdit(){
                 let self=this;
-            localStorage.setItem("EditArticleId",self.testID);
+            localStorage.setItem("EditArticleId",self.currentArticleID);
                 fetch('/DiscussArticleView/DiscussPoster' , {
                         method: 'GET'
                         }).then(() => {window.location.href="/DiscussArticleView/DiscussPoster";})
@@ -172,6 +172,7 @@
                  this.Comments(id);
                  this.getRatingcount(id);
                  this.getArticles(id);
+                 this.currentArticleID=id;
         }
 
     }).mount('#app')
