@@ -97,8 +97,9 @@
                                 {{article.content}}
                             </p>
                             <ul class="blog-info-link">
-                                <li><a href="#"><i class="fa fa-user"></i> {{article.releaseby}}</a></li>
-                                <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                                <li><a href="#"><i class="fa fa-user"></i> {{article.releaseByName}}</a></li>
+                                <li><a href="#"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
+                                <li><a href="#"><i class="far fa-calendar-alt"></i> {{article.createTime}}</a></li>
                             </ul>
                         </div>
                     </article>
@@ -181,7 +182,7 @@
 
             getArticles() {
                 let self = this;
-                fetch("/api/ArticlesApi/GetArticles").then(x => x.json()).then(res => self.articles = res)
+                fetch("/api/ArticlesApi").then(x => x.json()).then(res => self.articles = res)
             },
             goToPage(page) {
                 if (page >= 1 && page <= this.totalPages) {

@@ -131,7 +131,7 @@
 
             getArticles(id) {
             //let self = this;
-            fetch('/api/ArticlesApi/GetArticles')
+            fetch('/api/ArticlesApi')
             .then(x => x.json())
             .then(res => {
                 console.log(res);

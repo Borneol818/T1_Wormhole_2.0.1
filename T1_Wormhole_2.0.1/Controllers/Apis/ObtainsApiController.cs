@@ -24,7 +24,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             _context = context;
         }
 
-        // GET: api/ObtainsApi/GetObtains
+        // GET: api/ObtainsApi
         [EnableQuery]
         [HttpGet]
         
@@ -48,7 +48,7 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpPost("Filter")]
         public async Task<IEnumerable<ObtainDTO>>FilterObtain([FromBody]ObtainDTO obtainDTO)
             {
-            return _context.Obtains.Where(e => e.ObtainId == obtainDTO.ObtainID ||
+            return _context.Obtains.Where(e => 
             e.Name.Contains(obtainDTO.Name) ||
             e.Price == obtainDTO.Price ||
             e.Condition.Contains(obtainDTO.Condition))
