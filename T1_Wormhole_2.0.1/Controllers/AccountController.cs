@@ -32,6 +32,10 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                RedirectToAction("Index", "Home");                                  
+            }
             return View();
         }
 
@@ -177,7 +181,10 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            
+            if (User.Identity.IsAuthenticated)
+            {
+                RedirectToAction("Index", "Home");
+            }
             if (ModelState.IsValid)
             {
                 
@@ -257,6 +264,10 @@ namespace T1_Wormhole_2._0._1.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                RedirectToAction("Index", "Home");
+            }
             var userId = Convert.ToInt32(HttpContext.User.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
             var user = _context.UserInfos.FirstOrDefault(u => u.UserId == userId);
             user.Status = false;

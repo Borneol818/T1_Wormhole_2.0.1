@@ -40,7 +40,7 @@
                                 <div class="col-12 pb-3 box">
                                     <h3>上傳封面</h3>
                                     <div style="width:600px; border: 2px solid gray; overflow:hidden;">
-                                        <img id="PreViewCover" class="img-fluid" src=" ~/images/PhotoTest.jpg" title="待上傳" asp-append-version=true />
+                                        <img id="PreViewCover" class="img-fluid" v-bind:src="getArticleCover()" title="待上傳" asp-append-version=true />
                                     </div>
                                     <input type="file" id="ArticleCoverFile" class="form-control" @@change="ArticleCoverFileChange($event.target)" accept="image/*">
                                 </div>
@@ -87,6 +87,7 @@
                 signatureString:"",
                 EditMode:false,
                 EditId:0,
+                rand:1,
             }
         },
         methods:{
@@ -108,11 +109,11 @@
 					method: "POST",
 				}).then((response) => response.json()).then(res => {
 					if (res) {
-						alert('ok');
+						// alert('ok');
 						//self.rand=new Date().getTime(); //用時間控制rand擷取版本
                         self.jumpToDiscussArticleView(); //Borneol 4/24 我加來測試，可依需求刪留
 					} else {
-					  alert('Not ok')
+					  alert('上傳文章失敗')
 					}
 				}) 
             },
@@ -152,18 +153,15 @@
             //送出編輯文章
             async putEditArticle(){
                 let self = this;
-                let data = {
-                    title: self.posterTitle,
-                    content: self.posterComment,
-                    writerID:self.writerId,
-                    signature:self.signature
-                }
+                var data = new FormData();
+                data.append("title",self.posterTitle);
+                data.append("content",self.posterComment);
+                data.append("writerId",self.writerId);
+                data.append("signature",self.signatureString);
+                data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
 
                 var res= await fetch(`/api/Poster/EditArticle/${self.EditId}`, {
-                    body: JSON.stringify(data), // must match 'Content-Type' header
-                    headers: {
-                        "content-type": "application/json",
-                    },
+                    body:data, // must match 'Content-Type' header
                     method: "PUT",
                 });
                 if(res.ok)
@@ -176,6 +174,20 @@
 
             },
             /*------------編輯文章-----------*/
+            /*------------取得文章封面-----------*/
+            getArticleCover()
+            {
+                let self = this;
+                var res;
+                if(self.EditMode){//待改抓傳入的list 文章 id
+                    res= `/api/Poster/GetPhoto?id=${self.EditId}&v=${self.rand}`;
+                }
+                else{
+                    res=`/images/PhotoTest.jpg`;//之後改成無圖片專用顯示圖
+                }
+                    return res;
+            },
+            /*------------取得文章封面-----------*/
 
             getSignature()
             {
