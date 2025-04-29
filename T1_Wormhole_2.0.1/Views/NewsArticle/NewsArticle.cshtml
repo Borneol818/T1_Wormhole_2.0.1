@@ -109,7 +109,7 @@
         methods:{
 
             Comments(id){
-                    fetch('/api/Comments/GetByArticleId?articleId='+id)
+                    fetch('/api/Comments/GetByArticleId'+'?articleId='+id)
                     .then(response => response.json())
                     .then(data => {
                         this.comments = data;
@@ -128,9 +128,9 @@
 
             //alert(self.articles);
                 //self.articles = res.find(x=>x.articleID==parseInt(id)))
-            },
+        },
 
-            //取得好負評數量
+        //取得好負評數量
             getRatingcount(id){
                 fetch('/api/Comments/GetRating?articleid='+id)
                 .then(r => r.json())

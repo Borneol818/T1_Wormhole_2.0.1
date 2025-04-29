@@ -43,25 +43,6 @@ builder.Services.AddHangfire(config => config
 builder.Services.AddHangfireServer();
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
-// 添加 Hangfire 服務
-builder.Services.AddHangfire(config => config
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(conStr));
-
-builder.Services.AddHangfireServer();
-
-
-// 添加 Hangfire 服務
-builder.Services.AddHangfire(config => config
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(conStr));
-
-builder.Services.AddHangfireServer();
-
 //這裡寫一個判定用的方法並存入在這裡new的變數名稱，用來當作登入後的認證跟各項頁面功能的全域變數
 var app = builder.Build();
 
@@ -80,8 +61,6 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
-// 啟用 Hangfire Dashboard
-app.UseHangfireDashboard("/hangfire");
 
 // 啟用 Hangfire Dashboard
 app.UseHangfireDashboard("/hangfire");
