@@ -57,8 +57,8 @@
     <img :src="'/api/ArticlesApi/GetArticles?id=' + articles.articleID" />
     <div class="comments-area">
         <div class="comment-list">
-            <button v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
-            <button v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
+            <button type="button" v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
+            <button type="button" v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
         <div>
             <div class="single-comment justify-content-between d-flex">
@@ -84,7 +84,7 @@
             </div>
             <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
             <div class="reply-btn">
-                <button href="#" class="btn-reply text-uppercase">reply</button>
+                <button class="btn-reply text-uppercase">reply</button>
             </div>
         </div>
 
@@ -97,6 +97,7 @@
     Vue.createApp({
         data(){
             return {
+                id:null,
                 comments:[],
                 articles:[],
                 ratingcount: {
@@ -108,7 +109,7 @@
         methods:{
 
             Comments(id){
-                    fetch('/api/Comments/GetByArticleId'+'?articleId='+id)
+                    fetch('/api/Comments/GetByArticleId?articleId='+id)
                     .then(response => response.json())
                     .then(data => {
                         this.comments = data;
@@ -117,7 +118,7 @@
 
             getArticles(id) {
             //let self = this;
-            fetch('/api/ArticlesApi/GetArticles')
+            fetch('/api/ArticlesApi')
             .then(x => x.json())
             .then(res => {
                 console.log(res);
@@ -127,9 +128,9 @@
 
             //alert(self.articles);
                 //self.articles = res.find(x=>x.articleID==parseInt(id)))
-        },
+            },
 
-        //取得好負評數量
+            //取得好負評數量
             getRatingcount(id){
                 fetch('/api/Comments/GetRating?articleid='+id)
                 .then(r => r.json())
@@ -137,12 +138,11 @@
                 //console.log( data);
                     this.ratingcount=data;
                 })
-
-
-            //取得好負評數量
             },
+            //取得好負評數量
             //處理好負評的點擊
             submitRating(isPositive) {
+                console.log("目前文章ID:", this.id);
                 fetch('/api/Comments/SubmitRating', {
                     method: 'POST',
                     headers: {
@@ -156,7 +156,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        this.getRatingcount(id); // 更新網頁上的數字
+                        //console.log('API response:', data);
+                        this.loadRating(this.id); // 更新網頁上的數字
                     } else {
                         alert('提交評價失敗');
                     }
@@ -165,7 +166,15 @@
                     console.error('提交評價錯誤:', error);
                     alert('提交評價時發生錯誤');
                 });
-            }
+            },
+            loadRating(id) {
+                fetch('/api/Comments/GetRating?articleId='+id)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.positive = data.positive;
+                        this.negative = data.negative;
+                    });
+            },
         },
         mounted() {
 
@@ -174,11 +183,13 @@
             var id=urlParams.get('id') ;
             // 修改抓取文章id方式
             //alert(articleId[1]);
-
+            this.id = id;
             this.Comments(id);
             this.getRatingcount(id);
             this.getArticles(id);
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
+            console.log(this.id);
+            this.loadRating();
         }
 
     }).mount('#app')

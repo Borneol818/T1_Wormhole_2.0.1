@@ -59,8 +59,8 @@
 
     <div class="comments-area">
         <div class="comment-list">
-            <p>喜歡:{{ ratingcount.positive }}</p>
-            <p>不喜歡:{{ ratingcount.negative }}</p>
+            <button v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
+            <button v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
         <div>
             <div class="single-comment justify-content-between d-flex">
