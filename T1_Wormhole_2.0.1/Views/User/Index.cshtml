@@ -1,4 +1,13 @@
-﻿<!-- Hero area Start-->
+﻿<style>
+	.ellipsis-text {
+		display: -webkit-box;
+		-webkit-line-clamp: 3; /* 顯示幾行 */
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+</style>
+<!-- Hero area Start-->
 <!--  Hero area End -->
 <!--? Checkout Area Start-->
 <section class="checkout_area section-padding">
@@ -140,36 +149,34 @@
 					</div>
 					<div class="col-lg-4">
 						<div class="order_box">
-							<div style="border-bottom:1px solid #333;">
+							<div style="border-bottom:2px solid #333; margin-bottom:30px;">
 								<label class="col-md-12" style="font-size: 20px;">Wallet</label>
 								<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
 							</div>
-							<h3 style="margin-bottom: 10px;">Recently Post</h3>
-							<ul class="list">
-								<li>
-									<a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-								</li>
-								<li>
-									<a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-								</li>
-								<li>
-									<a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-								</li>
-							</ul>
-							<a href="#" style="font-size: 16px; color: blue;">Show More</a>
-							<h3 style="margin-bottom: 10px; margin-top:20px;">Articles</h3>
-							<ul class="list">
-								<li>
-									<a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-								</li>
-								<li>
-									<a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-								</li>
-								<li>
-									<a href="#"><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit</p></a>
-								</li>
-							</ul>
-							<a href="#" style="font-size: 16px; color: blue;">Show More</a>
+							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
+								<h2 style="margin-bottom: 10px;">Article History</h2>
+								<ul class="list" v-for="art in articlesHistory">
+									<li>
+										<a href="#">
+											<h3 style="margin:0px;">{{art.title}}</h3>
+											<p class="ellipsis-text">{{art.content}}</p>
+										</a>
+									</li>
+								</ul>
+								@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
+							</div>
+							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
+								<h2 style="margin-bottom: 10px;">Comment History</h2>
+								<ul class="list" v-for="com in commentHistory">
+									<li>
+										<a href="#">
+											<h3 style="margin:0px;">{{com.title}}</h3>
+											<p class="ellipsis-text">{{com.comment}}</p>
+										</a>
+									</li>
+								</ul>
+								@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
+							</div>			
 						</div>
 					</div>
 				</template>
@@ -190,6 +197,8 @@
 				userstatus:[],
 				badgeImg:[],
 				achievementImg:[],
+				articlesHistory:[],
+				commentHistory:[],
 				name:"",
 				userId:5,
 				phone:"",
@@ -233,7 +242,12 @@
 				await fetch('/api/User/GetAchievementPicture',{
 					credentials: 'include',
 				}).then(x => x.json()).then(res => self.achievementImg = res);
-
+				await fetch('/api/User/GetArticlesHistory',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.articlesHistory = res);
+				await fetch('/api/User/GetCommentHistory',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.commentHistory = res);
 			},
 			edit(userid){
 				let self = this;
