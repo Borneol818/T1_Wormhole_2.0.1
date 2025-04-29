@@ -83,6 +83,15 @@
         <!-- slider Area End-->
         <!-- Best Selling start -->
         <div id="app" class="most-popular section-bg">
+        @* 跑馬燈目前播放熱門文章 *@
+        <div class="marquee">
+            <div class="marquee-content">
+                <span v-for="item in popularArticles" :key="item.id" class="marquee-item">
+                    {{ item.articleTitle }}
+                </span>
+            </div>
+        </div>
+        @* 跑馬燈目前播放熱門文章 *@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8">

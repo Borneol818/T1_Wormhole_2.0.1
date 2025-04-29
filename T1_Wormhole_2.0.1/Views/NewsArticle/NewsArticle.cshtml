@@ -57,8 +57,8 @@
     <img :src="'/api/ArticlesApi/GetArticles?id=' + articles.articleID" />
     <div class="comments-area">
         <div class="comment-list">
-            <p>喜歡:{{ ratingcount.positive }}</p>
-            <p>不喜歡:{{ ratingcount.negative }}</p>
+            <button v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
+            <button v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
         <div>
             <div class="single-comment justify-content-between d-flex">
@@ -141,6 +141,31 @@
 
             //取得好負評數量
             },
+            //處理好負評的點擊
+            submitRating(isPositive) {
+                fetch('/api/Comments/SubmitRating', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        articleId: this.id,
+                        isPositive: isPositive // true 表示喜歡，false 表示不喜歡
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.getRatingcount(id); // 更新網頁上的數字
+                    } else {
+                        alert('提交評價失敗');
+                    }
+                })
+                .catch(error => {
+                    console.error('提交評價錯誤:', error);
+                    alert('提交評價時發生錯誤');
+                });
+            }
         },
         mounted() {
 
