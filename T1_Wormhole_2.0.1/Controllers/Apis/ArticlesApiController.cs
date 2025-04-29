@@ -78,13 +78,13 @@ namespace T1_Wormhole_2._0._1.Controllers
             return article;
         }
 
-        //GET: api/ArticlesApi/GetPhoto/1
+        //GET: api/ArticlesApi/GetPicture/1
         [HttpGet("GetPicture/{id}")]
         public async Task<FileResult> GetPicture(int id)
         {
             string Filename = Path.Combine("wwwroot", "images", "noimages.jpg");
             Article e = await _context.Articles.FindAsync(id);
-            byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(Filename); //e有值取picture 沒有值就取null
+            byte[] ImageContent = e?.ArticleCover != null ? e.ArticleCover : System.IO.File.ReadAllBytes(Filename); //e有值取ArticleCover 沒有值就取null
 
             return File(ImageContent, "image/jpeg");
         }
