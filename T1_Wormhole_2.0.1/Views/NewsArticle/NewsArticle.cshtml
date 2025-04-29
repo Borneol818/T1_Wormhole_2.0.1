@@ -58,11 +58,14 @@
     <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
 
     @* 先新增要驗證修改 *@
-    <img :src="'/api/ArticlesApi/GetArticles?id=' + articles.articleID" />
+    @* 文章圖片 *@
+    <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
+    @* 文章圖片 *@
+    <p>{{articles.content}}</p>
     <div class="comments-area">
         <div class="comment-list">
-            <button v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
-            <button v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
+            <button type="button" v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
+            <button type="button" v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
         <div>
             <div class="single-comment justify-content-between d-flex">
@@ -88,7 +91,7 @@
             </div>
             <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
             <div class="reply-btn">
-                <button href="#" class="btn-reply text-uppercase">reply</button>
+                <button class="btn-reply text-uppercase">reply</button>
             </div>
         </div>
 
@@ -142,12 +145,11 @@
                 //console.log( data);
                     this.ratingcount=data;
                 })
-
-
-            //取得好負評數量
             },
+            //取得好負評數量
             //處理好負評的點擊
             submitRating(isPositive) {
+                console.log("目前文章ID:", this.id);
                 fetch('/api/Comments/SubmitRating', {
                     method: 'POST',
                     headers: {
@@ -180,7 +182,15 @@
                         method: 'GET'
                         }).then(() => {window.location.href="/NewsArticle/newsPoster";})
             },
-            /*--------------進行文章編輯--------------*/
+			/*--------------進行文章編輯--------------*/
+            loadRating(id) {
+                fetch('/api/Comments/GetRating?articleId='+id)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.positive = data.positive;
+                        this.negative = data.negative;
+                    });
+            },
         },
         mounted() {
 
@@ -195,6 +205,7 @@
             this.getArticles(id);
             this.currentArticleID=id;
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
+            this.loadRating(id);
         }
 
     }).mount('#app')
