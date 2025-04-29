@@ -93,7 +93,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         public async Task findExpiredEvents() 
         {
             //篩選已經到期，且到期一天內的活動(每天定時篩選的話，就會是篩前一天沒篩到的活動)
-            var events = _db.Events.Where(e=>e.EventTimeEnd<=DateTime.Now&& e.EventTimeEnd.AddDays(1)>DateTime.Now).Select(e=>e.EventId).ToList();
+            var events = _db.Events.Where(e=>e.EventTimeEnd<=DateTime.Now&& e.EventTimeEnd.AddDays(1)>=DateTime.Now).Select(e=>e.EventId).ToList();
             if (events.Count < 1) return;
             foreach (var e in events) 
             {
