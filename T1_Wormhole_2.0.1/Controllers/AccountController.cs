@@ -236,9 +236,11 @@ namespace T1_Wormhole_2._0._1.Controllers
                     var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
 
-                    var authProperties = new AuthenticationProperties 
+                    var authProperties = new AuthenticationProperties
                     {
-                        IsPersistent = model.KeepLog == null ? false : true //保持登入
+                        IsPersistent = model.KeepLog == null ? false : true, //保持登入
+                        ExpiresUtc = DateTime.UtcNow.AddDays(7),
+                        AllowRefresh = true,
                     };
 
                     if (model.RememberMe != null)
@@ -249,7 +251,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                         string encryptedPWD = PWDProtector.Protect(model.Password);
                         CookieOptions options = new CookieOptions
                         {
-                            Expires = DateTime.Now.AddDays(10),
+                            Expires = DateTime.UtcNow.AddDays(30),
                             HttpOnly = true,
                             Secure = true,
                             SameSite = SameSiteMode.Strict
