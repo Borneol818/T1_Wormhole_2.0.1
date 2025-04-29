@@ -4,6 +4,7 @@ using T1_Wormhole_2._0._1.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using T1_Wormhole_2._0._1.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using T1_Wormhole_2._0._1.Models.DTOs;
 
 namespace T1_Wormhole_2._0._1.Controllers
 {
@@ -57,41 +58,73 @@ namespace T1_Wormhole_2._0._1.Controllers
             byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
+
         [HttpPost]
-        public async Task<IActionResult> SubmitRating([FromBody] RatingRequest request ,int Userid)
+        public async Task<IActionResult> SubmitRating([FromBody] RatingRequestDTO request)
         {
-            var newRating = new Rating
+            if (request.ArticleId <= 0 || request.UserId <= 0)
             {
-                ArticleId = request.ArticleId,
-                UserId = Userid, // 假設你有傳入 UserId
-                PositiveRating = request.IsPositive ? 1 : 0,
-                NegativeRating = request.IsPositive ? 0 : 1
-            };
+                return BadRequest("參數錯誤");
+            }
 
-            _context.Ratings.Add(newRating);
-            await _context.SaveChangesAsync();
-
-            // 統計這篇文章所有的正評/負評總和
-            int positiveTotal = await _context.Ratings
-                .Where(r => r.ArticleId == request.ArticleId)
-                .SumAsync(r => r.PositiveRating ?? 0);
-
-            int negativeTotal = await _context.Ratings
-                .Where(r => r.ArticleId == request.ArticleId)
-                .SumAsync(r => r.NegativeRating ?? 0);
-
-            return Ok(new
+            try
             {
-                success = true,
-                positive = positiveTotal,
-                negative = negativeTotal
-            });
+                var rating = await _context.Ratings
+                    .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId && r.UserId == request.UserId);
+
+                if (rating == null)
+                {
+                    var newRating = new Rating
+                    {
+                        ArticleId = request.ArticleId,
+                        UserId = request.UserId,
+                        PositiveRating = request.IsPositive ? 1 : 0,
+                        NegativeRating = request.IsPositive ? 0 : 1
+                    };
+                    _context.Ratings.Add(newRating);
+                }
+                else
+                {
+                    rating.PositiveRating = request.IsPositive ? 1 : 0;
+                    rating.NegativeRating = request.IsPositive ? 0 : 1;
+                    _context.Ratings.Update(rating);
+                }
+
+                await _context.SaveChangesAsync();
+
+                // 計算更新後的統計資料
+                var posCount = await _context.Ratings
+                    .Where(r => r.ArticleId == request.ArticleId)
+                    .SumAsync(r => r.PositiveRating);
+
+                var negCount = await _context.Ratings
+                    .Where(r => r.ArticleId == request.ArticleId)
+                    .SumAsync(r => r.NegativeRating);
+
+                var article = await _context.Articles
+                    .Include(a => a.Writer) // 確保載入作者資訊
+                    .FirstOrDefaultAsync(a => a.ArticleId == request.ArticleId);
+
+                var dto = new RatingsDTOs
+                {
+                    articlesId = request.ArticleId,
+                    prCount = posCount,
+                    ngrCount = negCount,
+                    popularCount = (posCount ?? 0) + (negCount ?? 0),
+                    articleTitle = article?.Title ?? "未知標題",
+                    Name = article?.Writer?.Nickname ?? "匿名"
+                };
+
+                return Ok(dto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
         }
-        public class RatingRequest
-        {
-            public int ArticleId { get; set; }
-            public bool IsPositive { get; set; }
-        }
+
+
+
         /// <summary>
         /// 新增留言
         /// </summary>
