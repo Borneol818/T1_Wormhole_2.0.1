@@ -155,9 +155,9 @@
 							</div>
 							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
 								<h2 style="margin-bottom: 10px;">Article History</h2>
-								<ul class="list" v-for="art in articlesHistory">
+								<ul class="list" v-for="art in articlesHistory" :key="art.articleID">
 									<li>
-										<a href="#">
+										<a :href="'/DiscussArticleView/DiscussArticle?id='+art.articleID">
 											<h3 style="margin:0px;">{{art.title}}</h3>
 											<p class="ellipsis-text">{{art.content}}</p>
 										</a>
@@ -167,9 +167,9 @@
 							</div>
 							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
 								<h2 style="margin-bottom: 10px;">Comment History</h2>
-								<ul class="list" v-for="com in commentHistory">
+								<ul class="list" v-for="com in commentHistory" :key="com.articleID">
 									<li>
-										<a href="#">
+										<a :href="'/DiscussArticleView/DiscussArticle?id='+com.articleID">
 											<h3 style="margin:0px;">{{com.title}}</h3>
 											<p class="ellipsis-text">{{com.comment}}</p>
 										</a>
