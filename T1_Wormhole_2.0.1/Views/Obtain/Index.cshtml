@@ -74,9 +74,10 @@
 					<h1>稱號</h1>
 					<ul class="recommended">
 						<li v-for="obtain in obtains">
+							<!--  編輯畫面 -->
 							<template v-if="obtain.Edit==true">
 								<div>
-									<img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" />
+									<img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" class="img-fluid" />
 									<div>
 										<input v-model="obtain.name" class="form-control" />
 										<input v-model="obtain.condition" class="form-control" />
@@ -85,11 +86,11 @@
 										<div>
 											<button id="update" class="btn btn-success" v-on:click="update(obtain)">更新</button>
 											<button class="btn btn-info" v-on:click="cancel">取消</button>
-											
 										</div>
 									</div>
 								</div>
 							</template>
+							<!--  顯示畫面 -->
 							<template v-else>
 								<div>
 									<img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" />
@@ -111,7 +112,7 @@
 
 					</ul>
 				</div>
-				@* 新增頁面 *@
+				<!--  新增畫面 -->
 				<div class="modal fade"
 					 id="insertmodal"
 					 tabindex="-1"

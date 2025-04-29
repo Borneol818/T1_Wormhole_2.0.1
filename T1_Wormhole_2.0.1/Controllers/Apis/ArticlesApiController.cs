@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using T1_Wormhole_2._0._1.Models.DTOs;
 using T1_Wormhole_2._0._1.Models.Database;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace T1_Wormhole_2._0._1.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class ArticlesApiController : ControllerBase
+    public class ArticlesApiController : ODataController
     {
         private readonly WormHoleContext _context;
 
@@ -23,10 +25,30 @@ namespace T1_Wormhole_2._0._1.Controllers
 
         // GET: api/ArticlesApi
         [HttpGet]
-        
-        public async Task<IEnumerable<ArticleDTO>> GetArticles()
+        [EnableQuery]
+        public IQueryable<ArticleDTO> GetArticles()
         {
-            var UserInfo = _context.UserInfos;
+            
+            return  _context.Articles
+                .Include(a => a.Writer)
+                .Include(a => a.ReleaseByNavigation)
+                .Include(a => a.ArticleResponses)
+                .Select(e => new ArticleDTO
+                {
+                ArticleID = e.ArticleId,
+                Title = e.Title,
+                Type = e.Type,
+                CreateTime = e.CreateTime,
+                Content = e.Content,
+                WriterNickname = e.Writer.Nickname,
+                ReleaseByName = e.ReleaseByNavigation.Name,
+                CommentCount= e.ArticleResponses.Count(),
+                ArticleCover=null
+                });
+
+        }
+        public IQueryable<ArticleDTO> GetArticles(int id)
+        {
             return _context.Articles.Select(e => new ArticleDTO
             {
                 ArticleID = e.ArticleId,
@@ -34,28 +56,13 @@ namespace T1_Wormhole_2._0._1.Controllers
                 Type = e.Type,
                 CreateTime = e.CreateTime,
                 Content = e.Content,
-                WriterID=e.WriterId,
-                //Writer = UserInfo.Where(s => s.UserId==e.WriterId).Select(s=>s.Nickname).Single(),
-                ReleaseBy = e.ReleaseBy,
-
+                WriterNickname = e.Writer.Nickname,
+                ReleaseByName = e.ReleaseByNavigation.Name,
+                ArticleCover = null
             });
 
         }
-        public async Task<IEnumerable<ArticleDTO>> GetArticles(int id)
-        {
-            return _context.Articles.Select(e => new ArticleDTO
-            {
-                ArticleID = e.ArticleId,
-                Title = e.Title,
-                Type = e.Type,
-                CreateTime = e.CreateTime,
-                Content = e.Content,
-                WriterID = e.WriterId,
-                ReleaseBy = e.ReleaseBy,
-                //Photo = e.Picture,
-            });
 
-        }
 
         // GET: api/ArticlesApi/5
         [HttpGet("{id}")]
@@ -71,63 +78,17 @@ namespace T1_Wormhole_2._0._1.Controllers
             return article;
         }
 
-        // PUT: api/ArticlesApi/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticle(int id, Article article)
+        //GET: api/ArticlesApi/GetPicture/1
+        [HttpGet("GetPicture/{id}")]
+        public async Task<FileResult> GetPicture(int id)
         {
-            if (id != article.ArticleId)
-            {
-                return BadRequest();
-            }
+            string Filename = Path.Combine("wwwroot", "images", "noimages.jpg");
+            Article e = await _context.Articles.FindAsync(id);
+            byte[] ImageContent = e?.ArticleCover != null ? e.ArticleCover : System.IO.File.ReadAllBytes(Filename); //e有值取ArticleCover 沒有值就取null
 
-            _context.Entry(article).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArticleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return File(ImageContent, "image/jpeg");
         }
 
-        // POST: api/ArticlesApi
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Article>> PostArticle(Article article)
-        {
-            _context.Articles.Add(article);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetArticle", new { id = article.ArticleId }, article);
-        }
-
-        // DELETE: api/ArticlesApi/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArticle(int id)
-        {
-            var article = await _context.Articles.FindAsync(id);
-            if (article == null)
-            {
-                return NotFound();
-            }
-
-            _context.Articles.Remove(article);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
 
         private bool ArticleExists(int id)
         {
