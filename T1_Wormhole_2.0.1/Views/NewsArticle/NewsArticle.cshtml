@@ -173,11 +173,7 @@
                     alert('提交評價時發生錯誤');
                 });
             },
-<<<<<<< HEAD
             //amy新增
-=======
-	    //amy新增
->>>>>>> origin/Sam
             /*--------------進行文章編輯--------------*/
             ArticleEdit(){
                 let self=this;
@@ -186,9 +182,6 @@
                         method: 'GET'
                         }).then(() => {window.location.href="/NewsArticle/newsPoster";})
             },
-<<<<<<< HEAD
-            /*--------------進行文章編輯--------------*/
-=======
 			/*--------------進行文章編輯--------------*/
             loadRating(id) {
                 fetch('/api/Comments/GetRating?articleId='+id)
@@ -198,7 +191,6 @@
                         this.negative = data.negative;
                     });
             },
->>>>>>> origin/Sam
         },
         mounted() {
 
