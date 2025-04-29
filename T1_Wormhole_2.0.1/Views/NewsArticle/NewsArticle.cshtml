@@ -51,10 +51,11 @@
         </div>
     </div>
     <h1>{{articles.title}}</h1>
-
-    <p>{{articles.content}}</p>
     @* 先新增要驗證修改 *@
-    <img :src="'/api/ArticlesApi/GetArticles?id=' + articles.articleID" />
+    @* 文章圖片 *@
+    <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
+    @* 文章圖片 *@
+    <p>{{articles.content}}</p>
     <div class="comments-area">
         <div class="comment-list">
             <button type="button" v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
@@ -183,13 +184,11 @@
             var id=urlParams.get('id') ;
             // 修改抓取文章id方式
             //alert(articleId[1]);
-            this.id = id;
             this.Comments(id);
             this.getRatingcount(id);
             this.getArticles(id);
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
-            console.log(this.id);
-            this.loadRating();
+            this.loadRating(id);
         }
 
     }).mount('#app')

@@ -50,9 +50,10 @@
         </div>
     </div>
     <h1>{{articles.title}}</h1>
-   
+    @* 文章圖片 *@
+    <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
+    @* 文章圖片 *@
     <p>{{articles.content}}</p>
-
 
     @*amy新增，之後請負責人放至適合位置*@
     <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
