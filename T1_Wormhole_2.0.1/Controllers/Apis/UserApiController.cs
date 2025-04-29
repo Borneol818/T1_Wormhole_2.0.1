@@ -64,7 +64,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = _db.ForumCoins.Where(x => x.UserId == currentUserId && x.Status.Contains("已發放"));                
             var totalCoins = result.Sum(x => x.CoinAmount);
-            var user =await _db.UserInfos.FindAsync(currentUserId);            
+            var user =await _db.UserInfos.FindAsync(currentUserId);
             
             if (user != null)
             {                                

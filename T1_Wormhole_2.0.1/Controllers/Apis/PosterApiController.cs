@@ -32,38 +32,35 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 //待補判斷身分，存News OR Discuss文章
                 if (User.FindFirst(ClaimTypes.Role)?.Value == "User")
                 {
-                    if (DTOModel.Signature.Length >= 1 && DTOModel.Signature != null)
+                    Article Art = new Article
                     {
-                        Article Art = new Article
+                        Title = DTOModel.Title,
+                        Type = true,//讀取是否為使用者
+                        CreateTime = DateTime.Now,
+                        Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
+                        WriterId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取使用者ID
+                    };
+                    if (DTOModel.ArticleCover != null)
+                    {
+                        using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
                         {
-                            Title = DTOModel.Title,
-                            Type = true,//讀取是否為使用者
-                            CreateTime = DateTime.Now,
-                            Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
-                            WriterId = DTOModel.WriterID,//讀取使用者ID
-                        };
-                        if (DTOModel.ArticleCover != null)
-                        {
-                            using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
-                            {
-                                Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
-                            }
+                            Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
                         }
-                        _db.Articles.Add(Art);
-                        _db.SaveChanges();
-
-                        return true;
                     }
+                    _db.Articles.Add(Art);
+                    _db.SaveChanges();
+
+                    return true;
                 }
-                else 
+                else if(User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
                 {
                     Article Art = new Article
                     {
                         Title = DTOModel.Title,
                         Type = false,
                         CreateTime = DateTime.Now,
-                        Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
-                        WriterId = DTOModel.WriterID,//讀取使用者ID
+                        Content = DTOModel.Content,
+                        ReleaseBy = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取管理員ID
                     };
                     if (DTOModel.ArticleCover != null)
                     {
@@ -115,7 +112,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 Type = Article.Type,//讀取是否為使用者
                 CreateTime = Article.CreateTime,
                 Content = Article.Content,
-                WriterID=Article.WriterId,
             };
 
             
