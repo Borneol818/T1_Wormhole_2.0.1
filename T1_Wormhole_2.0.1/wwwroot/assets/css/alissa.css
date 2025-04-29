@@ -1,0 +1,5 @@
+.circle-image {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+}
