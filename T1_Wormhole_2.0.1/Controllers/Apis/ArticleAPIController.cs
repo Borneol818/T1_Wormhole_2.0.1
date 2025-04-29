@@ -58,42 +58,34 @@ namespace T1_Wormhole_2._0._1.Controllers
             return File(ImageContent, "image/jpeg");
         }
         [HttpPost]
-        public async Task<IActionResult> SubmitRating([FromBody] RatingRequest request)
+        public async Task<IActionResult> SubmitRating([FromBody] RatingRequest request ,int Userid)
         {
-            // 查找是否有該文章的評價記錄
-            var rating = await _context.Ratings
-                .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId);
-
-            if (rating == null)
+            var newRating = new Rating
             {
-                // 如果沒有記錄，新增一筆
-                rating = new Rating
-                {
-                    ArticleId = request.ArticleId,
-                    PositiveRating = request.IsPositive ? 1 : 0,
-                    NegativeRating = request.IsPositive ? 0 : 1
-                };
-                _context.Ratings.Add(rating);
-            }
-            else
-            {
-                //更新喜歡或不喜歡
-                if (request.IsPositive)
-                {
-                    rating.PositiveRating = (rating.PositiveRating ?? 0) + 1;
-                }
-                else
-                {
-                    rating.NegativeRating = (rating.NegativeRating ?? 0) + 1;
-                }
-            }
+                ArticleId = request.ArticleId,
+                UserId = Userid, // 假設你有傳入 UserId
+                PositiveRating = request.IsPositive ? 1 : 0,
+                NegativeRating = request.IsPositive ? 0 : 1
+            };
 
-            // 儲存變更到資料庫
+            _context.Ratings.Add(newRating);
             await _context.SaveChangesAsync();
 
-            // 回傳成功訊息
-            return Ok(new { success = true });
+            // 統計這篇文章所有的正評/負評總和
+            int positiveTotal = await _context.Ratings
+                .Where(r => r.ArticleId == request.ArticleId)
+                .SumAsync(r => r.PositiveRating ?? 0);
 
+            int negativeTotal = await _context.Ratings
+                .Where(r => r.ArticleId == request.ArticleId)
+                .SumAsync(r => r.NegativeRating ?? 0);
+
+            return Ok(new
+            {
+                success = true,
+                positive = positiveTotal,
+                negative = negativeTotal
+            });
         }
         public class RatingRequest
         {
@@ -132,5 +124,5 @@ namespace T1_Wormhole_2._0._1.Controllers
             }
         }
     }
-    
+
 }

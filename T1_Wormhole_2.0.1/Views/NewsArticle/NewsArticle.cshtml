@@ -53,20 +53,22 @@
     <h1>{{articles.title}}</h1>
 
     <p>{{articles.content}}</p>
-
-    @*amy新增，之後請負責人放至適合位置*@
-    <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-
-    @* 先新增要驗證修改 *@
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
+
+  
+
+    @* 先新增要驗證修改 *@
+    
     <p>{{articles.content}}</p>
     <div class="comments-area">
         <div class="comment-list">
             <button type="button" v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
             <button type="button" v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
+        @*amy新增，之後請負責人放至適合位置*@
+        <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
         <div>
             <div class="single-comment justify-content-between d-flex">
                 <div class="user justify-content-between d-flex" v-for="Response in comments">
@@ -143,28 +145,35 @@
                 .then(r => r.json())
                 .then(data => {
                 //console.log( data);
-                    this.ratingcount=data;
+                    // this.ratingcount=data;
+                    this.ratingcount.positive = data.positive;
+                    this.ratingcount.negative = data.negative;
                 })
             },
             //取得好負評數量
             //處理好負評的點擊
             submitRating(isPositive) {
-                console.log("目前文章ID:", this.id);
+                console.log("目前文章ID:", this.currentArticleID);
                 fetch('/api/Comments/SubmitRating', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        articleId: this.id,
+                        articleId: this.currentArticleID,
                         isPositive: isPositive // true 表示喜歡，false 表示不喜歡
-                    })
+                    })  
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        this.getRatingcount(id); // 更新網頁上的數字
+                        console.log('取得評分結果:', data);
+                        console.log(this.ratingcount.positive,this.ratingcount.negative);
+                        // this.getRatingcount(this.currentArticleID); 更新網頁上的數字
+                        this.ratingcount.positive = data.positive;
+                        this.ratingcount.negative = data.negative;
                     } else {
+                        console.log('取得評分結果:', data);
                         alert('提交評價失敗');
                     }
                 })
