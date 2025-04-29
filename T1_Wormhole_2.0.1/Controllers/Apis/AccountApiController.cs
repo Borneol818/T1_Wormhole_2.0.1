@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using System.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using T1_Wormhole_2._0._1.Models.Database;
@@ -67,6 +69,20 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             {
                 Console.WriteLine($"Error decrypting cookie: {ex.Message}");
                 return "";
+            }
+        }
+
+        [HttpGet]
+        public bool isAdmin() 
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "Admin")
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
             }
         }
     }

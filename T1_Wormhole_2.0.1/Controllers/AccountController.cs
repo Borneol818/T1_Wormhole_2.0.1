@@ -6,6 +6,8 @@ using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
 using T1_Wormhole_2._0._1.Models.DTOs;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace T1_Wormhole_2._0._1.Controllers
@@ -34,9 +36,12 @@ namespace T1_Wormhole_2._0._1.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                RedirectToAction("Index", "Home");                                  
+                return RedirectToAction("Index", "Home");
             }
-            return View();
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -74,7 +79,17 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Phone = model2.Phone,
                     Status = false
                 };
+
                 _context.UserInfos.Add(userInfo);
+                _context.SaveChanges();
+                var TempUserId = _context.UserInfos.FirstOrDefault(u => u.Email == model1.Email).UserId;
+                var userStatus = new UserStatus
+                {
+                    Id = TempUserId,
+                    Status = false,
+                    Level = 1
+                };
+                _context.UserStatuses.Add(userStatus);
                 _context.SaveChanges();
                 var baseUrl = _configuration["AppSettings:BaseUrl"];
                 var verificationLink = $"{baseUrl}/Account/VerifyEmail?token={user.EmailVerificationToken}&email={user.Email}";
@@ -175,16 +190,19 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else 
+            {
+                return View();
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                RedirectToAction("Index", "Home");
-            }
             if (ModelState.IsValid)
             {
                 
@@ -262,6 +280,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             if (!User.Identity.IsAuthenticated)
