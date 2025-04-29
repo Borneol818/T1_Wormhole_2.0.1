@@ -191,7 +191,7 @@
             getSignature()
             {
                 let self=this;
-                fetch('/api/Poster/getSignature' + '?userID=' + 5, {
+                fetch('/api/Poster/getSignature?userID=' + 5, {
                     method: 'GET'
                 }).then((response) => response.json()).then(res => self.signature=res)
             },
