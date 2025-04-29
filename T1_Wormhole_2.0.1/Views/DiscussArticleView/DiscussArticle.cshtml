@@ -87,7 +87,7 @@
             </div>
             <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
             <div class="reply-btn">
-                <button href="#" class="btn-reply text-uppercase">reply</button>
+                <button href="#" class="btn-reply text-uppercase" v-on:click="submitResponse">reply</button>
             </div>
         </div>
     </div>
@@ -100,12 +100,12 @@
         data(){
             return {
                 comments:[],
-                testID:6,//測試用id，功能建置完成後刪除
+                currentArticleID:0,
 
                 articles:[],
                 ratingcount: {
-                positive: 0,
-                negative: 0
+                    positive: 0,
+                    negative: 0
                 }
             }
         },
@@ -122,7 +122,7 @@
             /*--------------進行文章編輯--------------*/
             ArticleEdit(){
                 let self=this;
-            localStorage.setItem("EditArticleId",self.testID);
+            localStorage.setItem("EditArticleId",self.currentArticleID);
                 fetch('/DiscussArticleView/DiscussPoster' , {
                         method: 'GET'
                         }).then(() => {window.location.href="/DiscussArticleView/DiscussPoster";})
@@ -152,8 +152,60 @@
                         this.ratingcount=data;
                     })
 
-            }
+            },
             //取得好負評數量
+            //留言
+            submitResponse(id){
+                
+
+                if (!self.textResponse.trim()) {
+                    alert("請輸入留言內容");
+                    return;
+                }
+
+                // 組留言物件
+                let response = {
+                    ArticleId: articleId,
+                    Comment: self.textResponse,
+                    Id: 0, // 或可以不給，後端自己產生
+                    UserId: 1, // 這邊要用真實登入使用者ID，這裡假設測試用
+                    CreateTime: new Date().toISOString()
+                };
+
+                fetch('/api/Respones/ArticleResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(response)
+                }).then(r => {
+                   if(r.ok){
+                       return r.json();
+                   }
+                   else{
+                       throw new Error("留言失敗");
+                   }
+                }).then(res => {
+                    if(res.success){
+                        // 新增留言到最上面
+            
+                        self.comments.unshift({
+                        writer: "我自己", // 這裡之後要改成登入者名字
+                        content: self.textResponse,
+                        date: new Date().toLocaleString('zh-TW', { hour12: false })
+                });
+                    self.textResponse = "";
+                } 
+                else 
+                {
+                    alert("留言失敗");
+                }
+            })
+                .catch(error => {
+                    console.error(error);
+                    alert("留言失敗");
+                })
+            },
         },
         mounted() {
             // var url=location.href;
@@ -172,6 +224,7 @@
                  this.Comments(id);
                  this.getRatingcount(id);
                  this.getArticles(id);
+                 this.currentArticleID=id;
         }
 
     }).mount('#app')

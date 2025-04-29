@@ -79,17 +79,23 @@
 
         </div>
     </header>
+
+    @*Amy---改button成a連結+連結到使用者po文區*@
+    <a asp-controller="NewsArticle" asp-action="newsPoster"
+       style="wight:500px ;position: fixed ;color:red ; right:229px; top:340px">發表文章</a>
+
+
     <main>
 
         <!--  Hero area End -->
-        <!-- Blog Area Start-->
+        @* <!-- Blog Area Start-->文章內容開始 *@
         <section class="blog_area section-padding">
             <div class="container" id="app">
                 <div class="row">
                     <article class="blog_item">
-                        @* {{article.Picture}} *@
                         <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
                             @* 依文章ID跳選到該文章內容 *@
+                            <img class="img-fluid" v-bind:src="'/api/ArticlesApi/GetPicture/'+article.articleID+'?v='+rand" />
                             <a :href="'/NewsArticle/NewsArticle?id=' + article.articleID">
                                 <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
                             </a>
@@ -106,14 +112,17 @@
 
                     <nav class="blog-pagination justify-content-center d-flex">
                         <ul class="pagination">
+                            @* 上一頁 *@
                             <li class="page-item" :class="{ disabled: currentPage === 1 }">
                                 <a href="#" class="page-link" @@click.prevent="goToPage(currentPage - 1)" aria-label="Previous">
                                     <i class="ti-angle-left"></i>
                                 </a>
                             </li>
+                            @* 第?頁 *@
                             <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
                                 <a href="#" class="page-link" @@click.prevent="goToPage(page)">{{page}}</a>
                             </li>
+                            @* 下一頁 *@
                             <li class="page-item" :class="{ disabled: currentPage === totalPages }">
                                 <a href="#" class="page-link" @@click.prevent="goToPage(currentPage + 1)" aria-label="Next">
                                     <i class="ti-angle-right"></i>
@@ -175,7 +184,7 @@
             return {
                 articles:[],
                 currentPage: 1,
-                pageSize: 5,
+                    pageSize: 5,//每頁顯示文章篇數
             }
         },
         methods: {
@@ -187,20 +196,25 @@
             goToPage(page) {
                 if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
+                    //換頁捲到頁頂
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                    });
                 }
             },
         },
         computed:{
             nowArticles() {
-                const start = (this.currentPage - 1) * this.pageSize;
-                const end = start + this.pageSize;
+                const start = (this.currentPage - 1) * this.pageSize;//計算起始值
+                const end = start + this.pageSize;//結束值
                 return this.articles
-                    .filter(a => a.type === false)
-                    .slice(start, end);
+                .filter(a => a.type === false)//篩選新聞版文章
+                .slice(start, end);//取出頁面要顯示的文章
             },
             totalPages() {
-                const filteredArticles = this.articles.filter(a => a.type === false);
-                return Math.ceil(filteredArticles.length / this.pageSize);
+                const filteredArticles = this.articles.filter(a => a.type === false);//篩選新聞版文章
+                return Math.ceil(filteredArticles.length / this.pageSize);//總文章數/每頁顯示幾篇(無條件進位)
                 },
          },
         mounted() {

@@ -29,6 +29,8 @@
 	<link rel="stylesheet" href="~/assets/css/style.css">
 	<link href="~/css/borneol.css" rel="stylesheet" />
 	<link href="~/assets/css/amy.css" rel="stylesheet" />
+	@* 跑馬燈用css *@
+	<link href="~/css/Sam.css" rel="stylesheet">
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	@* <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
 </head>
@@ -136,6 +138,8 @@
 			</div>
 		</div>
 	</header>
+	<!-- Header End -->
+	
 	<div class="container">
 		<main role="main" class="ph-3">
 			@RenderBody()
@@ -224,7 +228,12 @@
 	<div id="back-top">
 		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
 	</div>
+	<!-- Scroll Up -->
 
+	<button class="sidebar-toggle">
+		<!-- 使用Font Awesome的Icon -->
+		<i class="fas fa-bars"></i>
+	</button>
 	<!-- JS here -->
 	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
 	<script>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Security.Claims;
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
@@ -22,16 +23,18 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             _db = db;
         }
 
+        // Post: api/Poster/postArticle
         [HttpPost]
         public bool postArticle(AddDiscussArticlesDTO DTOModel)
         {
             try
             {
-                if (DTOModel.Signature != null)
+                //待補判斷身分，存News OR Discuss文章
+                if (User.FindFirst(ClaimTypes.Role)?.Value == "User")
                 {
-                    if (DTOModel.Signature.Length >= 1)
+                    if (DTOModel.Signature.Length >= 1 && DTOModel.Signature != null)
                     {
-                        Article Art= new Article
+                        Article Art = new Article
                         {
                             Title = DTOModel.Title,
                             Type = true,//讀取是否為使用者
@@ -43,43 +46,39 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         {
                             using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
                             {
-                                Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length); //4/24 Borneol 配合資料庫欄位打錯字修改
+                                Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
                             }
                         }
                         _db.Articles.Add(Art);
                         _db.SaveChanges();
 
-                        //return RedirectToAction("Index", "DiscussArticleView");
                         return true;
                     }
-                    //else
-                    //{
-                    //    Article Art = new Article
-                    //    {
-                    //        Title = DTOModel.Title,
-                    //        Type = true,//讀取是否為使用者
-                    //        CreateTime = DateTime.Now,
-                    //        Content = DTOModel.Content,
-                    //        WriterId = DTOModel.WriterID,//讀取使用者ID
-                    //    };
-                    //    if (DTOModel.ArticleCover != null)
-                    //    {
-                    //        using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
-                    //        {
-                    //            Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
-                    //        }
-                    //    }
-
-                    //    _db.Articles.Add(Art);
-                    //    _db.SaveChanges();
-                    //    return true;
-                    //}
-                    return false;
                 }
-                else
+                else 
                 {
-                    return false;
+                    Article Art = new Article
+                    {
+                        Title = DTOModel.Title,
+                        Type = false,
+                        CreateTime = DateTime.Now,
+                        Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
+                        WriterId = DTOModel.WriterID,//讀取使用者ID
+                    };
+                    if (DTOModel.ArticleCover != null)
+                    {
+                        using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
+                        {
+                            Art.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
+                        }
+                    }
+                    _db.Articles.Add(Art);
+                    _db.SaveChanges();
+
+                    return true;
                 }
+                
+                return false;
 
             }
             catch (Exception)
@@ -117,7 +116,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 CreateTime = Article.CreateTime,
                 Content = Article.Content,
                 WriterID=Article.WriterId,
-              
             };
 
             
@@ -141,7 +139,14 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 Article.Title = DTOModel.Title;
                 Article.Content= DTOModel.Content;
             }
-               
+            if (DTOModel.ArticleCover != null)
+            {
+                using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
+                {
+                    Article.ArticleCover = br.ReadBytes((int)DTOModel.ArticleCover.Length);
+                }
+            }
+
 
             _db.Entry(Article).State = EntityState.Modified;
 
