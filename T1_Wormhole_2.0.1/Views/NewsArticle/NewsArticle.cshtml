@@ -98,12 +98,12 @@
     Vue.createApp({
         data(){
             return {
-                id:null,
                 comments:[],
                 articles:[],
                 ratingcount: {
                 positive: 0,
-                negative: 0
+                negative: 0,
+                currentArticleID:0,
                 }
             }
         },
@@ -157,8 +157,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        //console.log('API response:', data);
-                        this.loadRating(this.id); // 更新網頁上的數字
+                        this.getRatingcount(id); // 更新網頁上的數字
                     } else {
                         alert('提交評價失敗');
                     }
@@ -168,6 +167,16 @@
                     alert('提交評價時發生錯誤');
                 });
             },
+	    //amy新增
+            /*--------------進行文章編輯--------------*/
+            ArticleEdit(){
+                let self=this;
+            localStorage.setItem("EditArticleId",self.currentArticleID);
+                fetch('/NewsArticle/newsPoster' , {
+                        method: 'GET'
+                        }).then(() => {window.location.href="/NewsArticle/newsPoster";})
+            },
+			/*--------------進行文章編輯--------------*/
             loadRating(id) {
                 fetch('/api/Comments/GetRating?articleId='+id)
                     .then(response => response.json())
@@ -184,9 +193,11 @@
             var id=urlParams.get('id') ;
             // 修改抓取文章id方式
             //alert(articleId[1]);
+
             this.Comments(id);
             this.getRatingcount(id);
             this.getArticles(id);
+            this.currentArticleID=id;
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
             this.loadRating(id);
         }
