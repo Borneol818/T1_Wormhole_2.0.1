@@ -64,7 +64,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = _db.ForumCoins.Where(x => x.UserId == currentUserId && x.Status.Contains("已發放"));                
             var totalCoins = result.Sum(x => x.CoinAmount);
-            var user =await _db.UserInfos.FindAsync(currentUserId);            
+            var user =await _db.UserInfos.FindAsync(currentUserId);
             
             if (user != null)
             {                                
@@ -260,5 +260,46 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             return eachLevelExp;
         }
         //Borneol 04/24 使用者升級判定-製作中
+
+        //Borneol 04/29 使用者PO文&留言歷史-製作中
+        [HttpGet]
+        public async Task<List<ArticleDTO>> GetArticlesHistory()
+        {
+            var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var result = _db.Articles.Where(x => x.WriterId == currentUserId)
+                .Select(e => new ArticleDTO
+                {
+                    ArticleID = e.ArticleId,
+                    Title = e.Title,
+                    Type = e.Type,
+                    //CreateTime = e.CreateTime,
+                    Content = e.Content,                    
+                });
+            return result.ToList();
+        }
+        [HttpGet]
+        public async Task<List<CommentDto>> GetCommentHistory()
+        {
+            var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var ArtTitles= _db.Articles.Select(e =>new { e.Title, e.ArticleId});
+            var commentHistory = _db.ArticleResponses.Where(x => x.UserId == currentUserId)
+                .Select(e => new CommentDto
+                {                    
+                    ArticleID = e.ArticleId,
+                    Id = e.Id,
+                    Comment = e.Comment,
+                    //CreateTime = e.CreateTime,
+                }).ToList();
+            foreach (var item in commentHistory)
+            {
+                var article = ArtTitles.FirstOrDefault(x => x.ArticleId == item.ArticleID);
+                if (article != null)
+                {
+                    item.Title = article.Title;
+                }
+            }
+            return commentHistory;
+        }
+        //Borneol 04/29 使用者PO文&留言歷史-製作中
     }
 }
