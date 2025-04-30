@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using T1_Wormhole_2._0._1.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using T1_Wormhole_2._0._1.Models.DTOs;
+using System.Security.Claims;
 
 namespace T1_Wormhole_2._0._1.Controllers
 {
@@ -59,25 +60,29 @@ namespace T1_Wormhole_2._0._1.Controllers
             return File(ImageContent, "image/jpeg");
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> SubmitRating([FromBody] RatingRequestDTO request)
         {
-            if (request.ArticleId <= 0 || request.UserId <= 0)
+            int UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (request.ArticleId <= 0 || UserId <= 0)
             {
                 return BadRequest("參數錯誤");
             }
 
             try
             {
+                // 嘗試查找使用者是否已經對這篇文章評價過
                 var rating = await _context.Ratings
-                    .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId && r.UserId == request.UserId);
+                    .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId && r.UserId == UserId);
 
                 if (rating == null)
                 {
+                    // 如果使用者沒有評價過，新增一筆新的評價資料
                     var newRating = new Rating
                     {
                         ArticleId = request.ArticleId,
-                        UserId = request.UserId,
+                        UserId = UserId,
                         PositiveRating = request.IsPositive ? 1 : 0,
                         NegativeRating = request.IsPositive ? 0 : 1
                     };
@@ -85,6 +90,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                 }
                 else
                 {
+                    // 如果使用者已經評價過，則更新其評價
+
                     rating.PositiveRating = request.IsPositive ? 1 : 0;
                     rating.NegativeRating = request.IsPositive ? 0 : 1;
                     _context.Ratings.Update(rating);
@@ -115,10 +122,11 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Name = article?.Writer?.Nickname ?? "匿名"
                 };
 
-                return Ok(dto);
+                return Ok(new { success = true, data = dto });
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
+                Console.WriteLine("Error: " + ex.InnerException?.Message);
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }

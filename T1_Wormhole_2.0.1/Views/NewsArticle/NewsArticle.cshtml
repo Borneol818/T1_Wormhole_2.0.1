@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
-   
+
 </head>
 
 <div id="app">
@@ -57,15 +57,15 @@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
 
-  
+
 
     @* 先新增要驗證修改 *@
-    
+
     <p>{{articles.content}}</p>
     <div class="comments-area">
         <div class="comment-list">
-            <button type="button" v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
-            <button type="button" v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
+            <button type="button" v-on:click="submitRating(true)" :class="{'btn-liked': hasLiked, 'btn-like': !hasLiked}">喜歡: ({{ ratingcount.positive }})</button>
+            <button type="button" v-on:click="submitRating(false)":class="{'btn-disliked': hasDisliked, 'btn-dislike': !hasDisliked}">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
         @*amy新增，之後請負責人放至適合位置*@
         <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
@@ -112,7 +112,10 @@
                 positive: 0,
                 negative: 0,
                 currentArticleID:0,
-                }
+                },
+                currentUserId:0,
+                hasLiked: false, // 使用者是否已經按過喜歡
+                hasDisliked: false, // 使用者是否已經按過不喜歡
             }
         },
         methods:{
@@ -150,40 +153,53 @@
                     this.ratingcount.negative = data.negative;
                 })
             },
-            //取得好負評數量
-            //處理好負評的點擊
-                submitRating(isPositive) {
-                    if (!this.currentUserId) {
-                        alert('請先登入才能評分');
-                        return;
-                    }
-            
-                    fetch('/api/Comments/SubmitRating', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            articleId: this.currentArticleID,
-                            isPositive: isPositive,
-                            userId: this.currentUserId // 加入 userId 傳入
-                        })
+            // 點擊喜歡按鈕
+            toggleLike() {
+                this.hasLiked = !this.hasLiked;
+                if (this.hasLiked) {
+                    this.hasDisliked = false; // 如果按了喜歡，取消不喜歡
+                    this.submitRating(true); // 發送喜歡的評價
+                }
+                else {
+                    this.submitRating(null); // 取消評價
+                }
+            },
+
+            // 點擊不喜歡按鈕
+            toggleDislike() {
+                this.hasDisliked = !this.hasDisliked;
+                if (this.hasDisliked) {
+                    this.hasLiked = false; // 如果按了不喜歡，取消喜歡
+                    this.submitRating(false); // 發送不喜歡的評價
+                }
+                else {
+                    this.submitRating(null); // 取消評價
+                }
+            },
+            submitRating(isPositive) {
+                fetch('/api/Comments/SubmitRating', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        articleId: this.currentArticleID,
+                        isPositive: isPositive
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.ratingcount.positive = data.positive;
-                            this.ratingcount.negative = data.negative;
-                        } else {
-                            alert('提交評價失敗：' + (data.message || ''));
-                        }
-                    })
-                    .catch(error => {
-                        console.error('提交評價錯誤:', error);
-                        alert('提交評價時發生錯誤');
-                    });
-                },
-        
+                }).then(response => response.json()).then(data => {
+                   if (data.success) {
+                        this.ratingcount.positive = data.data.prCount;
+                        this.ratingcount.negative = data.data.ngrCount;
+                   }
+                   else {
+                        alert('提交評價失敗：' + data.message);
+                   }
+            }).catch(error => {
+                    console.error('提交評價錯誤:', error);
+                    alert('提交評價時發生錯誤');
+                });
+            },
+
             //amy新增
             /*--------------進行文章編輯--------------*/
             ArticleEdit(){
@@ -193,15 +209,30 @@
                         method: 'GET'
                         }).then(() => {window.location.href="/NewsArticle/newsPoster";})
             },
-			/*--------------進行文章編輯--------------*/
+            /*--------------進行文章編輯--------------*/
             loadRating(id) {
-                fetch('/api/Comments/GetRating?articleId='+id)
-                    .then(response => response.json())
-                    .then(data => {
-                        this.positive = data.positive;
-                        this.negative = data.negative;
-                    });
-            },
+                fetch('/api/Comments/GetRating?articleId=' + id)
+                .then(response => response.json())
+                .then(data => {
+                    this.ratingcount.positive = data.positive;
+                    this.ratingcount.negative = data.negative;
+
+                    // 假設從後端返回的資料中有「是否已經評價過」的標記
+                    // 根據後端的資料來設置使用者的按鈕狀態
+                    if (data.userRating === true) {
+                        this.hasLiked = true;
+                        this.hasDisliked = false;
+                    }
+                    else if (data.userRating === false) {
+                        this.hasLiked = false;
+                        this.hasDisliked = true;
+                    }
+                    else {
+                        this.hasLiked = false;
+                        this.hasDisliked = false;
+                    }
+                });
+            }
         },
         mounted() {
 

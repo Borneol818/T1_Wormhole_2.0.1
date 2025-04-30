@@ -359,9 +359,11 @@ public partial class WormHoleContext : DbContext
 
         modelBuilder.Entity<Rating>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Rating");
+            entity.HasKey(e => new { e.ArticleId, e.UserId }).HasName("PK_Rating");
+
+
+            entity.ToTable("Rating");
+            
 
             entity.Property(e => e.ArticleId)
                 .HasComment("文章ID")
