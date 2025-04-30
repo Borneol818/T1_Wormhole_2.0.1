@@ -59,6 +59,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Relation]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[UserInfo]",
          "ObjectType": 0
       },
