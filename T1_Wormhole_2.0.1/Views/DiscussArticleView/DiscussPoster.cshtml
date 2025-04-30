@@ -82,7 +82,6 @@
             return{
                 posterTitle:"",
                 posterComment:"",
-                writerId:5,
                 signature:[],
                 signatureString:"",
                 EditMode:false,
@@ -97,7 +96,6 @@
 				var data = new FormData();
 				data.append("title",self.posterTitle);
 				data.append("content",self.posterComment);
-				data.append("writerId",self.writerId);
 				data.append("signature",self.signatureString);
                 data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
                 alert(JSON.stringify(data));

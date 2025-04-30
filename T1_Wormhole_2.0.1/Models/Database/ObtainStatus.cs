@@ -27,6 +27,9 @@ public partial class ObtainStatus
     /// </summary>
     public int Count { get; set; }
 
+    /// <summary>
+    /// 取得這個Obtain後的使用狀態如已派發、已領取、使用中
+    /// </summary>
     public string Status { get; set; }
 
     public virtual Obtain Obtain { get; set; }
