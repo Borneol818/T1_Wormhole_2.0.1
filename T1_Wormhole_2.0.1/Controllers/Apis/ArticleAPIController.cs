@@ -4,6 +4,8 @@ using T1_Wormhole_2._0._1.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using T1_Wormhole_2._0._1.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using T1_Wormhole_2._0._1.Models.DTOs;
+using System.Security.Claims;
 
 namespace T1_Wormhole_2._0._1.Controllers
 {
@@ -27,7 +29,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             {
                 writer = r.User.Nickname,
                 content = r.Comment,
-                date = r.CreateTime.ToString("yyyy年MM月dd日 HH點mm分ss秒")
+                date = r.CreateTime.ToString("yyyy年MM月dd日 HH點mm分")
 
             }).ToList();
 
@@ -57,49 +59,80 @@ namespace T1_Wormhole_2._0._1.Controllers
             byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
-        [HttpPost]
-        public async Task<IActionResult> SubmitRating([FromBody] RatingRequest request)
-        {
-            // 查找是否有該文章的評價記錄
-            var rating = await _context.Ratings
-                .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId);
 
-            if (rating == null)
+        
+        [HttpPost]
+        public async Task<IActionResult> SubmitRating([FromBody] RatingRequestDTO request)
+        {
+            int UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (request.ArticleId <= 0 || UserId <= 0)
             {
-                // 如果沒有記錄，新增一筆
-                rating = new Rating
-                {
-                    ArticleId = request.ArticleId,
-                    PositiveRating = request.IsPositive ? 1 : 0,
-                    NegativeRating = request.IsPositive ? 0 : 1
-                };
-                _context.Ratings.Add(rating);
+                return BadRequest("參數錯誤");
             }
-            else
+
+            try
             {
-                //更新喜歡或不喜歡
-                if (request.IsPositive)
+                // 嘗試查找使用者是否已經對這篇文章評價過
+                var rating = await _context.Ratings
+                    .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId && r.UserId == UserId);
+
+                if (rating == null)
                 {
-                    rating.PositiveRating = (rating.PositiveRating ?? 0) + 1;
+                    // 如果使用者沒有評價過，新增一筆新的評價資料
+                    var newRating = new Rating
+                    {
+                        ArticleId = request.ArticleId,
+                        UserId = UserId,
+                        PositiveRating = request.IsPositive ? 1 : 0,
+                        NegativeRating = request.IsPositive ? 0 : 1
+                    };
+                    _context.Ratings.Add(newRating);
                 }
                 else
                 {
-                    rating.NegativeRating = (rating.NegativeRating ?? 0) + 1;
+                    // 如果使用者已經評價過，則更新其評價
+
+                    rating.PositiveRating = request.IsPositive ? 1 : 0;
+                    rating.NegativeRating = request.IsPositive ? 0 : 1;
+                    _context.Ratings.Update(rating);
                 }
+
+                await _context.SaveChangesAsync();
+
+                // 計算更新後的統計資料
+                var posCount = await _context.Ratings
+                    .Where(r => r.ArticleId == request.ArticleId)
+                    .SumAsync(r => r.PositiveRating);
+
+                var negCount = await _context.Ratings
+                    .Where(r => r.ArticleId == request.ArticleId)
+                    .SumAsync(r => r.NegativeRating);
+
+                var article = await _context.Articles
+                    .Include(a => a.Writer) // 確保載入作者資訊
+                    .FirstOrDefaultAsync(a => a.ArticleId == request.ArticleId);
+
+                var dto = new RatingsDTOs
+                {
+                    articlesId = request.ArticleId,
+                    prCount = posCount,
+                    ngrCount = negCount,
+                    popularCount = (posCount ?? 0) + (negCount ?? 0),
+                    articleTitle = article?.Title ?? "未知標題",
+                    Name = article?.Writer?.Nickname ?? "匿名"
+                };
+
+                return Ok(new { success = true, data = dto });
             }
-
-            // 儲存變更到資料庫
-            await _context.SaveChangesAsync();
-
-            // 回傳成功訊息
-            return Ok(new { success = true });
-
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine("Error: " + ex.InnerException?.Message);
+                return StatusCode(500, new { success = false, message = ex.Message });
+            }
         }
-        public class RatingRequest
-        {
-            public int ArticleId { get; set; }
-            public bool IsPositive { get; set; }
-        }
+
+
+
         /// <summary>
         /// 新增留言
         /// </summary>
@@ -132,5 +165,5 @@ namespace T1_Wormhole_2._0._1.Controllers
             }
         }
     }
-    
+
 }

@@ -44,7 +44,7 @@ public partial class Article
 
     public byte[] Picture { get; set; }
 
-    public byte[] ArticleCover { get; set; } //4/24 Borneol 配合資料庫欄位打錯字修改
+    public byte[] ArticleCover { get; set; }
 
     public virtual ICollection<ArticleResponse> ArticleResponses { get; set; } = new List<ArticleResponse>();
 
