@@ -10,5 +10,6 @@
         public string articleTitle { get; set; }
 
         public string? Name { get; set; }
+        public bool Type { get; set; }
     }
 }

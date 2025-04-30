@@ -108,7 +108,7 @@
                             <div class="col properties pb-20">
                                 <div class=" properties-card">
                                     <div class="properties-img">
-                                        <a href="book-details.html"><img src="assets/img/gallery/most_popular1.jpg" alt=""></a>
+                                        <a :href="getArticleUrl(item)"><img v-bind:src="'/api/ArticlesApi/GetPicture/'+item.articlesId+'?v='+rand" alt=""></a>
                                     </div>
                                     <div class="properties-caption">
                                         <h3><a href="book-details.html">{{item.articleTitle}}</a></h3>
@@ -314,15 +314,32 @@
                 fetch("/api/AccountApi/isAdmin")
                     .then(response => response.json())
                     .then(result => self.isAdmin = result)
-            }  
+            },
+            getArticleUrl(popularArticle)
+            {
+                var url;
+                if(popularArticle.type)//typeof true==新聞
+                {
+                    url=`/NewsArticle/NewsArticle?id=${popularArticle.articlesId}`
+                    
+                }
+                else
+                {
+                    url=`/DiscussArticleView/DiscussArticle?id=${popularArticle.articlesId}`
+                }
+                return url;
+            },
+            getArticleImage()
+            {
+
+            },
         },
         mounted() {
             this.sortArticles();
             this.checkAdmin();
             // this.getSignature();
             // this.transWords();
-
-        },
+        }
     }).mount("#app");
 </script>
 

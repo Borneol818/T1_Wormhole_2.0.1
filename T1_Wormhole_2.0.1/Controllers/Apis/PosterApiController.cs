@@ -29,13 +29,13 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         {
             try
             {
-                //待補判斷身分，存News OR Discuss文章
+                //判斷身分，存News OR Discuss文章
                 if (User.FindFirst(ClaimTypes.Role)?.Value == "User")
                 {
                     Article Art = new Article
                     {
                         Title = DTOModel.Title,
-                        Type = true,//讀取是否為使用者
+                        Type = false,//讀取是否為使用者(使用者=文章=false)
                         CreateTime = DateTime.Now,
                         Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
                         WriterId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取使用者ID
@@ -57,7 +57,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Article Art = new Article
                     {
                         Title = DTOModel.Title,
-                        Type = false,
+                        Type = true,
                         CreateTime = DateTime.Now,
                         Content = DTOModel.Content,
                         ReleaseBy = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取管理員ID
