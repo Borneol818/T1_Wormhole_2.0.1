@@ -68,9 +68,10 @@
                                             @* <div class="hero-caption "> *@
                                             <div class="circle-image row text-center gx-4">
                                                 <div class="col-4">
-
+                                                 <a class="nav-link text-dark" asp-controller="Event" asp-action="Index">
                                                 <img class="img-fluid" src="~/assets/img/hero/image3.jpg" />
                                                 <h5>活動</h5>
+                                                 </a>
                                                 </div>
                                                 <div class="col-4 image-hover-group">
                                                     <div class="main-image-wrapper">
@@ -78,19 +79,25 @@
                                                     <h5>討論板/新聞板</h5>
                                                         <div class="sub-images">
                                                             <div>
+                                                            <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">
                                                             <img class="img-fluid" src="~/assets/img/hero/image4.jpg" />
                                                             <p>討論板</p>
+                                                            </a>
                                                             </div>
                                                             <div>
+                                                            <a asp-area="" asp-controller="NewsArticle" asp-action="Index">
                                                             <img class="img-fluid" src="~/assets/img/hero/image8.jpg" />
                                                             <p>新聞板</p>
+                                                            </a>
                                                             </div>
 												        </div>
 											        </div>
                                                 </div>
                                                 <div class="col-4">
+                                                    <a class="nav-link text-dark" asp-controller="Obtain" asp-action="Index">
                                                     <img class="img-fluid" src="~/assets/img/hero/image18.jpg"/>
-                                                <h5>社群</h5>
+                                                <h5>WormShop</h5>
+                                                     </a>
                                                 </div>
                                             </div>
                                                 @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
