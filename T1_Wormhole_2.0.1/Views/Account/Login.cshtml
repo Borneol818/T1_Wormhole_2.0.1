@@ -26,11 +26,6 @@
                         <div class="single-input-fields login-check">
                             <a href="/Account/ForgotPassword" style="margin-bottom: 20px">Forgot Password?</a> @* 修改連結內容 *@
                         </div>
-                        <div class="single-input-fields">
-                            <label>Login with</label>
-                            <button href="#" style="width: 100%; height: 50px; background-color: #FF1616; margin-bottom: 5px; border: 0px;">Google</button>
-                            <button href="#" style="width: 100%; height: 50px; background-color: #FF1616; margin-bottom: 5px; border: 0px;">Facebook</button>
-                        </div>
                         <div class="single-input-fields login-check" style="margin-top: 20px;">
                             <input type="checkbox" id="KeepLog" name="KeepLog">
                             <label for="KeepLog">Keep me logged in</label>
@@ -39,7 +34,24 @@
                             <input type="checkbox" id="RememberMe" name="RememberMe">
                             <label for="RememberMe">Remember Me</label>
                         </div>
+                        <div class="single-input-fields login-check" style="margin-top: 20px;">
+                            <label>Login with</label>
+                        </div>
+                        <div id="g_id_onload"
+                             data-client_id="775349593232-348s21pflg84e22t1j34h9kqtl5hfvgb.apps.googleusercontent.com"
+                             data-login_uri="https://localhost:7053/Account/ValidGoogleLogin"
+                             data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                             data-type="standard"
+                             data-size="large"
+                             data-theme="outline"
+                             data-text="sign_in_with"
+                             data-shape="rectangular"
+                             data-logo_alignment="left">
+                        </div>
                     </div>
+                    
                     <!-- form Footer -->
                     <div class="login-footer">
                         <p>Don’t have an account? <a href="/Account/Register">Sign Up</a>  here</p> @* 修改連結內容 *@
@@ -53,6 +65,7 @@
 
 
 </body>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
      Vue.createApp({
         data() {
