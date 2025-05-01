@@ -1,0 +1,71 @@
+﻿<link href="~/assets/css/map.css" rel="stylesheet" />
+
+<div class="row">
+    <h2>現在位置</h2>
+    <div class="col-8 mb-10">
+        <div id="map" style="width:700px;height:700px;"></div>
+    </div>
+    <div class="col-4 mb-10">
+        <h2>探索附近區域</h2>
+        <button>搜尋</button>
+    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaa7UO2-acy2jtR3qzsv3R6txB6WnqxDo&loading=async&callback=initMap&v=weekly&solution_channel=GMP_CCS_geolocation_v2"
+        defer></script>
+<script>
+    let map;
+    function initMap()
+    {
+        //Add map
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 23.576, lng: 120.974 },
+            zoom: 8,
+        });
+        infoWindow = new google.maps.InfoWindow();
+
+        //add pin location button
+        const locationButton = document.createElement("button");
+
+        locationButton.textContent = "Pan to Current Location";
+        locationButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+            locationButton
+        );
+        locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent("Location found.");
+                infoWindow.open(map);
+                map.setCenter(pos);
+                },
+                () => {
+                handleLocationError(true, infoWindow, map.getCenter());
+                }
+            );}
+            else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+            }
+        });
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+            browserHasGeolocation?
+            "Error: The Geolocation service failed.": "Error: Your browser doesn't support geolocation."
+        );
+      infoWindow.open(map);
+    }
+
+    window.initMap = initMap;
+</script>
