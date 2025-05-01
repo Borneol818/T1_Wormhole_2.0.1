@@ -57,6 +57,7 @@
 
     @*amy新增，之後請負責人放至適合位置*@
     <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+    <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
 
     <div class="comments-area">
         <div class="comment-list">
@@ -112,6 +113,8 @@
                 currentUserId:0,
                 hasLiked: false, // 使用者是否已經按過喜歡
                 hasDisliked: false, // 使用者是否已經按過不喜歡
+
+                isUserArticle:true,
             }
         },
         methods:{
@@ -133,7 +136,34 @@
                         }).then(() => {window.location.href="/DiscussArticleView/DiscussPoster";})
             },
             /*--------------進行文章編輯--------------*/
-
+            /*--------------進行文章刪除--------------*/
+            async ArticleDelete(){
+                var ret=confirm("確定要刪除嗎?");
+                let artId=this.currentArticleID;
+                    if(ret){
+                await fetch(`/api/Comments/DeleteArticle?id=${artId}`, {
+                    method: 'Delete'
+                    }).then(res=>res.text())
+                    .then(res=>{
+                        alert(res);
+                        window.location.href="/DiscussArticleView";//無法跳轉?
+                    })
+                    .catch(Error=>{
+                    alert("刪除失敗");
+                });
+                }
+            },
+            UsersArticleORNot(artId){
+                let self=this;
+            },
+            /*--------------進行文章刪除--------------*/
+            /*--------------跳轉用--------------*/
+            jumpToDiscussArticleView(){
+                fetch('/DiscussArticleView/Index' , {
+                    method: 'GET'
+                }).then(() => {window.location.href="/DiscussArticleView";})
+            },
+            /*--------------跳轉用--------------*/
             getArticles(id) {
             //let self = this;
             fetch('/api/ArticlesApi')
@@ -300,6 +330,7 @@
                  this.getRatingcount(id);
                  this.getArticles(id);
                  this.currentArticleID=id;
+                 this.UsersArticleORNot(id);
         }
 
     }).mount('#app')

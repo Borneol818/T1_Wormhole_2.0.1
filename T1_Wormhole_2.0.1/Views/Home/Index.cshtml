@@ -143,7 +143,7 @@
                                         <a :href="getArticleUrl(item)"><img v-bind:src="'/api/ArticlesApi/GetPicture/'+item.articlesId+'?v='+rand" alt=""></a>
                                     </div>
                                     <div class="properties-caption">
-                                        <h3><a href="book-details.html">{{item.articleTitle}}</a></h3>
+                                        <h3><a :href="getArticleUrl(item)">{{item.articleTitle}}</a></h3>
                                         <p>{{item.name}}</p>
                                         <div class="properties-footer d-flex justify-content-between align-items-center">
                                             <div class="review">
