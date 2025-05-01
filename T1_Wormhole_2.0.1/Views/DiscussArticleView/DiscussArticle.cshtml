@@ -105,9 +105,13 @@
 
                 articles:[],
                 ratingcount: {
-                    positive: 0,
-                    negative: 0
-                }
+                positive: 0,
+                negative: 0,
+                currentArticleID:0,
+                },
+                currentUserId:0,
+                hasLiked: false, // 使用者是否已經按過喜歡
+                hasDisliked: false, // 使用者是否已經按過不喜歡
             }
         },
         methods:{
@@ -151,8 +155,55 @@
                     .then(data => {
                         //console.log( data);
                         this.ratingcount=data;
-                    })
+                    this.ratingcount.positive = data.positive;
+                    this.ratingcount.negative = data.negative;
+                })
+            },
+            // 點擊喜歡按鈕
+            toggleLike() {
+                this.hasLiked = !this.hasLiked;
+                if (this.hasLiked) {
+                    this.hasDisliked = false; // 如果按了喜歡，取消不喜歡
+                    this.submitRating(true); // 發送喜歡的評價
+                }
+                else {
+                    this.submitRating(null); // 取消評價
+                }
+            },
 
+            // 點擊不喜歡按鈕
+            toggleDislike() {
+                this.hasDisliked = !this.hasDisliked;
+                if (this.hasDisliked) {
+                    this.hasLiked = false; // 如果按了不喜歡，取消喜歡
+                    this.submitRating(false); // 發送不喜歡的評價
+                }
+                else {
+                    this.submitRating(null); // 取消評價
+                }
+            },
+            submitRating(isPositive) {
+                fetch('/api/Comments/SubmitRating', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        articleId: this.currentArticleID,
+                        isPositive: isPositive
+                    })
+                }).then(response => response.json()).then(data => {
+                   if (data.success) {
+                        this.ratingcount.positive = data.data.prCount;
+                        this.ratingcount.negative = data.data.ngrCount;
+                   }
+                   else {
+                        alert('提交評價失敗：' + data.message);
+                   }
+            }).catch(error => {
+                    console.error('提交評價錯誤:', error);
+                    alert('請先登入');
+                });
             },
             //取得好負評數量
             //留言
@@ -207,6 +258,29 @@
                     alert("留言失敗");
                 })
             },
+            loadRating(id) {
+                fetch('/api/Comments/GetRating?articleId=' + id)
+                .then(response => response.json())
+                .then(data => {
+                    this.ratingcount.positive = data.positive;
+                    this.ratingcount.negative = data.negative;
+
+                    // 假設從後端返回的資料中有「是否已經評價過」的標記
+                    // 根據後端的資料來設置使用者的按鈕狀態
+                    if (data.userRating === true) {
+                        this.hasLiked = true;
+                        this.hasDisliked = false;
+                    }
+                    else if (data.userRating === false) {
+                        this.hasLiked = false;
+                        this.hasDisliked = true;
+                    }
+                    else {
+                        this.hasLiked = false;
+                        this.hasDisliked = false;
+                    }
+                });
+            }
         },
         mounted() {
             // var url=location.href;
@@ -221,7 +295,7 @@
                 let urlParams = new URLSearchParams(window.location.search);
                 var id=urlParams.get('id') ;
             // 修改抓取文章id方式
-
+                
                  this.Comments(id);
                  this.getRatingcount(id);
                  this.getArticles(id);

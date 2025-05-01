@@ -35,6 +35,8 @@ public partial class WormHoleContext : DbContext
 
     public virtual DbSet<Rating> Ratings { get; set; }
 
+    public virtual DbSet<Relation> Relations { get; set; }
+
     public virtual DbSet<UserInfo> UserInfos { get; set; }
 
     public virtual DbSet<UserStatus> UserStatuses { get; set; }
@@ -55,7 +57,6 @@ public partial class WormHoleContext : DbContext
                 .HasComment("文章創建時間")
                 .HasColumnType("datetime")
                 .HasColumnName("Create time");
-            entity.Property(e => e.Picture).HasMaxLength(50);
             entity.Property(e => e.ReleaseBy).HasComment("新聞發布者ID");
             entity.Property(e => e.Title)
                 .IsRequired()
@@ -65,7 +66,6 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.WriterId)
                 .HasComment("文章創作者ID")
                 .HasColumnName("WriterID");
-            entity.Property(e => e.ArticleCover);
 
             entity.HasOne(d => d.ReleaseByNavigation).WithMany(p => p.Articles)
                 .HasForeignKey(d => d.ReleaseBy)
@@ -116,8 +116,7 @@ public partial class WormHoleContext : DbContext
                 .HasColumnName("ManagerID");
             entity.Property(e => e.Account)
                 .IsRequired()
-                .HasMaxLength(10)
-                .IsFixedLength()
+                .HasMaxLength(20)
                 .HasComment("管理員帳號");
             entity.Property(e => e.CreateTime)
                 .HasComment("管理員創建時間")
@@ -135,8 +134,7 @@ public partial class WormHoleContext : DbContext
                 .HasComment("管理員姓名");
             entity.Property(e => e.Password)
                 .IsRequired()
-                .HasMaxLength(10)
-                .IsFixedLength()
+                .HasMaxLength(256)
                 .HasComment("管理員密碼");
             entity.Property(e => e.Permissions).HasComment("管理員權限");
             entity.Property(e => e.PhoneNumber)
@@ -167,12 +165,16 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.EventContent)
                 .HasMaxLength(500)
                 .HasComment("活動內容");
+            entity.Property(e => e.EventTarget).HasComment("用來新增活動目標數量");
             entity.Property(e => e.EventTimeEnd)
                 .HasComment("活動結束時間")
                 .HasColumnType("smalldatetime");
             entity.Property(e => e.EventTimeStrat)
                 .HasComment("活動開始時間")
                 .HasColumnType("smalldatetime");
+            entity.Property(e => e.KeyWord)
+                .HasMaxLength(20)
+                .HasComment("用來記錄文章標題是否符合條件");
             entity.Property(e => e.ManagerId)
                 .HasComment("管理者ID")
                 .HasColumnName("ManagerID");
@@ -187,11 +189,6 @@ public partial class WormHoleContext : DbContext
                 .IsRequired()
                 .HasMaxLength(10)
                 .HasComment("活動類別");
-            entity.Property(e => e.EventTarget)
-                .HasComment("活動目標");
-            entity.Property(e => e.KeyWord)
-                .HasMaxLength(20)
-                .HasComment("過濾是否符合活動條件用，目前用在篩選標題是否含有關鍵字");
 
             entity.HasOne(d => d.Manager).WithMany(p => p.Events)
                 .HasForeignKey(d => d.ManagerId)
@@ -295,7 +292,6 @@ public partial class WormHoleContext : DbContext
                 .IsRequired()
                 .HasMaxLength(30)
                 .HasComment("稱號名稱");
-            entity.Property(e => e.Picture).HasMaxLength(50);
             entity.Property(e => e.Type).HasComment("稱號類型");
         });
 
@@ -312,6 +308,9 @@ public partial class WormHoleContext : DbContext
                 .HasComment("使用者ID")
                 .HasColumnName("UserID");
             entity.Property(e => e.Count).HasComment("稱號數量");
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasComment("取得這個Obtain後的使用狀態如已派發、已領取、使用中");
             entity.Property(e => e.Time)
                 .HasComment("稱號獲得時間")
                 .HasColumnType("smalldatetime");
@@ -359,9 +358,11 @@ public partial class WormHoleContext : DbContext
 
         modelBuilder.Entity<Rating>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Rating");
+            entity.HasKey(e => new { e.ArticleId, e.UserId }).HasName("PK_Rating");
+
+
+            entity.ToTable("Rating");
+            
 
             entity.Property(e => e.ArticleId)
                 .HasComment("文章ID")
@@ -381,6 +382,32 @@ public partial class WormHoleContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Rating_User");
+        });
+
+        modelBuilder.Entity<Relation>(entity =>
+        {
+            entity.HasKey(e => new { e.InviterId, e.InviteeId });
+
+            entity.ToTable("Relation");
+
+            entity.Property(e => e.InviterId).HasColumnName("InviterID");
+            entity.Property(e => e.InviteeId).HasColumnName("InviteeID");
+            entity.Property(e => e.Invite)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.RelationTypre)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Invitee).WithMany(p => p.Invitees)
+                .HasForeignKey(d => d.InviteeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Relation_UserInfo1");
+
+            entity.HasOne(d => d.Inviter).WithMany(p => p.Inviters)
+                .HasForeignKey(d => d.InviterId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Relation_UserInfo");
         });
 
         modelBuilder.Entity<UserInfo>(entity =>
@@ -412,10 +439,7 @@ public partial class WormHoleContext : DbContext
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasComment("使用者電話");
-            entity.Property(e => e.Photo)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasComment("頭像");
+            entity.Property(e => e.Photo).HasComment("頭像");
             entity.Property(e => e.Sex).HasComment("使用者生理性別");
             entity.Property(e => e.SignatureLine)
                 .HasMaxLength(100)

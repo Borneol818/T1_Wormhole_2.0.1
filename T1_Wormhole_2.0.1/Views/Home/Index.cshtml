@@ -60,22 +60,54 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="slider">
-                            <!-- Single Slider -->
+                            <!-- Single Slider 首頁大圖-->
                             <div class="single-slider slider-height slider-bg1 d-flex align-items-center">
                                 <div class="container">
-                                    <div class="row justify-content-center">
-                                        <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7">
-                                            <div class="hero-caption text-center">
-                                                @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
-                                                @* <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1> *@
-                                                @* <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s">Browse Store</a> *@
+                                    @* <div class="row justify-content-center"> *@
+                                    @*     <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7"> *@
+                                            @* <div class="hero-caption "> *@
+                                            <div class="circle-image row text-center gx-4">
+                                                <div class="col-4">
+                                                 <a class="nav-link text-dark" asp-controller="Event" asp-action="Index">
+                                                <img class="img-fluid" src="~/assets/img/hero/image3.jpg" />
+                                                <h5>活動</h5>
+                                                 </a>
+                                                </div>
+                                                <div class="col-4 image-hover-group">
+                                                    <div class="main-image-wrapper">
+                                                    <img class="img-fluid" src="~/assets/img/hero/image17.jpg"/>
+                                                    <h5>討論板/新聞板</h5>
+                                                        <div class="sub-images">
+                                                            <div>
+                                                            <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">
+                                                            <img class="img-fluid" src="~/assets/img/hero/image4.jpg" />
+                                                            <p>討論板</p>
+                                                            </a>
+                                                            </div>
+                                                            <div>
+                                                            <a asp-area="" asp-controller="NewsArticle" asp-action="Index">
+                                                            <img class="img-fluid" src="~/assets/img/hero/image8.jpg" />
+                                                            <p>新聞板</p>
+                                                            </a>
+                                                            </div>
+												        </div>
+											        </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <a class="nav-link text-dark" asp-controller="Obtain" asp-action="Index">
+                                                    <img class="img-fluid" src="~/assets/img/hero/image18.jpg"/>
+                                                <h5>WormShop</h5>
+                                                     </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                                @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
+                                                @* <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1>
+                                                <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s">Browse Store</a> *@
+                                            @* </div> *@
+                                    @*     </div> *@
+                                    @* </div> *@
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -108,7 +140,7 @@
                             <div class="col properties pb-20">
                                 <div class=" properties-card">
                                     <div class="properties-img">
-                                        <a href="book-details.html"><img src="assets/img/gallery/most_popular1.jpg" alt=""></a>
+                                        <a :href="getArticleUrl(item)"><img v-bind:src="'/api/ArticlesApi/GetPicture/'+item.articlesId+'?v='+rand" alt=""></a>
                                     </div>
                                     <div class="properties-caption">
                                         <h3><a href="book-details.html">{{item.articleTitle}}</a></h3>
@@ -314,15 +346,33 @@
                 fetch("/api/AccountApi/isAdmin")
                     .then(response => response.json())
                     .then(result => self.isAdmin = result)
-            }  
+            },
+            getArticleUrl(popularArticle)
+            {
+                var url;
+                if(popularArticle.type)//typeof true==新聞
+                {
+                    url=`/NewsArticle/NewsArticle?id=${popularArticle.articlesId}`
+                    
+                }
+                else
+                {
+                    url=`/DiscussArticleView/DiscussArticle?id=${popularArticle.articlesId}`
+                }
+                return url;
+            },
+            getArticleImage()
+            {
+
+            },
         },
         mounted() {
             this.sortArticles();
             this.checkAdmin();
             // this.getSignature();
             // this.transWords();
-
-        },
+        }
     }).mount("#app");
 </script>
+
 

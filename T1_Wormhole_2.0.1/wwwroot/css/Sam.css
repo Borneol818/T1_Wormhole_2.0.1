@@ -18,3 +18,21 @@
         transform: translateX(-100%);
     }
 }
+
+.btn-like {
+    background-color: gray;
+    color: white;
+}
+
+.btn-dislike {
+    background-color: gray;
+    color: white;
+}
+
+.btn-liked {
+    background-color: green; 
+}
+
+.btn-disliked {
+    background-color: red; 
+}

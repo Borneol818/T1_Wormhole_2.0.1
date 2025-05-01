@@ -77,4 +77,7 @@ public partial class UserInfo
     public virtual ICollection<Participation> Participations { get; set; } = new List<Participation>();
 
     public virtual UserStatus UserStatus { get; set; }
+    public virtual ICollection<Relation> Invitees { get; set; }
+    public virtual ICollection<Relation> Inviters { get; set; }
+    
 }

@@ -19,18 +19,14 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
 
         [HttpGet]
         public List<RatingsDTOs> Get() {
-            //得到近期日期文章(暫停)
-            //ticks太細，改更大的時間區間
-            //var RecentArticlesID = _db.Articles.Where(x =>new TimeSpan(DateTime.Now.Ticks-x.CreateTime.Ticks).Days <= 7).Select(x => x.ArticleId);
-
-
-            var allArticlesID = _db.Articles.Select(x=>x.ArticleId);
+            //得到近期日期文章-讀取7日內最熱門文章
+            var RecentArticlesID = _db.Articles.Where(x =>x.CreateTime.AddDays(7)>=DateTime.Now).Select(x => x.ArticleId);
 
             List<RatingsDTOs> RatingsDTO = new List<RatingsDTOs>();
 
             //var a = _db.Articles.Where(x => x.ArticleId == 1).Select(x => x.WriterId).First();
             //參考mvc core 範例 viewTwoTable
-            foreach (int id in allArticlesID.ToList())
+            foreach (int id in RecentArticlesID.ToList())
             {
                 var idsRating=_db.Ratings.Where(x => x.ArticleId == id);
                 var prCount= idsRating.Sum(x=>x.PositiveRating);
@@ -41,17 +37,18 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 int? writerId;
                 int? managersId;
                 string name;
-
+                bool type;
 
                 if (_db.Articles.Where(x => x.ArticleId == id).Select(x => x.WriterId).First()!=null)
                 {
                      writerId= _db.Articles.Where(x => x.ArticleId == id).Select(x => x.WriterId).First();
                      name= _db.UserInfos.Where(x => x.UserId == writerId).Select(x => x.Name).First();
-
+                     type = _db.Articles.Where(x=> x.ArticleId == id).Select(x=>x.Type).First();
                 }
                 else {
                      managersId= _db.Articles.Where(x => x.ArticleId == id).Select(x => x.ReleaseBy).First();
                      name = _db.BoManagers.Where(x => x.ManagerId == managersId).Select(x => x.Name).First();
+                     type = _db.Articles.Where(x => x.ArticleId == id).Select(x => x.Type).First();
                 }
 
                 RatingsDTO.Add(new RatingsDTOs
@@ -62,6 +59,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     popularCount = popularCount,
                     articleTitle = forTitle,
                     Name = name,
+                    Type = type,
                 });
             }
 
