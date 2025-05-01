@@ -71,3 +71,11 @@
     padding: 0 0.2em;
     border-radius: 0.2em;
 }
+/*非漢堡選單的導覽列不顯示*/
+.main-menu {
+    display: none !important;
+}
+
+.mobile_menu {
+    display: block !important;
+}
