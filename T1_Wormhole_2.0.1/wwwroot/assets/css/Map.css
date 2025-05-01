@@ -1,4 +1,9 @@
-﻿.custom-map-control-button {
+﻿#map {
+    width:700px;
+    height:700px;
+}
+
+.custom-map-control-button {
     color:black;
     background-color: #fff;
     border: 0;
