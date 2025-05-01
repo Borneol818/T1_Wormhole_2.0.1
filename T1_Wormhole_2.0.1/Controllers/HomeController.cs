@@ -33,6 +33,11 @@ namespace T1_Wormhole_2._0._1.Controllers
             return Ok(result);
         }
 
+        public IActionResult Map() 
+        {
+            return View();
+        }
+
             [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

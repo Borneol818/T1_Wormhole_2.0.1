@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.Models.DTOs;
 using Hangfire;
+using System.Security.Claims;
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
@@ -39,6 +40,13 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 Type=e.Type, 
 
             }).ToListAsync();
+        }
+
+        //get:/api/EventObtain/getUser
+        [HttpGet]
+        public async Task<int> getUser() 
+        {
+            return Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
 
         //post:/api/EventObtain/joinEvent
