@@ -164,6 +164,30 @@ namespace T1_Wormhole_2._0._1.Controllers
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
+
+        //amy新增
+        //刪除文章用
+        //delete:/api/Comments/DeleteArticle?id=
+        [HttpDelete]
+        public async Task<string> DeleteArticle(int id)
+        {
+            var art = await _context.Articles.FindAsync(id);
+            if (art == null)
+            {
+                return "刪除文章失敗";
+            }
+
+            try
+            {
+                _context.Articles.Remove(art);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                return "刪除文章失敗";
+            }
+            return "刪除文章成功";
+        }
     }
 
 }
