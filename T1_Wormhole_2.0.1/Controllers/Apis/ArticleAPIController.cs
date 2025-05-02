@@ -188,6 +188,30 @@ namespace T1_Wormhole_2._0._1.Controllers
             }
             return "刪除文章成功";
         }
+
+        //amy新增
+        //比對是否是作者
+        //get:/api/Comments/isArticleAuthor?id=
+        [HttpGet]
+        public async Task<bool> isArticleAuthor(int id)
+        {
+            var art = await _context.Articles.FindAsync(id);
+            if (art.Type)//true==討論版
+            {
+                if (art.WriterId == Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+                {
+                    return true;
+                }
+            }
+            else 
+            {
+                if (art.ReleaseBy == Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }
