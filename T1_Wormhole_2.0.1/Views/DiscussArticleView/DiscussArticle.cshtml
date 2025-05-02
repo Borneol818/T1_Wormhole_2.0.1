@@ -146,9 +146,8 @@
                     }).then(res=>res.text())
                     .then(res=>{
                         alert(res);
-                        window.location.href="/DiscussArticleView";//無法跳轉?
-                    })
-                    .catch(Error=>{
+                    }).then(()=>window.location.href="/DiscussArticleView")
+                    .catch(Err=>{
                     alert("刪除失敗");
                 });
                 }
