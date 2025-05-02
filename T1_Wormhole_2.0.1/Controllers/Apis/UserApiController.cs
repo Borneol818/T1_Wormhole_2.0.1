@@ -35,7 +35,9 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             //{
             //    return Enumerable.Empty<UserInfo>(); //先回傳空列舉,看要回傳自己的資料還是怎麼樣
             //}
-            var result = _db.UserInfos.Where(x => x.UserId == currentUserId)
+            if (User.FindFirst(ClaimTypes.Role)?.Value == "User")
+            {
+                var resultU = _db.UserInfos.Where(x => x.UserId == currentUserId)
                 .Select(e => new UserInfo
                 {
                     UserId = e.UserId,
@@ -48,7 +50,22 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Photo = null,
                     Wallet = e.Wallet,
                 });
-            return result;
+                return resultU;
+            }
+            else if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
+            {
+                var resultM = _db.BoManagers.Where(x => x.ManagerId == currentUserId)
+               .Select(e => new UserInfo
+               {
+                   Name = e.Name,
+                   Nickname = e.Team,
+               });
+                return resultM;
+            }
+            else 
+            {
+                return Enumerable.Empty<UserInfo>();
+            }
         }
         [HttpGet]
         public async Task<IEnumerable<UserStatus>> GetStatus()
