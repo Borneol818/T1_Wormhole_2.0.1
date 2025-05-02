@@ -60,7 +60,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Name = e.Name,
                     Nickname = e.Nickname,
                     Phone = e.Phone,
-                    Birthday = e.Brithday,
+                    Birthday = e.Birthday,
                     Signature = e.SignatureLine,
                     Sex = e.Sex,
                     Photo = null,
@@ -191,7 +191,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
             data.Name = model.Name;
             data.Nickname = model.Nickname;
-            data.Brithday = DateOnly.Parse(model.Birthday);
+            data.Birthday = DateOnly.Parse(model.Birthday);
             data.SignatureLine = model.Signature;
             data.Sex = model.Sex;
             data.Phone = model.Phone;

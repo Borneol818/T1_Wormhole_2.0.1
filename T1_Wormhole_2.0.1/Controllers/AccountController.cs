@@ -76,7 +76,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Email = model1.Email,
                     Nickname = model2.Nickname,
                     Sex = model2.Sex,
-                    Brithday = model2.Brithday,
+                    Birthday = model2.Birthday,
                     Phone = model2.Phone,
                     Status = false
                 };
@@ -532,7 +532,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Email = model.Email,
                     Nickname = model.Nickname,
                     Sex = model.Sex,
-                    Brithday = model.Brithday,
+                    Birthday = model.Birthday,
                     Phone = model.Phone,
                     Status = false
                 };

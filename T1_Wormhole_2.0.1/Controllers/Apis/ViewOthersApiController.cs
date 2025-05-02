@@ -37,7 +37,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Name = e.Name,
                     Nickname = e.Nickname,
                     Phone = e.Phone,
-                    Brithday = e.Brithday,
+                    Birthday = e.Birthday,
                     SignatureLine = e.SignatureLine,
                     Sex = e.Sex,
                     Photo = null,
