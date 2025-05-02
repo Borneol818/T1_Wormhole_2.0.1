@@ -344,7 +344,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         }
         //Borneol 04/24 使用者升級判定-製作中
 
-        //Borneol 04/29 使用者PO文&留言歷史-製作中
+        //Borneol 04/29 使用者PO文&留言歷史
         [HttpGet]
         public async Task<List<ArticleDTO>> GetArticlesHistory()
         {
@@ -383,6 +383,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
             return commentHistory;
         }
-        //Borneol 04/29 使用者PO文&留言歷史-製作中
+        //Borneol 04/29 使用者PO文&留言歷史
     }
 }
