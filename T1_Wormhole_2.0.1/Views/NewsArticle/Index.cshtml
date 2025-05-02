@@ -60,17 +60,18 @@
         </div>
     </header>
 
-    @*Amy---改button成a連結+連結到使用者po文區*@
-    <a asp-controller="NewsArticle" asp-action="newsPoster"
-       style="wight:500px ;position: fixed ;color:red ; right:229px; top:340px">發表文章</a>
 
 
-    <main>
+
+    <main id="app">
+        @*Amy---改button成a連結+連結到使用者po文區*@
+        <a asp-controller="NewsArticle" asp-action="newsPoster"
+           style="position: fixed ;color:red ; right:229px; top:340px" v-if="isAdmin">發表文章</a>
 
         <!--  Hero area End -->
         @* <!-- Blog Area Start-->文章內容開始 *@
         <section class="blog_area section-padding">
-            <div class="container" id="app">
+            <div class="container" >
                 <div class="row">
                     <article class="blog_item">
                         <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
@@ -164,7 +165,8 @@
             return {
                 articles:[],
                 currentPage: 1,
-                    pageSize: 5,//每頁顯示文章篇數
+                pageSize: 5,//每頁顯示文章篇數
+                isAdmin:false,
             }
         },
         methods: {
@@ -196,9 +198,19 @@
                 const filteredArticles = this.articles.filter(a => a.type === false);//篩選新聞版文章
                 return Math.ceil(filteredArticles.length / this.pageSize);//總文章數/每頁顯示幾篇(無條件進位)
                 },
+            //amy新增
+            //判斷是否是管理員，是則顯示發表文章功能
+            isAdminFun(){
+                let self=this;
+                fetch("/api/ArticlesApi/isAdmin", {
+                    credentials: 'include'
+                    }).then(res=>res.json())
+                    .then(res=>self.isAdmin=res);
+            },
          },
         mounted() {
             this.getArticles();
+            this.isAdminFun();
         }
     }).mount("#app")
 

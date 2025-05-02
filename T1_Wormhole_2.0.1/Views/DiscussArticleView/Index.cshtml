@@ -62,16 +62,17 @@
         </div>
     </header>
 
-    @*Amy---改button成a連結+連結到使用者po文區*@
-    <a asp-controller="DiscussArticleView" asp-action="DiscussPoster"
-       style="wight:500px ;position: fixed ;color:red ; right:229px; top:340px">發表文章</a>
 
-    <main>
+
+    <main id="app">
+        @*Amy---改button成a連結+連結到使用者po文區*@
+        <a asp-controller="DiscussArticleView" asp-action="DiscussPoster"
+           style="position: fixed ;color:red ; right:229px; top:340px" v-if="isUser">發表文章</a>
 
         <!--  Hero area End -->
         @* <!-- Blog Area Start-->文章內容開始 *@
         <section class="blog_area section-padding">
-            <div class="container" id="app">
+            <div class="container" >
                 <div class="row">
                      <article class="blog_item">
                         <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
@@ -163,6 +164,7 @@
                 articles:[],
                 currentPage: 1,
                 pageSize: 5,//每頁顯示文章篇數
+                isUser:false,
             }
         },
         methods: {
@@ -182,6 +184,16 @@
                     });
                 }
             },
+
+            //amy新增
+            //判斷是否是使用者，是則顯示發表文章功能
+            isUserFun(){
+                let self=this;
+                fetch("/api/ArticlesApi/isUser", {
+                    credentials: 'include'
+                    }).then(res=>res.json())
+                    .then(res=>self.isUser=res);
+            },
         },
         computed:{
             nowArticles() {
@@ -198,6 +210,7 @@
          },
         mounted() {
             this.getArticles();
+            this.isUserFun();
         }
     }).mount("#app")
 
