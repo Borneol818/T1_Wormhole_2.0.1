@@ -74,7 +74,7 @@
                 events:[],
                 currentEvent:{},
                 showDetail:false,
-                testID:5,//測試用userID，完成測試後刪除
+                userID:{},
             }
         },
         methods:{
@@ -83,7 +83,7 @@
                 // alert("抓取活動列表");
                 let self=this;
                 await fetch("/api/EventObtain/getAllEvent",{
-                    method:"GET",
+                    credentials: 'include',
                 }).then(response=>{
                     if(response.ok){
                        return response.json();
@@ -94,6 +94,10 @@
                 }).catch(err=>{
                     alert(err);
                 });
+                //抓取當前user
+                await fetch("/api/EventObtain/getUser",{
+                    credentials: 'include',
+                }).then(x => x.json()).then(res => self.userID=res);
             },
             //----------顯示活動列表----------
             //依照類型切換顯示圖片
@@ -129,7 +133,7 @@
                 let joinData=
                 {
                     eventId:event.eventId,
-                    userId:self.testID,
+                    userId:self.userID,
                 };
                 await fetch("/api/EventObtain/joinEvent",{
                     method:"POST",
