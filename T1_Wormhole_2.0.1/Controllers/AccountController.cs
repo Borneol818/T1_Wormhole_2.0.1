@@ -8,6 +8,7 @@ using T1_Wormhole_2._0._1.Models.DTOs;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Google.Apis.Auth;
 
 
 namespace T1_Wormhole_2._0._1.Controllers
@@ -75,7 +76,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Email = model1.Email,
                     Nickname = model2.Nickname,
                     Sex = model2.Sex,
-                    Brithday = model2.Brithday,
+                    Birthday = model2.Birthday,
                     Phone = model2.Phone,
                     Status = false
                 };
@@ -397,6 +398,163 @@ namespace T1_Wormhole_2._0._1.Controllers
             }
             Console.WriteLine("something wrong");
             return View(model);
+        }
+
+        public async Task<IActionResult> ValidGoogleLogin()
+        {
+            string? formCredential = Request.Form["credential"]; //回傳憑證
+            string? formToken = Request.Form["g_csrf_token"]; //回傳令牌
+            string? cookiesToken = Request.Cookies["g_csrf_token"]; //Cookie 令牌
+
+            // 驗證 Google Token
+            GoogleJsonWebSignature.Payload? payload = VerifyGoogleToken(formCredential, formToken, cookiesToken).Result;
+            if (payload == null)
+            {
+                // 驗證失敗
+                ViewData["Msg"] = "驗證 Google 授權失敗";
+            }
+            else
+            {
+                //驗證成功，取使用者資訊內容
+                ViewData["Msg"] = "驗證 Google 授權成功" + "<br>";
+                ViewData["Msg"] += "Email:" + payload.Email + "<br>";
+                ViewData["Msg"] += "Name:" + payload.Name + "<br>";
+                ViewData["Msg"] += "Picture:" + payload.Picture;
+            }
+            var email = payload.Email;
+            TempData["Email"] = email;
+            var user = _context.UserInfos.FirstOrDefault(u => u.Email == payload.Email);
+            if (user == null)
+            {
+                return RedirectToAction("SubmitUserInfo", "Account");
+            }
+            else
+            {
+                var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, payload.Name),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Role, "User"),
+            };
+
+                //做一張身分證叫做cookies
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+                //放身分證在原則內
+                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+
+                var authProperties = new AuthenticationProperties
+                {
+
+                };
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    claimsPrincipal,
+                    authProperties);
+
+                user.Status = true;
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        public async Task<GoogleJsonWebSignature.Payload?> VerifyGoogleToken(string? formCredential, string? formToken, string? cookiesToken)
+        {
+            // 檢查空值
+            if (formCredential == null || formToken == null && cookiesToken == null)
+            {
+                return null;
+            }
+
+            GoogleJsonWebSignature.Payload? payload;
+            try
+            {
+                // 驗證 token
+                if (formToken != cookiesToken)
+                {
+                    return null;
+                }
+
+                // 驗證憑證
+                IConfiguration Config = new ConfigurationBuilder().AddJsonFile("appSettings.json").Build();
+                string GoogleApiClientId = Config.GetSection("GoogleApiClientId").Value;
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { GoogleApiClientId }
+                };
+                payload = await GoogleJsonWebSignature.ValidateAsync(formCredential, settings);
+                if (!payload.Issuer.Equals("accounts.google.com") && !payload.Issuer.Equals("https://accounts.google.com"))
+                {
+                    return null;
+                }
+                if (payload.ExpirationTimeSeconds == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    DateTime now = DateTime.Now.ToUniversalTime();
+                    DateTime expiration = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).DateTime;
+                    if (now > expiration)
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return payload;
+        }
+
+        [HttpGet]
+        public IActionResult SubmitUserInfo()
+        {
+            TempData.Keep("Email");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SubmitUserInfo(UserInfo model)
+        {
+            model.Email = TempData["Email"]?.ToString();
+            model.UserId = 0;
+            if (ModelState.IsValid)
+            {
+                var userInfo = new UserInfo
+                {
+                    UserId = 0,
+                    Name = model.Name,
+                    Email = model.Email,
+                    Nickname = model.Nickname,
+                    Sex = model.Sex,
+                    Birthday = model.Birthday,
+                    Phone = model.Phone,
+                    Status = false
+                };
+
+                _context.UserInfos.Add(userInfo);
+                _context.SaveChanges();
+                var TempUserId = _context.UserInfos.FirstOrDefault(u => u.Email == model.Email).UserId;
+                var userStatus = new UserStatus
+                {
+                    Id = TempUserId,
+                    Status = false,
+                    Level = 1
+                };
+                _context.UserStatuses.Add(userStatus);
+                _context.SaveChanges();
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {
+                Console.WriteLine("使用者資訊有誤");
+                return View(model);
+            }
         }
     }
 }

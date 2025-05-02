@@ -2,79 +2,59 @@
     ViewData["Title"] = "新聞文章首頁";
 }
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>新聞文章首頁</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
 
-    <!-- CSS here -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/price_rangs.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/slick.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
 <body>
     <header>
         <div class="header-area">
             <div class="main-header ">
 
-                <div class="header-bottom  header-sticky">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-xl-12">
-                                <!-- logo 2 -->
-                                <div class="logo2">
-                                    <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
-                                </div>
-                                <!-- Main-menu -->
-                                <div class="main-menu text-center d-none d-lg-block">
-                                    <nav>
-                                        <ul id="navigation">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="categories.html">Categories</a></li>
-                                            <li><a href="about.html">About</a></li>
-                                            <li>
-                                                <a href="#">Pages</a>
-                                                <ul class="submenu">
-                                                    <li><a href="login.html">login</a></li>
-                                                    <li><a href="cart.html">Cart</a></li>
-                                                    <li><a href="checkout.html">Checkout</a></li>
-                                                    <li><a href="book-details.html">book Details</a></li>
-                                                    <li><a href="blog_details.html">Blog Details</a></li>
-                                                    <li><a href="elements.html">Element</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li><a href="contact.html">Contect</a></li>
-                                            <li>
-                                                <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
-                                            </li>
-                                            <li>
-                                                <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </div>
-                            <!-- Mobile Menu -->
-                            <div class="col-xl-12">
-                                <div class="mobile_menu d-block d-lg-none"></div>
-                            </div>
-                        </div>
-                    </div>
+                @* <div class="header-bottom  header-sticky"> *@
+                @*     <div class="container"> *@
+                @*         <div class="row align-items-center"> *@
+                @*             <div class="col-xl-12"> *@
+                @*                 <!-- logo 2 --> *@
+                @*                 <div class="logo2"> *@
+                @*                     <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a> *@
+                @*                 </div> *@
+                @*                 <!-- Main-menu --> *@
+                @*                 <div class="main-menu text-center d-none d-lg-block"> *@
+                @*                     <nav> *@
+                @*                         <ul id="navigation"> *@
+                @*                             <li><a href="index.html">Home</a></li> *@
+                @*                             <li><a href="categories.html">Categories</a></li> *@
+                @*                             <li><a href="about.html">About</a></li> *@
+                @*                             <li> *@
+                @*                                 <a href="#">Pages</a> *@
+                @*                                 <ul class="submenu"> *@
+                @*                                     <li><a href="login.html">login</a></li> *@
+                @*                                     <li><a href="cart.html">Cart</a></li> *@
+                @*                                     <li><a href="checkout.html">Checkout</a></li> *@
+                @*                                     <li><a href="book-details.html">book Details</a></li> *@
+                @*                                     <li><a href="blog_details.html">Blog Details</a></li> *@
+                @*                                     <li><a href="elements.html">Element</a></li> *@
+                @*                                 </ul> *@
+                @*                             </li> *@
+                @*                             <li><a href="blog.html">Blog</a></li> *@
+                @*                             <li><a href="contact.html">Contect</a></li> *@
+                @*                             <li> *@
+                @*                                 <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a> *@
+                @*                             </li> *@
+                @*                             <li> *@
+                @*                                 <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a> *@
+                @*                             </li> *@
+                @*                         </ul> *@
+                @*                     </nav> *@
+                @*                 </div> *@
+                @*             </div> *@
+                @*             <!-- Mobile Menu --> *@
+                @*             <div class="col-xl-12"> *@
+                @*                 <div class="mobile_menu d-block d-lg-none"></div> *@
+                @*             </div> *@
+                @*         </div> *@
+                @*     </div> *@
 
 
-                </div>
+                @* </div> *@
             </div>
 
         </div>
@@ -223,13 +203,4 @@
     }).mount("#app")
 
 </script>
-<style>
-    .ellipsis-text {
-        display: -webkit-box;
-        -webkit-line-clamp: 3; /* 顯示幾行 */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-</style>
 }
