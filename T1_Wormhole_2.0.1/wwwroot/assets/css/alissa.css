@@ -1,3 +1,11 @@
+.ellipsis-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 顯示幾行 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .circle-image {
     position: relative;
 /*    overflow: hidden;*/
@@ -70,4 +78,12 @@
     background-color: #022430;
     padding: 0 0.2em;
     border-radius: 0.2em;
+}
+/*非漢堡選單的導覽列不顯示*/
+.main-menu {
+    display: none !important;
+}
+
+.mobile_menu {
+    display: block !important;
 }

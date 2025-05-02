@@ -2961,21 +2961,21 @@ hr {
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     .header-area .header-bottom {
         padding: 8px 13px;
-        background: #fff;
+        background: black;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
     .header-area .header-bottom {
         padding: 8px 13px;
-        background: #fff;
+        background: black;
     }
 }
 
 @media (max-width: 575px) {
     .header-area .header-bottom {
         padding: 8px 0px;
-        background: #fff;
+        background: black;
     }
 }
 
@@ -3209,7 +3209,7 @@ hr {
     }
 
 .header-bottom {
-    background: #FEF4F4;
+    background: black;
 }
 
     .header-bottom .main-menu ul li {
@@ -3383,13 +3383,14 @@ hr {
             right: 16px;
         }
 
-            .mobile_menu .slicknav_menu .slicknav_btn .slicknav_icon-bar {
-                background-color: #FF1616 !important;
-            }
+        .mobile_menu .slicknav_menu .slicknav_btn .slicknav_icon-bar {
+            background-color: #295361 !important;/* 改導覽列背景色   */
+            
+        }
 
         .mobile_menu .slicknav_menu .slicknav_nav {
             margin-top: 1px !important;
-            background: #FF1616;
+            background: #295361;/* 改導覽列背景色   */
             border-bottom: 0;
         }
 

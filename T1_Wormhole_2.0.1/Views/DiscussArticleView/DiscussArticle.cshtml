@@ -12,57 +12,24 @@
 </head>
 
 <div id="app">
-    <div class="header-bottom  header-sticky">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-12">
-                    <!-- Main-menu -->
-                    <div class="main-menu text-center d-none d-lg-block">
-                        <nav>
-                            <ul id="navigation">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="categories.html">Categories</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li>
-                                    <a href="#">Pages</a>
-                                    <ul class="submenu">
-                                        <li><a href="login.html">login</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="book-details.html">book Details</a></li>
-                                        <li><a href="blog_details.html">Blog Details</a></li>
-                                        <li><a href="elements.html">Element</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contect</a></li>
-                                <li>
-                                    <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
-                                </li>
-                                <li>
-                                    <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <h1>{{articles.title}}</h1>
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
+    <div>
+
+        @*amy新增，之後請負責人放至適合位置*@
+        <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+        <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
+    </div>
     <p>{{articles.content}}</p>
 
-    @*amy新增，之後請負責人放至適合位置*@
-    <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-    <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
 
     <div class="comments-area">
         <div class="comment-list">
-            <button type="button" v-on:click="submitRating(true)" class="btn-liked">喜歡: ({{ ratingcount.positive }})</button>
-            <button type="button" v-on:click="submitRating(false)" class="btn-disliked">不喜歡: ({{ ratingcount.negative }})</button>
+            <button type="button" v-on:click="submitRating(true)" class="btn-liked">喜歡: {{ ratingcount.positive }}</button>
+            <button type="button" v-on:click="submitRating(false)" class="btn-disliked">不喜歡: {{ ratingcount.negative }}</button>
         </div>
         <div>
             <div class="single-comment justify-content-between d-flex">
@@ -79,9 +46,11 @@
                                 <h5>
                                     <a href="#">{{ Response.writer }}</a>
                                 </h5>
+                                
+                            </div>
+                            <div>
                                 <p class="date">時間{{ Response.date }}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
