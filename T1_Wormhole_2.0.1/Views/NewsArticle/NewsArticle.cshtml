@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
-
+    <link href="~/css/Sam.css" rel="stylesheet">
 </head>
 
 <div id="app">
@@ -64,8 +64,8 @@
     <p>{{articles.content}}</p>
     <div class="comments-area">
         <div class="comment-list">
-            <button type="button" v-on:click="submitRating(true)" :class="{'btn-liked': hasLiked, 'btn-like': !hasLiked}">喜歡: ({{ ratingcount.positive }})</button>
-            <button type="button" v-on:click="submitRating(false)":class="{'btn-disliked': hasDisliked, 'btn-dislike': !hasDisliked}">不喜歡: ({{ ratingcount.negative }})</button>
+            <button type="button" v-on:click="submitRating(true)" class="btn-liked">喜歡: ({{ ratingcount.positive }})</button>
+            <button type="button" v-on:click="submitRating(false)" class="btn-disliked">不喜歡: ({{ ratingcount.negative }})</button>
         </div>
         @*amy新增，之後請負責人放至適合位置*@
         <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
@@ -91,9 +91,9 @@
                     </div>
                 </div>
             </div>
-            <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
+            <textarea v-model="textResponse" placeholder="輸入留言" class="textarea"></textarea>
             <div class="reply-btn">
-                <button class="btn-reply text-uppercase">reply</button>
+                <button class="btn-reply text-uppercase" v-on:click="submitResponse">reply</button>
             </div>
         </div>
 
@@ -199,7 +199,45 @@
                     alert('請先登入');
                 });
             },
+            //取得好負評數量
+            //留言
+            submitResponse() {
+                if (!this.textResponse || !this.textResponse.trim()) {
+                    alert("請輸入留言內容");
+                    return;
+                }
 
+                const response = {
+                    articleID: this.currentArticleID,
+                    comment: this.textResponse
+                };
+
+                fetch('/api/Comments/AddArticleResponse', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(response)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        this.comments.unshift({
+                            writer: res.nickname, // 可以從使用者資料取 nickname
+                            content: this.textResponse,
+                            date: new Date().toLocaleString('zh-TW', { hour12: false })
+                        });
+                        this.textResponse = "";
+                    } else {
+                        alert("留言失敗：" + res.message);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("留言失敗");
+                });
+            },
             //amy新增
             /*--------------進行文章編輯--------------*/
             ArticleEdit(){
@@ -232,7 +270,7 @@
                         this.hasDisliked = false;
                     }
                 });
-            }
+            },
         },
         mounted() {
 

@@ -55,7 +55,7 @@ namespace T1_Wormhole_2._0._1.Controllers
         public async Task<FileResult> GetArticlePhoto(int articleId)
         {
             string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
-            Article e = await _context.Articles.FindAsync(articleId);
+            Article? e = await _context.Articles.FindAsync(articleId);
             byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
@@ -136,34 +136,44 @@ namespace T1_Wormhole_2._0._1.Controllers
         /// <summary>
         /// 新增留言
         /// </summary>
+     
         [HttpPost]
-        public async Task<IActionResult> ArticleResponse([FromBody] ArticleResponse request)
+        public async Task<IActionResult> AddArticleResponse([FromBody] ResponseDTO request)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(request.Comment))
                 {
-                    return BadRequest("留言內容不能為空白");
+                    return BadRequest(new { success = false, message = "留言內容不能為空白" });
                 }
 
+                var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdStr == null) return Unauthorized(new { success = false, message = "請先登入" });
+
+                int userId = int.Parse(userIdStr);
+                var username=await _context.UserInfos.FirstOrDefaultAsync(x => x.UserId == userId);
                 var newResponse = new ArticleResponse
                 {
-                    ArticleId = request.ArticleId,
+                    ArticleId = request.ArticleID,
                     Comment = request.Comment,
-                    UserId = request.UserId,   // 這裡必須傳正確的UserId
+                    UserId = userId,
+                    User = username,
                     CreateTime = DateTime.Now
                 };
 
                 _context.ArticleResponses.Add(newResponse);
                 await _context.SaveChangesAsync();
 
-                return Ok(new { success = true });
+                return Ok(new { success = true,
+                    nickname= username.Nickname
+                });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
+
 
         //amy新增
         //刪除文章用
