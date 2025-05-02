@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using T1_Wormhole_2._0._1.Models.DTOs;
 
 namespace T1_Wormhole_2._0._1.Controllers.Apis
 {
-    [Route("api/[controller]")]
+    [Route("api/Relation/[Action]")]
     [ApiController]
     public class RelationApiController : ControllerBase
     {
@@ -18,7 +19,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             _db = db;
         }
         [HttpGet]
-        public async Task<IEnumerable<Relation>> GetRelation()
+        public async Task<IQueryable<RelationDto>> GetRelation()
         {
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             if (role == "Admin")
@@ -29,19 +30,19 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             {
                 var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
                 var id = Convert.ToInt32(currentUserId.Value);
-                var relations = await _db.Relations
+                var relations = _db.Relations
                     .Where(r => r.InviterId == id && r.RelationTypre != "Block" || r.InviteeId == id && r.RelationTypre != "Block")
                     .Include(r => r.Inviter).Include(r => r.Invitee) // Join 資料
-                    .Select(r => new
+                    .Select(r => new RelationDto
                     {
-                        r.RelationTypre,
-                        r.InviterId,
+                        RelationTypre=r.RelationTypre,
+                        InviterId = r.InviterId,
                         InviterName = r.Inviter.Name,
-                        r.InviteeId,
+                        InviteeId = r.InviteeId,
                         InviteeName = r.Invitee.Name,
-                        r.Invite,
-                    }).ToListAsync();
-                return (IEnumerable<Relation>)relations;
+                        Invite = r.Invite,
+                    });
+                return relations;
             }
             else
             {

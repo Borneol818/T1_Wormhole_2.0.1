@@ -9,5 +9,7 @@
         public int InviteeId { get; set; }
 
         public string Invite { get; set; }
+        public string InviterName { get; set; }
+        public string InviteeName { get; set; }
     }
 }
