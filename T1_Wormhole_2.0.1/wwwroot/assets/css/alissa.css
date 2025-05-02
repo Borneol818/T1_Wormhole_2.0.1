@@ -1,3 +1,11 @@
+.ellipsis-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 顯示幾行 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .circle-image {
     position: relative;
 /*    overflow: hidden;*/
