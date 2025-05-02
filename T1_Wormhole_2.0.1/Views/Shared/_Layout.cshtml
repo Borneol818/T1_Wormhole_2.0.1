@@ -74,16 +74,36 @@
 													<a class="shopping-card" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" src="~/images/phototest.jpg" alt=""></a>
 													@* </div> *@
 													<div class="dropdown-menu "
-														 aria-labelledby="dropdownId">
-														<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" v-for="layoutItem in userInfoForLayout">
-															<h3>My Account</h3>
-															<label>User Name</label>
-															<p>{{layoutItem.name}}</p>
-															<label>Nickname</label>
-															<p>{{layoutItem.nickname}}</p>
-														</div>
-														<a class="dropdown-item" href="#">使用者設定</a>
-														<a class="dropdown-item" href="/Account/Logout">登出</a>
+														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
+														<template v-if="layoutItem.isAdmin==false">
+															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" >
+																<h3>My Account</h3>
+																<label>User Name</label>
+																<p>{{layoutItem.name}}</p>
+																<label>Nickname</label>
+																<p>{{layoutItem.nickname}}</p>
+															</div>
+															<a class="dropdown-item" href="#">使用者設定</a>
+															<a class="dropdown-item" href="/Account/Logout">登出</a>
+														</template>
+														<template v-else-if="layoutItem.isAdmin==true">
+															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" >
+																<h3>Manager Account</h3>
+																<label>Manager Name</label>
+																<p>{{layoutItem.managerName}}</p>
+																<label>Team</label>
+																<p>{{layoutItem.managerTeam}}</p>
+															</div>
+															<a class="dropdown-item" href="#">使用者設定</a>
+															<a class="dropdown-item" href="/Account/Logout">登出</a>
+														</template>
+														@* <template v-else> *@
+														@* 	<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;"> *@
+														@* 		<h1>{{layoutItem.empInfo}}</h1> *@
+														@* 	</div>															 *@
+														@* </template> *@
+														@* <a class="dropdown-item" href="#">使用者設定</a> *@
+														@* <a class="dropdown-item" href="/Account/Logout">登出</a> *@
 													</div>
 												</li>
 												<li><a href="/Account/Login" class="btn header-btn">Login</a></li>

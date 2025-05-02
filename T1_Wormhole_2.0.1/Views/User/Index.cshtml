@@ -100,7 +100,7 @@
 						</div>
 					</form>
 				</template>
-				<template v-else>
+				<template v-else-if="item.isAdmin==false&&item.edit==false">
 					<div class="col-lg-3" align="center" style="color:antiquewhite;">
 						<!-- 大頭貼 -->
 						<div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
@@ -136,11 +136,11 @@
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
 								<label for="" class="col-md-10" style="font-size: 16px;">生日</label>
-								<label for="" class="col-md-10" style="font-size: 16px;">{{item.brithday}}</label>
+								<label for="" class="col-md-10" style="font-size: 16px;">{{item.birthday}}</label>
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
 								<label for="" class="col-md-10" style="font-size: 16px;">簽名檔</label>
-								<label for="" class="col-md-10" style="font-size: 16px;">{{item.signatureLine}}</label>
+								<label for="" class="col-md-10" style="font-size: 16px;">{{item.signature}}</label>
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
 								<button class="btn btn-primary" @@click="edit(item.userId)">編輯資訊</button>
@@ -179,6 +179,22 @@
 							</div>			
 						</div>
 					</div>
+				</template>
+				<template v-else-if="item.isAdmin==true&&item.edit==false">
+					<h1 style="color:antiquewhite;">Manager Profile</h1>
+					<div class ="row contact_form">
+						<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+							<label class="col-md-10" style="font-size: 16px;">管理員名稱:</label>
+							<label class="col-md-10" style="font-size: 16px;">{{item.managerName}}</label>
+						</div>
+						<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
+							<label for="" class="col-md-10" style="font-size: 16px;">組別</label>
+							<label for="" class="col-md-10" style="font-size: 16px;">{{item.managerTeam}}</label>
+						</div>
+					</div>
+				</template>
+				<template v-else>
+					<h1>{{item.empInfo}}</h1>
 				</template>
 			</div>
 		</div>
@@ -228,8 +244,21 @@
 					if(item.sex==true){
 						item.sex="男性";
 					}
-					else{
+					else if(item.sex==false){
 						item.sex="女性";
+					}
+					else{
+						item.sex= "未填寫";
+					}
+
+					if(item.isAdmin==null){
+						alert(item.empInfo);
+					}
+					else if(item.isAdmin==true){
+						item.isAdmin=true;
+					}				
+					else{
+						self.isAdmin=false;
 					}
 					item.edit=false;
 				});
