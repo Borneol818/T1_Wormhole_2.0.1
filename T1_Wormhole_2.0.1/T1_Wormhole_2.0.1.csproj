@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="efpt.config.json.user" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.8.18" />
     <PackageReference Include="Hangfire.Core" Version="1.8.18" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.8.18" />

@@ -208,7 +208,7 @@
     });
 
     /* 6. Nice Selectorp  */
-//todo obtainºÙ¸¹·s¼WType®É½Ä¬ð
+//todo obtain�ٸ��s�WType�ɽĬ�
   //var nice_Select = $('select');
   //  if(nice_Select.length){
   //    nice_Select.niceSelect();
