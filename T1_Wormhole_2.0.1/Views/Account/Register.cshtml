@@ -1,6 +1,6 @@
 ﻿<body>
     <!-- header end -->
-    <main class="login-bg" style="height: 180vh;">
+    <main class="login-bg" style="height: 1500px;">
         <!-- Register Area Start -->
         <div class="register-form-area" id="app">
             <div class="register-form text-center">
@@ -13,57 +13,61 @@
                 <!-- Single Input Fields -->
                     <div class="input-box" style="margin-bottom:20px;">
                         <div class="single-input-fields" style="overflow: hidden;">
-                            <label>Username</label>
+                            <label>Account</label>
                             <input type="text" name="Account" v-model="account" @@blur="checkAccount" placeholder="Enter username" style="margin-bottom: 10px;" minlength="4" maxlength="20">
-                            <label v-show="isAccountAvailable" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Username</label>
-                            <label v-show="isExistAccount" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Username already taken</label>
+                            <label v-show="hasAccount" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="isAccountAvailable" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Account</label>
+                            <label v-show="isExistAccount" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Account already taken</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Email Address</label>
                             <input type="email" name="Email" v-model="Email" @@input="checkEmailFormat" placeholder="Enter email address" style="margin-bottom: 10px;">
+                            <label v-show="hasEmail" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             <label v-show="isEmailFormat" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Email Format</label>
                             <label v-show="isNotEmailFormat" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Incorrect Email format</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Password</label>
                             <input type="password" name="Password" v-model="Password" @@input="checkPassword" placeholder="Enter Password" style="margin-bottom: 10px;" minlength="8" maxlength="20">
+                            <label v-show="hasPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             <label v-show="isValidPassword" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Valid Password</label>
                             <label v-show="isInValidPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Invalid Password</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Confirm Password</label>
                             <input type="password" name="ConfirmPassword" v-model="ConfirmPassword" @@input="checkConfirmPassword" placeholder="Confirm Password" style="margin-bottom: 10px;">
+                            <label v-show="hasConfirmPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             <label v-show="isMatchPassword" style="float:left; color: green; font-size: 12px; margin-bottom: 20px;">Password Match</label>
                             <label v-show="isNotMatchPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Password Is Not Match</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Name</label>
                             <input type="text" name="Name" v-model="Name" @@input="checkName" placeholder="Enter Your Name" style="margin-bottom: 10px;" minlength="3" maxlength="20">
-                            <label v-show="isName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="hasName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>NickName</label>
                             <input type="text" name="Nickname" v-model="Nickname" @@input="checkNickname" placeholder="Enter Your Nickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
-                            <label v-show="isNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="hasNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Phone</label>
                             <input type="text" name="Phone" v-model="Phone" @@input="checkPhone" placeholder="09XXXXXXXX" style="margin-bottom: 10px;" minlength="10" maxlength="10">
-                            <label v-show="isPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="hasPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                         </div>
                         <div class="row">
                             <div class="single-input-fields col-6" style="margin-left: 10px; margin-right:20px;">
                                 <label>Birthday</label>
                                 <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" @@input="checkBirthday" placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
-                                <label v-show="isBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                                <label v-show="hasBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             </div>
                             <div class="single-input-fields col-5">
                                 <label>Sex</label>
-                                <select class="country_select" style="height: 50px; width: 100%;">
+                                <select class="country_select" style="height: 50px; width: 100%; margin-bottom:10px;">
                                     <option value="0">Male</option>
                                     <option value="1">Female</option>
                                 </select>
-                                <label v-show="isSex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                                <label v-show="hasSex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             </div>
                         </div>
                     </div>
@@ -97,9 +101,25 @@
                 ConfirmPassword:'',
                 isMatchPassword: false,
                 isNotMatchPassword: false,
+                hasAccount:true,
+                hasEmail:true,
+                hasPassword:true,
+                hasConfirmPassword:true,
+                hasName: true,
+                hasNickname: true,
+                hasPhone:true,
+                hasBirthday:true,
+                hasSex:true,
+                Name:'',
             };
         },
         methods: {
+            isNullAccount(){
+                let self = this;
+                if(self.account.length > 0){
+                    self.hasAccount = false;
+                }
+            },
             checkAccount() {
                 let self = this;
                 self.isAccountAvailable = false;
@@ -163,7 +183,8 @@
                     self.isMatchPassword = false;
                     self.isNotMatchPassword = true;
                 }
-            }
+            },
+            isEmptyAccount(){}
         },
         computed:{
             formIsValid() {
@@ -176,6 +197,13 @@
         },
         mounted() {
 
+        },
+        watch:{
+            // account(text){
+            //     if(this.text.length > 0){
+            //         console.log("function is working");
+            //     }
+            // }
         }
     }).mount("#app")
 </script>
