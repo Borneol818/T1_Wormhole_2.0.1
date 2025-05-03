@@ -166,11 +166,41 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         //{
         //    var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         //    int? Wallet = _db.ObtainStatuses.Where(x => x.UserId == currentUserId).Select(x => x.Count).Sum();
-            
+
         //    return Ok(Wallet);
 
         //}
+        [HttpGet]
+        public async Task<string?> GetCoinsLog() //這是使用者的金幣紀錄
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
 
+                return "沒有紀錄";
+            }
+
+            var id = Convert.ToInt32(currentUserId.Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "User")
+            {
+                var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放")).Select(x=>x.CoinSource).ToListAsync();
+                
+                var user = await _db.UserInfos.FindAsync(id);
+
+                if (user != null)
+                {
+                    
+                    await _db.SaveChangesAsync();
+                    return string.Join("\n", result);
+                }
+            }
+            else
+            {
+                return "沒有紀錄";
+            }
+            return "沒有紀錄";
+        }
 
         [HttpGet]
         public async Task<FileResult> GetPhoto(int id) //這是撈使用者頭像的(傳回的是單個檔案用File)
