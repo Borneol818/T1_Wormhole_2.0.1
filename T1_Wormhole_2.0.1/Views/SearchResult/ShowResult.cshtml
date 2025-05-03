@@ -11,7 +11,7 @@
 <div id="showResult" class="container">
 	<div class="row">
         <div class="col-3">
-            <div class="card mr-10" style="width: 18rem; height:20rem; background-color:black" v-for="user in searchResultU" :key="user.resultUserId">
+            <div class="card mr-10" style="width: 18rem; height:20rem; background-color:black; margin-bottom:50px;" v-for="user in searchResultU" :key="user.resultUserId">
                 <a :href="'/User/ViewProfile?id=' + user.resultUserId">
                     <img class="card-img-top" alt="" :src="'/api/Search/GetUserPhoto?id='+user.resultUserId" :title=" user.name" />
                     <div class="card-body">

@@ -34,7 +34,7 @@
 							@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitee.inviteeId)">Accept</button> *@
 							@* </div> *@
 							<div class="col-2">
-								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="cancelInvite(invitee.inviteeId)">Cancel</button>
+								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(invitee.inviteeId)">Cancel</button>
 							</div>
 						</div>
 					</li>
@@ -54,7 +54,7 @@
 								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button>
 							</div>
 							<div class="col-2">
-								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="rejectInvite(self.inviterId)">Reject</button>
+								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="refuseInvite(self.inviterId)">Refuse</button>
 							</div>
 						</div>
 					</li>
@@ -98,17 +98,17 @@
 								relationType: res[i].relationType
 							});
 						}
-						else if(res[i].invite=="申請中"&&res[i].inviteeId==_this.myUserId){
+						else if(res[i].invite=="申請中"&&res[i].inviteeId!=_this.myUserId){
 							_this.invitings.push({
-								inviteeId: res[i].inviterId,
-								inviteeName: res[i].inviterName,
+								inviteeId: res[i].inviteeId,
+								inviteeName: res[i].inviteeName,
 								invite: res[i].invite
 							});
 						}
 						else{
 							_this.myInvitings.push({
-								inviterId: res[i].inviteeId,
-								inviterName: res[i].inviteeName,
+								inviterId: res[i].inviterId,
+								inviterName: res[i].inviterName,
 								invite: res[i].invite
 							});
 						}
@@ -134,12 +134,57 @@
 					},
 					method:"DELETE",
 					}).then(x=>
-						alert("以後別做朋友！"),					
+						alert("以後別做朋友！"),	
+						window.location.href="/User/TestRelation",
 					);
 			},
-			 cancelInvite(){},
-			 acceptInvite(){},
-			 rejectInvite(){},
+			 // cancelInvite(){},
+			 async acceptInvite(inviterId){
+				this.getUserId();
+				 var request={};
+					request.inviterId= inviterId;
+					request.inviteeId = this.myUserId;
+					request.invite = "同意邀請";
+					request.relationType = "Friend";
+					request.inviterName = "";
+					request.inviteeName = "";
+
+				 await fetch('/api/Relation/AcceptRelation',{
+					 body:JSON.stringify(request),
+					 credentials: 'include',
+					headers:{
+						"Content-Type":"application/json",
+						// "Accept":"application/json",
+					},
+					method:"PUT",
+					}).then(x=>
+						alert("恭喜你們成為了朋友！"),
+						window.location.href="/User/TestRelation",
+					);
+			 },
+			 async refuseInvite(inviterId){
+				this.getUserId();
+				 var request={};
+					request.inviterId= inviterId;
+					request.inviteeId = this.myUserId;
+					request.invite = "拒絕邀請";
+					request.relationType = "Friend";
+					request.inviterName = "";
+					request.inviteeName = "";
+
+				 await fetch('/api/Relation/RefuseRelation',{
+					 body:JSON.stringify(request),
+					 credentials: 'include',
+					headers:{
+						"Content-Type":"application/json",
+						// "Accept":"application/json",
+					},
+					method:"PUT",
+					}).then(x=>
+						alert("篩選也是一種選擇！"),
+						window.location.href="/User/TestRelation",
+					);
+			 },
 			 async getUserId(){
 				 await fetch('/api/User/Get',{
 					credentials: 'include',
