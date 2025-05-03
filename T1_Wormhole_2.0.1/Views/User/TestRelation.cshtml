@@ -1,82 +1,155 @@
 ﻿<div id="RelationList">
-    <div class="col-lg-4">
-        <div class="order_box">
-            <div style="border-bottom:2px solid #333; margin-bottom:20px;">
-                <h2 style="margin-bottom: 10px;">Relation List</h2>
-                <ul class="list" v-for="friend in relations" :key="friend.inviteeId">
-                    <li>
-                        <a :href="'/User/ViewProfile?id='+friend.inviteeId">
-                            <h3 style="margin:0px;">{{friend.inviteeName}}</h3>
-                            <p class="ellipsis-text">{{friend.relationTypre}}</p>
-                        </a>
-                    </li>
-                </ul>
-                @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
-            </div>
-            <div style="border-bottom:2px solid #333; margin-bottom:20px;">
-                <h2 style="margin-bottom: 10px;">Inviting List</h2>
-                <ul class="list" v-for="invitee in invitings" :key="invitee.inviteeId">
-                    <li>
-                        <a :href="'/User/ViewProfile?id='+invitee.inviteeId">
-                            <h3 style="margin:0px;">{{invitee.inviteeName}}</h3>
-                            <p class="ellipsis-text">{{invitee.invite}}</p>
-                        </a>
-                    </li>
-                </ul>
-                @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
-            </div>
-            @* <div style="border-bottom:2px solid #333; margin-bottom:20px;"> *@
-            @*     <h2 style="margin-bottom: 10px;">Inviting List</h2> *@
-            @*     <ul class="list" v-for="self in invitings" :key="self.inviterId"> *@
-            @*         <li> *@
-            @*             <a :href="'/User/ViewProfile?id='+self.inviterId"> *@
-            @*                 <h3 style="margin:0px;">{{self.inviterName}}</h3> *@
-            @*                 <p class="ellipsis-text">{{self.invite}}</p> *@
-            @*             </a> *@
-            @*         </li> *@
-            @*     </ul> *@
-            @*     @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@ 
-            @* </div> *@
-        </div>
-    </div>
+	<div>
+		<div class="order_box">
+			<div style="border-bottom:2px solid #333; margin-bottom:20px;">
+				<h1 style="margin-bottom: 10px;">Relation List</h1>
+				<ul class="list" v-for="friend in relations" :key="friend.inviteeId">
+					<li>
+						<div class="row">
+							<a class="col-10" :href="'/User/ViewProfile?id='+friend.inviteeId">
+								<h3 style="margin:0px;">{{friend.inviteeName}}</h3>
+								<p class="ellipsis-text">{{friend.relationTypre}}</p>
+							</a>
+							@* <div class="col-2"> *@
+							@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button> *@
+							@* </div> *@
+							<div class="col-2">
+								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(friend.inviteeId)">Break</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+				@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
+			</div>
+			<div style="border-bottom:2px solid #333; margin-bottom:20px;">
+				<h1 style="margin-bottom: 10px;">Inviting List</h1>
+				<ul class="list" v-for="invitee in invitings" :key="invitee.inviteeId">
+					<li>
+						<div class="row">
+							<a class="col-10" :href="'/User/ViewProfile?id='+invitee.inviteeId">
+								<h3 style="margin:0px;">{{invitee.inviteeName}}</h3>
+								<p class="ellipsis-text">{{invitee.invite}}</p>
+							</a>
+							@* <div class="col-2"> *@
+							@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitee.inviteeId)">Accept</button> *@
+							@* </div> *@
+							<div class="col-2">
+								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="cancelInvite(invitee.inviteeId)">Cancel</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+				@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
+			</div>
+			<div style="border-bottom:2px solid #333; margin-bottom:20px;">
+				<h1 style="margin-bottom: 10px;">Inviting Me</h1>
+				<ul class="list" v-for="self in myInvitings" :key="self.inviterId">
+					<li>
+						<div class="row">
+							<a class="col-8" :href="'/User/ViewProfile?id='+self.inviterId">
+								<h3 style="margin:0px;">{{self.inviterName}}</h3>
+								<p class="ellipsis-text">{{self.invite}}</p>
+							</a>
+							<div class="col-2">
+								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button>
+							</div>
+							<div class="col-2">
+								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="rejectInvite(self.inviterId)">Reject</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+				@*     @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@ 
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
-    Vue.createApp({
-        data(){
-            return{
-                relations:[],
-                invitings:[],
-            }
-        },
-        methods:{
-            async getRelations(){
-                let _this=this;
-                var i;
-                await fetch('/api/Relation/GetRelation',{
-                    credentials: 'include',
-                }).then(x=>x.json()).then(res=>{
-                    for(i=0;i<res.length;i++){
-                        if(res[i].invite!="申請中"){
-                                _this.relations.push({
-                                inviteeId: res[i].inviteeId,
-                                inviteeName: res[i].inviteeName,
-                                relationTypre: res[i].relationTypre
-                            });
-                        }
-                        else{
-                            _this.invitings.push({
-                                inviteeId: res[i].inviteeId,
-                                inviteeName: res[i].inviteeName,
-                                invite: res[i].invite
-                            });
-                        }
-                    }                                  
-                });
-            },
-        },
-        mounted(){
-            this.getRelations();
-        },
-    }).mount("#RelationList");
+	Vue.createApp({
+		data(){
+			return{
+				relations:[],
+				invitings:[],
+				myInvitings:[],
+				myUserId:0,
+			}
+		},
+		methods:{
+			async getRelations(){
+				let _this=this;	
+				var i;
+				this.getUserId();
+				await fetch('/api/Relation/GetRelation',{
+					credentials: 'include',
+				}).then(x=>x.json()).then(res=>{
+					for(i=0;i<res.length;i++){
+						if(res[i].invite!="申請中"&&res[i].inviterId==_this.myUserId){
+							_this.relations.push({
+								inviteeId: res[i].inviteeId,
+								inviteeName: res[i].inviteeName,
+								relationTypre: res[i].relationTypre
+							});
+						}
+						else if(res[i].invite!="申請中"&&res[i].inviteeId==_this.myUserId){
+							_this.relations.push({
+								inviteeId: res[i].inviterId,
+								inviteeName: res[i].inviterName,
+								relationTypre: res[i].relationTypre
+							});
+						}
+						else if(res[i].invite=="申請中"&&res[i].inviteeId==_this.myUserId){
+							_this.invitings.push({
+								inviteeId: res[i].inviterId,
+								inviteeName: res[i].inviterName,
+								invite: res[i].invite
+							});
+						}
+						else{
+							_this.myInvitings.push({
+								inviterId: res[i].inviteeId,
+								inviterName: res[i].inviteeName,
+								invite: res[i].invite
+							});
+						}
+					}
+				});
+			},
+			 async breakInvite(inviteeId){				 
+				 this.getUserId();
+				 var request={};
+					request.inviterId=this.myUserId;
+					request.inviteeId = inviteeId;
+					request.invite = "取消邀請";
+					request.relationTypre = "無關係";
+					request.inviterName = "";
+					request.inviteeName = "";
+
+				 await fetch('/api/Relation/DeleteRelation',{
+					 body:JSON.stringify(request),
+					 credentials: 'include',
+					headers:{
+						"Content-Type":"application/json",
+						// "Accept":"application/json",
+					},
+					method:"DELETE",
+					}).then(x=>
+						alert("以後別做朋友！"),					
+					);
+			},
+			 cancelInvite(){},
+			 acceptInvite(){},
+			 rejectInvite(){},
+			 async getUserId(){
+				 await fetch('/api/User/Get',{
+					credentials: 'include',
+				}).then(x=>x.json()).then(res=>{
+					this.myUserId=res[0].userId;
+				});
+			 },			 
+		},
+		mounted(){			
+			this.getRelations();
+		},
+	}).mount("#RelationList");
 </script>

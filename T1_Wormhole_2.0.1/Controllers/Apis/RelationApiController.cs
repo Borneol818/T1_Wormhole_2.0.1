@@ -150,7 +150,9 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             else if (role == "User")
             {
                 var relation = await _db.Relations
-                    .FirstOrDefaultAsync(r => r.InviterId == relationDto.InviterId && r.InviteeId == relationDto.InviteeId);
+                    .FirstOrDefaultAsync(
+                    r => r.InviterId == relationDto.InviterId && r.InviteeId == relationDto.InviteeId ||
+                    r.InviteeId == relationDto.InviterId && r.InviterId == relationDto.InviteeId);
                 if (relation != null)
                 {
                     _db.Relations.Remove(relation);
