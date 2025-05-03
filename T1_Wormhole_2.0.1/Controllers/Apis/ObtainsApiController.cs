@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Authorization;
@@ -75,6 +76,7 @@ namespace T1_Wormhole_2._0._1.Controllers
 
 
         // GET: api/ObtainsApi/GetObtain/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ObtainDTO> GetObtain(int id)
         {
@@ -98,6 +100,7 @@ namespace T1_Wormhole_2._0._1.Controllers
 
         // PUT: api/ObtainsApi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<String> PutObtain( int id,[FromForm] ObtainDTO obtDTO)
         {
@@ -141,6 +144,7 @@ namespace T1_Wormhole_2._0._1.Controllers
 
         // POST: api/ObtainsApi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<string> PostObtain([FromForm] ObtainDTO obtDTO)
         {
@@ -165,32 +169,34 @@ namespace T1_Wormhole_2._0._1.Controllers
         }
 
         // POST: api/ObtainsApi/3
+        [Authorize(Roles = "User")]
         [HttpPost("{id}")]
-        [Authorize]
         public async Task<IActionResult> Buy(int id)
         {
+          try
+          {
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
             if (userIdClaim == null)
-                return Unauthorized("無法取得使用者資訊");
+                return Unauthorized(new { message = "無法取得使用者資訊" });
             int userID = int.Parse(userIdClaim.Value);
 
             var user = await _context.UserInfos.FindAsync(userID);
             if (user == null)
-                return NotFound("使用者不存在");
+                return NotFound(new { message = "使用者不存在" });
 
             var obtain = await _context.Obtains.FindAsync(id);
             if (obtain == null)
-                return NotFound("稱號不存在");
+                return NotFound(new { message = "稱號不存在" });
 
             if (obtain.Price == 0)
-                return BadRequest("此稱號無法購買");
+                return BadRequest(new { message = "此稱號無法購買" });
 
             if (user.Wallet < obtain.Price)
-                return BadRequest("餘額不足");
+                return BadRequest(new { message = "餘額不足" });
 
             bool alreadyOwned = _context.ObtainStatuses.Any(x => x.UserId == userID && x.ObtainId == id);
             if (alreadyOwned)
-                return BadRequest("您已擁有此稱號");
+                return BadRequest(new { message = "您已擁有此稱號" });
             user.Wallet -= obtain.Price;
             var status = new ObtainStatus
             {
@@ -201,10 +207,17 @@ namespace T1_Wormhole_2._0._1.Controllers
             _context.ObtainStatuses.Add(status);
 
             await _context.SaveChangesAsync();
-            return Ok("購買成功");
+            return Ok(new { message = "購買成功" });
+          }
+            catch (Exception ex)
+            {
+                // log exception
+                return StatusCode(500, "伺服器錯誤：" + ex.Message);
+            }
         }
 
         // DELETE: api/ObtainsApi/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<string> DeleteObtain(int id)
         {
@@ -217,6 +230,34 @@ namespace T1_Wormhole_2._0._1.Controllers
             _context.Obtains.Remove(obtain);
             await _context.SaveChangesAsync();
             return "刪除Obtain成功!";
+        }
+
+        [HttpGet("isAdmin")]
+        public bool isAdmin()
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "Admin")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        [HttpGet("isUser")]
+        public bool isUser()
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "User")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool ObtainExists(int id)
