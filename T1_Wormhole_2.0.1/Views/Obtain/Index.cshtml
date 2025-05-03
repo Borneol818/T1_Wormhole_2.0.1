@@ -411,7 +411,7 @@
                 },
                 // 顯示金幣獲取紀錄 正常運作但資料庫資料不足無法完整驗證
                  getCoinsLog() {
-                    
+
                     axios.get("/api/User/GetCoinsLog")
                         .then(response => {
                             alert(response.data);

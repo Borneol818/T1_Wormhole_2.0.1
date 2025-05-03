@@ -41,8 +41,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         EmpInfo = "請先登入或註冊帳號，謝謝",
                     }
                 };
-                
-                EmpInfo =  EmpInfoErr;
+
+                EmpInfo = EmpInfoErr;
                 return EmpInfoErr;
                 //EmpInfo.Add(new InfoDto() { EmpInfo= "請先登入或註冊帳號，謝謝"}); //這邊是為了讓前端可以撈到資料,不然會報錯 
 
@@ -100,7 +100,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
             var id = Convert.ToInt32(currentUserId.Value);
             var result = _db.UserStatuses.Where(x => x.Id == id)
-                .Select(x=>new UserStatusDto
+                .Select(x => new UserStatusDto
                 {
                     Id = x.Id,
                     CommentCount = x.CommentCount,
@@ -184,13 +184,13 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             if (role == "User")
             {
-                var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放")).Select(x=>x.CoinSource).ToListAsync();
-                
+                var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放")).Select(x => x.CoinSource).ToListAsync();
+
                 var user = await _db.UserInfos.FindAsync(id);
 
                 if (user != null)
                 {
-                    
+
                     await _db.SaveChangesAsync();
                     return string.Join("\n", result);
                 }
@@ -314,7 +314,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         //依照瀏覽文章次數、註冊天數、評論數量、發文數量等決定user等級
         //(等級如何評斷可以自己設計，不一定這邊舉例都要用到)
         [NonAction]
-        public void UserLevelUp() {
+        public void UserLevelUp()
+        {
             int level = 0;
             var levelExp = EachLevelExp(); // 產生等級門檻，例如第 N 級需要 N^2 * 10
             var userStatus = _db.UserStatuses.ToList();
@@ -358,7 +359,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 }
                 //這邊是計算等級的
                 item.Level = level;
-                _db.Entry(item).State = EntityState.Modified;                
+                _db.Entry(item).State = EntityState.Modified;
                 //這邊可以加入升級的通知或其他操作
             }
             _db.SaveChanges();
@@ -386,7 +387,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Title = e.Title,
                     Type = e.Type,
                     //CreateTime = e.CreateTime,
-                    Content = e.Content,                    
+                    Content = e.Content,
                 });
             return result.ToList();
         }
@@ -394,10 +395,10 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         public async Task<List<CommentDto>> GetCommentHistory()
         {
             var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var ArtTitles= _db.Articles.Select(e =>new { e.Title, e.ArticleId});
+            var ArtTitles = _db.Articles.Select(e => new { e.Title, e.ArticleId });
             var commentHistory = _db.ArticleResponses.Where(x => x.UserId == currentUserId)
                 .Select(e => new CommentDto
-                {                    
+                {
                     ArticleID = e.ArticleId,
                     Id = e.Id,
                     Comment = e.Comment,
