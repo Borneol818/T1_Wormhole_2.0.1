@@ -83,7 +83,7 @@
                 hasLiked: false, // 使用者是否已經按過喜歡
                 hasDisliked: false, // 使用者是否已經按過不喜歡
 
-                isUserArticle:true,
+                isUserArticle:false,
             }
         },
         methods:{
@@ -115,15 +115,19 @@
                     }).then(res=>res.text())
                     .then(res=>{
                         alert(res);
-                        window.location.href="/DiscussArticleView";//無法跳轉?
-                    })
-                    .catch(Error=>{
+                    }).then(()=>window.location.href="/DiscussArticleView")
+                    .catch(Err=>{
                     alert("刪除失敗");
                 });
                 }
             },
-            UsersArticleORNot(artId){
-                let self=this;
+            //送到後端比對是否是文章作者
+            async UsersArticleORNot(artId){
+                self=this;
+                await fetch(`/api/Comments/isArticleAuthor?id=${artId}`, {
+                    credentials: 'include'
+                    }).then(res=>res.json())
+                    .then(res=>self.isUserArticle=res);
             },
             /*--------------進行文章刪除--------------*/
             /*--------------跳轉用--------------*/
