@@ -19,7 +19,7 @@
     }
 }
 
-.btn-like {
+/*.btn-like {
     background-color: gray;
     color: white;
 }
@@ -27,12 +27,18 @@
 .btn-dislike {
     background-color: gray;
     color: white;
-}
+}*/
 
 .btn-liked {
-    background-color: green; 
+    color: black;
+    background-color: green;
 }
 
 .btn-disliked {
-    background-color: red; 
+    color: black;
+    background-color: red;
+}
+textarea{
+    width:50%;
+    height:150px;
 }

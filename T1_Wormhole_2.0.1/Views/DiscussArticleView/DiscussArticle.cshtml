@@ -1,68 +1,35 @@
 ﻿@{
-	ViewData["Title"] = "討論版";
+    ViewData["Title"] = "討論版";
 }
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>討論版</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
-
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>討論版</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
+    <link href="~/css/Sam.css" rel="stylesheet">
 </head>
 
 <div id="app">
-    <div class="header-bottom  header-sticky">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-12">
-                    <!-- Main-menu -->
-                    <div class="main-menu text-center d-none d-lg-block">
-                        <nav>
-                            <ul id="navigation">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="categories.html">Categories</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li>
-                                    <a href="#">Pages</a>
-                                    <ul class="submenu">
-                                        <li><a href="login.html">login</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="book-details.html">book Details</a></li>
-                                        <li><a href="blog_details.html">Blog Details</a></li>
-                                        <li><a href="elements.html">Element</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contect</a></li>
-                                <li>
-                                    <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
-                                </li>
-                                <li>
-                                    <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <h1>{{articles.title}}</h1>
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
+    <div>
+
+        @*amy新增，之後請負責人放至適合位置*@
+        <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+        <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
+    </div>
     <p>{{articles.content}}</p>
 
-    @*amy新增，之後請負責人放至適合位置*@
-    <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-    <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
 
     <div class="comments-area">
         <div class="comment-list">
-            <button v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
-            <button v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
+            <button type="button" v-on:click="submitRating(true)" class="btn-liked">喜歡: {{ ratingcount.positive }}</button>
+            <button type="button" v-on:click="submitRating(false)" class="btn-disliked">不喜歡: {{ ratingcount.negative }}</button>
         </div>
         <div>
             <div class="single-comment justify-content-between d-flex">
@@ -79,17 +46,19 @@
                                 <h5>
                                     <a href="#">{{ Response.writer }}</a>
                                 </h5>
+                                
+                            </div>
+                            <div>
                                 <p class="date">時間{{ Response.date }}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
             </div>
-            <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
+            <textarea v-model="textResponse" placeholder="輸入留言" class="textarea"></textarea>
             <div class="reply-btn">
-                <button href="#" class="btn-reply text-uppercase" v-on:click="submitResponse">reply</button>
+                <button class="btn-reply text-uppercase" v-on:click="submitResponse">reply</button>
             </div>
         </div>
     </div>
@@ -170,17 +139,17 @@
             /*--------------跳轉用--------------*/
             getArticles(id) {
             //let self = this;
-            fetch('/api/ArticlesApi')
-            .then(x => x.json())
-            .then(res => {
-                console.log(res);
-                this.articles = res.find(x => x.articleID == id);;
-            })
+                fetch('/api/ArticlesApi')
+                .then(x => x.json())
+                .then(res => {
+                    console.log(res);
+                    this.articles = res.find(x => x.articleID == id);;
+                })
 
 
             //alert(self.articles);
                 //self.articles = res.find(x=>x.articleID==parseInt(id)))
-        },
+            },
 
         //取得好負評數量
             getRatingcount(id){
@@ -234,73 +203,59 @@
                    else {
                         alert('提交評價失敗：' + data.message);
                    }
-            }).catch(error => {
+                }).catch(error => {
                     console.error('提交評價錯誤:', error);
                     alert('請先登入');
                 });
             },
             //取得好負評數量
             //留言
-            submitResponse(id){
-                
-
-                if (!self.textResponse.trim()) {
+            submitResponse() {
+                if (!this.textResponse || !this.textResponse.trim()) {
                     alert("請輸入留言內容");
                     return;
                 }
 
-                // 組留言物件
-                let response = {
-                    ArticleId: articleId,
-                    Comment: self.textResponse,
-                    Id: 0, // 或可以不給，後端自己產生
-                    UserId: 1, // 這邊要用真實登入使用者ID，這裡假設測試用
-                    CreateTime: new Date().toISOString()
+                const response = {
+                    articleID: this.currentArticleID,
+                    comment: this.textResponse
                 };
 
-                fetch('/api/Respones/ArticleResponse', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(response)
-                }).then(r => {
-                   if(r.ok){
-                       return r.json();
-                   }
-                   else{
-                       throw new Error("留言失敗");
-                   }
-                }).then(res => {
-                    if(res.success){
-                        // 新增留言到最上面
-            
-                        self.comments.unshift({
-                        writer: "我自己", // 這裡之後要改成登入者名字
-                        content: self.textResponse,
-                        date: new Date().toLocaleString('zh-TW', { hour12: false })
-                });
-                    self.textResponse = "";
-                } 
-                else 
-                {
-                    alert("留言失敗");
-                }
-            })
+                fetch('/api/Comments/AddArticleResponse', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(response)
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        this.comments.unshift({
+                            writer: res.nickname, // 可以從使用者資料取 nickname
+                            content: this.textResponse,
+                            date: new Date().toLocaleString('zh-TW', { hour12: false })
+                        });
+                        this.textResponse = "";
+                    } else {
+                        alert("留言失敗：" + res.message);
+                    }
+                })
                 .catch(error => {
                     console.error(error);
                     alert("留言失敗");
-                })
+                });
             },
+	    
+	    
+
             loadRating(id) {
                 fetch('/api/Comments/GetRating?articleId=' + id)
                 .then(response => response.json())
                 .then(data => {
                     this.ratingcount.positive = data.positive;
                     this.ratingcount.negative = data.negative;
-
-                    // 假設從後端返回的資料中有「是否已經評價過」的標記
-                    // 根據後端的資料來設置使用者的按鈕狀態
                     if (data.userRating === true) {
                         this.hasLiked = true;
                         this.hasDisliked = false;
@@ -314,22 +269,14 @@
                         this.hasDisliked = false;
                     }
                 });
-            }
+            },
         },
         mounted() {
-            // var url=location.href;
-            //      var articleId="";
-            //      var str="";
-            //      if(url.indexOf('?')!=-1){
-            //              str=url.split('?');
-            //              articleId=str[1].split('=');
-            //      }
-            //          alert(articleId[1]);
             // 修改抓取文章id方式
                 let urlParams = new URLSearchParams(window.location.search);
                 var id=urlParams.get('id') ;
             // 修改抓取文章id方式
-                
+
                  this.Comments(id);
                  this.getRatingcount(id);
                  this.getArticles(id);
