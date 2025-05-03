@@ -1,417 +1,437 @@
 ﻿<div class="wrapper ">
 
-	<div class="content" id="app">
-		<div class="catgory">
-			<h1>Worm Shop</h1>
-		</div>
-		<div class="side">
-			<div class="neighbor">
-				<h1 style="font-size:30px">Wallet</h1>
-				<h2 style="text-align:right"><i class="fa-solid fa-coins fa-beat"></i>{{coins}}</h2>
-			</div>
-			<h1>打工人~打工魂!!</h1>
-			<ul class="chatRoom">
-				<li>
-					<a href="">
-						<h1>邀請好友註冊獲得蟲洞碧</h1>
-						<p>詳情請點進連結</p>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<h1>要錢沒有要命一條</h1>
-						<p>完成指定數量負評獲取蟲洞碧獎勵</p>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<h1>一人一句匿名樹洞</h1>
-						<p>完成指定數量匿名評論獲取蟲洞碧獎勵</p>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<h1>有人跟我一樣嗎?</h1>
-						<p>發布指定數量問帖獲取蟲洞碧獎勵</p>
-					</a>
-				</li>
-				<li>
-					<a href="">
-						<h1>沒技術的渣渣進來對線</h1>
-						<p>在聊天室裡超過指定時間獲取蟲洞碧獎勵</p>
-					</a>
-				</li>
-			</ul>
-		</div>
-		<div class="mb-3">
-			<div class="foremost">
-				<table style="width:100%">
-					<tr>
-						@* 僅管理者可以新增 尚未對user隱藏 *@
-						<td>
-							<button type="button" data-bs-toggle="modal" data-bs-target="#insertmodal" class="btn btn-primary">新增</button>
-						</td>
-						<td>
-							<div class="row" style="width:50%;margin-left:auto;margin-right:0">
-								<input class="col-md-8 form-control" v-model.lazy="filter" placeholder="請輸入欲搜尋之關鍵字" />
-							</div>
-						</td>
-					</tr>
-				</table>
-				@*         <div style="border-bottom: 3px solid #fff; padding-bottom:10px;"> *@
-				@* <h1>成就徽章</h1> *@
-				@*     <ul class="recommended"> *@
-				@*                 <li> *@
-				@*                     <img src="~/img/貓1.jpg" alt=""> *@
-				@*                     <h1>聖騎士團徽章</h1> *@
-				@*                     <p>評論同一個玩家的討論版10次</p> *@
-				@*                     <a asp-controller="User" asp-action="ViewProfile">Get</a> *@
-				@*                 </li> *@
+    <div class="content" id="app">
+        <div class="catgory">
+            <h1>Worm Shop</h1>
+        </div>
+        <div class="side">
+            <div class="neighbor">
+                <label class="col-md-12" style="font-size: 20px;">Wallet</label>
+                <a href="#" style="font-size: 30px; color:#C0D6DF ; margin-bottom: 10px;" @@click.prevent="getCoinsLog">餘額:{{coins}}</a>
+            </div>
+            <h1>打工人~打工魂!!</h1>
+            <ul class="chatRoom">
+                <li>
+                    <a href="">
+                        <h1>邀請好友註冊獲得蟲洞碧</h1>
+                        <p>詳情請點進連結</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <h1>要錢沒有要命一條</h1>
+                        <p>完成指定數量負評獲取蟲洞碧獎勵</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <h1>一人一句匿名樹洞</h1>
+                        <p>完成指定數量匿名評論獲取蟲洞碧獎勵</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <h1>有人跟我一樣嗎?</h1>
+                        <p>發布指定數量問帖獲取蟲洞碧獎勵</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <h1>沒技術的渣渣進來對線</h1>
+                        <p>在聊天室裡超過指定時間獲取蟲洞碧獎勵</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <div class="foremost">
+                <table style="width:100%">
+                    <tr>
+                        @* 僅管理者可以新增 尚未對user隱藏 *@
+                        <td>
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#insertmodal" class="btn btn-primary">新增</button>
+                        </td>
+                        <td>
+                            <div class="row" style="width:50%;margin-left:auto;margin-right:0">
+                                <input class="col-md-8 form-control" v-model.lazy="filter" placeholder="請輸入欲搜尋之關鍵字" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                @*         <div style="border-bottom: 3px solid #fff; padding-bottom:10px;"> *@
+                @* <h1>成就徽章</h1> *@
+                @*     <ul class="recommended"> *@
+                @*                 <li> *@
+                @*                     <img src="~/img/貓1.jpg" alt=""> *@
+                @*                     <h1>聖騎士團徽章</h1> *@
+                @*                     <p>評論同一個玩家的討論版10次</p> *@
+                @*                     <a asp-controller="User" asp-action="ViewProfile">Get</a> *@
+                @*                 </li> *@
 
-				@*             </ul> *@
-				@*         </div> *@
-				<div style="border-bottom: 3px solid #fff; padding-bottom:10px;">
-					<h1>稱號</h1>
-					<ul class="recommended">
-						<li v-for="obtain in obtains">
-							<!--  編輯畫面 -->
-							<template v-if="obtain.Edit==true">
-								<div>
-									<img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" class="img-fluid" />
-									<div>
-										<input v-model="obtain.name" class="form-control" />
-										<input v-model="obtain.condition" class="form-control" />
-										<input v-model="obtain.price" class="form-control" />
-										<input v-bind:id="'editFile'+ obtain.obtainID" type="file" accept="image/*" v-on:change="editFileChange($event.target)" class="form-control" />
-										<div>
-											<button id="update" class="btn btn-success" v-on:click="update(obtain)">更新</button>
-											<button class="btn btn-info" v-on:click="cancel">取消</button>
-										</div>
-									</div>
-								</div>
-							</template>
-							<!--  顯示畫面 -->
-							<template v-else>
-								<div>
-									<img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" />
-									<div>
-										<h1>{{obtain.name}}</h1>
-										<p>{{obtain.condition}}</p>
-										<p>蟲洞幣：{{obtain.price}}</p>
+                @*             </ul> *@
+                @*         </div> *@
+                <div style="border-bottom: 3px solid #fff; padding-bottom:10px;">
+                    <h1>稱號</h1>
+                    <ul class="recommended">
+                        <li v-for="obtain in obtains">
+                            <!--  編輯畫面 -->
+                            <template v-if="obtain.Edit==true">
+                                <div>
+                                    <img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" class="img-fluid" />
+                                    <div>
+                                        <input v-model="obtain.name" class="form-control" />
+                                        <input v-model="obtain.condition" class="form-control" />
+                                        <input v-model="obtain.price" class="form-control" />
+                                        <input v-bind:id="'editFile'+ obtain.obtainID" type="file" accept="image/*" v-on:change="editFileChange($event.target)" class="form-control" />
+                                        <div>
+                                            <button id="update" class="btn btn-success" v-on:click="update(obtain)">更新</button>
+                                            <button class="btn btn-info" v-on:click="cancel">取消</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <!--  顯示畫面 -->
+                            <template v-else>
+                                <div>
+                                    <img v-bind:src="'/api/ObtainsApi/GetPicture/'+obtain.obtainID+'?v='+rand" v-bind:title="obtain.name" />
+                                    <div>
+                                        <h1>{{obtain.name}}</h1>
+                                        <p>{{obtain.condition}}</p>
+                                        <p>蟲洞幣：{{obtain.price}}</p>
 
-										<div>
-											<button class="btn btn-warning" v-on:click="edit(obtain.obtainID)">編輯</button>
-											<button class="btn btn-danger" v-on:click="deleteobtain(obtain.obtainID)">刪除</button>
-											<button v-if="obtain.price > 0" class="btn btn-outline-secondary" v-on:click="buyObtain(obtain.obtainID)">Get</button>
-										</div>
-									</div>
-								</div>
-							</template>
-						</li>
-
-
-					</ul>
-				</div>
-				<!--  新增畫面 -->
-				<div class="modal fade"
-					 id="insertmodal"
-					 tabindex="-1"
-					 data-bs-backdrop="static"
-					 data-bs-keyboard="false"
-					 role="dialog"
-					 aria-labelledby="modalTitleId"
-					 aria-hidden="true">
-					<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
-						 role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="modalTitleId">
-									新增稱號
-								</h5>
-								<button type="button"
-										class="btn-close"
-										data-bs-dismiss="modal"
-										aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<div class="container">
-									<div class="form-floating mb-3">
-										<input class="form-control" id="floatingName" placeholder="稱號" v-model="name" maxlength="30">
-										<label for="floatingName">稱號</label>
-									</div>
-									<div class="form-floating mb-3">
-										<input class="form-control" id="floatingCondition" placeholder="達成條件" v-model="condition" maxlength="50">
-										<label for="floatingCondition">達成條件</label>
-									</div>
-									<div class="form-floating mb-3">
-										<input type="number" class="form-control" id="floatingPrice" placeholder="蟲洞幣" v-model="price">
-										<label for="floatingPrice">蟲洞幣價格</label>
-									</div>
-									<div class="mb-3">
-										<select class="form-select" aria-label=".form-select-lg example" v-model="type" required>
-											<option value="0">請選擇類型</option>
-											<option value="1">成就達成</option>
-											<option value="2">活動</option>
-											<option value="3">蟲洞幣獲得</option>
-										</select>
-										@* <p>目前選擇的 type：{{ type }}</p>  //為了檢視type的值是否修正成功*@
-									</div>
-									<br>
-									<div class="mb-3">
-										<label class="form-label">圖片:</label>
-										<img src="~/images/noimage.jpg" id="insertPreview" title="待上傳" class="form-control" />
-										<input id="insertFile" type="file" accept="image/*" v-on:change="insertFileChange($event.target)" class="form-control" />
-									</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button"
-										class="btn btn-secondary"
-										data-bs-dismiss="modal">
-									Close
-								</button>
-								<button type="button" class="btn btn-primary" v-on:click="insert" data-bs-dismiss="modal">Save</button>
-							</div>
-						</div>
-					</div>
-				</div>
-
-			</div>
+                                        <div>
+                                            <button class="btn btn-warning" v-on:click="edit(obtain.obtainID)">編輯</button>
+                                            <button class="btn btn-danger" v-on:click="deleteobtain(obtain.obtainID)">刪除</button>
+                                            <button v-if="obtain.price > 0" class="btn btn-outline-secondary" v-on:click="buyObtain(obtain.obtainID)">Get</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </li>
 
 
-		</div>
-	</div>
+                    </ul>
+                </div>
+                <!--  新增畫面 -->
+                <div class="modal fade"
+                     id="insertmodal"
+                     tabindex="-1"
+                     data-bs-backdrop="static"
+                     data-bs-keyboard="false"
+                     role="dialog"
+                     aria-labelledby="modalTitleId"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md"
+                         role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">
+                                    新增稱號
+                                </h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="floatingName" placeholder="稱號" v-model="name" maxlength="30">
+                                        <label for="floatingName">稱號</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="floatingCondition" placeholder="達成條件" v-model="condition" maxlength="50">
+                                        <label for="floatingCondition">達成條件</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" id="floatingPrice" placeholder="蟲洞幣" v-model="price">
+                                        <label for="floatingPrice">蟲洞幣價格</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <select class="form-select" aria-label=".form-select-lg example" v-model="type" required>
+                                            <option value="0">請選擇類型</option>
+                                            <option value="1">成就達成</option>
+                                            <option value="2">活動</option>
+                                            <option value="3">蟲洞幣獲得</option>
+                                        </select>
+                                        @* <p>目前選擇的 type：{{ type }}</p>  //為了檢視type的值是否修正成功*@
+                                    </div>
+                                    <br>
+                                    <div class="mb-3">
+                                        <label class="form-label">圖片:</label>
+                                        <img src="~/images/noimage.jpg" id="insertPreview" title="待上傳" class="form-control" />
+                                        <input id="insertFile" type="file" accept="image/*" v-on:change="insertFileChange($event.target)" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="button" class="btn btn-primary" v-on:click="insert" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
 </div>
 @section Scripts
 {
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-		Vue.createApp({
-			data() {
-				return {
-					obtains:[],
-					filter:"",
-					name:"",
-					condition:"",
-					price:"",
-					type:"0",
-					rand:1,
-							coins:0,
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    obtains:[],
+                    filter:"",
+                    name:"",
+                    condition:"",
+                    price:"",
+                    type:"0",
+                    rand:1,
+                    coins:0,
 
-				}
-			},
-			watch:{
-			filter(){
-				let _this = this;
-					var request={};
-					request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.name=_this.filter;
-					request.condition=_this.filter;
-					request.picture=null;
-						axios.post("api/ObtainsApi/Filter",request).then(response=>{
-						_this.obtains=response.data;
-								 for(var i=0;i<_this.obtains.length;i++){
-								 _this.obtains[i].Edit=false;
-								 }
-					}).catch(err=>{
-						alert("Error");
-					});
-				}
-			},
-			methods: {
-				// logType() {
-				// console.log("type:", this.type, "typeof:", typeof this.type);
-				// },為了檢視type回傳值
+                }
+            },
+            watch:{
+            filter(){
+                let _this = this;
+                    var request={};
+                    request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                    request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                    request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                    request.name=_this.filter;
+                    request.condition=_this.filter;
+                    request.picture=null;
+                        axios.post("api/ObtainsApi/Filter",request).then(response=>{
+                        _this.obtains=response.data;
+                                 for(var i=0;i<_this.obtains.length;i++){
+                                 _this.obtains[i].Edit=false;
+                                 }
+                    }).catch(err=>{
+                        alert("Error");
+                    });
+                }
+            },
+            methods: {
+                // logType() {
+                // console.log("type:", this.type, "typeof:", typeof this.type);
+                // },為了檢視type回傳值
 
-			getObtains() {
-				let self = this;
-				fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
-			},
-			filterObtains:function(){
-				// alert("filterObtains");
-				let _this = this;
-				var request={};
-					request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
-					request.name=_this.filter;
-					request.condition=_this.filter;
-					request.picture=null;
-						axios.post("api/ObtainsApi/Filter",request).then(response=>{
-						_this.obtains=response.data;
-								 for(var i=0;i<_this.obtains.length;i++){
-								 _this.obtains[i].Edit=false;
-								 }
-					}).catch(err=>{
-						alert("Error");
-					});
-			},
-				edit:function(obtainID){
-						// alert(`編輯:${obtainID}`);
-						let _this=this;
-						for(let i = 0; i < _this.obtains.length; i++){
-						_this.obtains[i].Edit = false;
-				}
-						for(var i=0;i<_this.obtains.length;i++){
-							var obtain=_this.obtains[i];
-							if(obtain.obtainID==obtainID){
-								obtain.Edit= true;
-								obtain.backup = {
-									name: obtain.name,
-									condition: obtain.condition,
-									price: obtain.price
-								};
-							}
-						}
-				},
-				cancel:function(){
-					// alert("cancel");
-					let _this=this;
-					for(var i=0;i<_this.obtains.length;i++){
-						var obtain=_this.obtains[i];
-						if(obtain.Edit== true){
-						   obtain.Edit= false;
-							obtain.name = obtain.backup.name;
-							obtain.condition = obtain.backup.condition;
-							obtain.price = obtain.backup.price;
+            getObtains() {
+                let self = this;
+                fetch("/api/ObtainsApi/GetObtains").then(x => x.json()).then(res => self.obtains = res)
+            },
+            filterObtains:function(){
+                // alert("filterObtains");
+                let _this = this;
+                var request={};
+                    request.obtainID=isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                    request.type = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                    request.price = isNaN(Number(_this.filter)) ? -1 : Number(_this.filter);
+                    request.name=_this.filter;
+                    request.condition=_this.filter;
+                    request.picture=null;
+                        axios.post("api/ObtainsApi/Filter",request).then(response=>{
+                        _this.obtains=response.data;
+                                 for(var i=0;i<_this.obtains.length;i++){
+                                 _this.obtains[i].Edit=false;
+                                 }
+                    }).catch(err=>{
+                        alert("Error");
+                    });
+            },
+                edit:function(obtainID){
+                        // alert(`編輯:${obtainID}`);
+                        let _this=this;
+                        for(let i = 0; i < _this.obtains.length; i++){
+                        _this.obtains[i].Edit = false;
+                }
+                        for(var i=0;i<_this.obtains.length;i++){
+                            var obtain=_this.obtains[i];
+                            if(obtain.obtainID==obtainID){
+                                obtain.Edit= true;
+                                obtain.backup = {
+                                    name: obtain.name,
+                                    condition: obtain.condition,
+                                    price: obtain.price
+                                };
+                            }
+                        }
+                },
+                cancel:function(){
+                    // alert("cancel");
+                    let _this=this;
+                    for(var i=0;i<_this.obtains.length;i++){
+                        var obtain=_this.obtains[i];
+                        if(obtain.Edit== true){
+                           obtain.Edit= false;
+                            obtain.name = obtain.backup.name;
+                            obtain.condition = obtain.backup.condition;
+                            obtain.price = obtain.backup.price;
 
-							delete obtain.backup;
+                            delete obtain.backup;
 
-						}
-					}
-				},
-				readURL:function(inputTypeFile,img,btn){
-						if(inputTypeFile.files[0]!=null){
-							var file=inputTypeFile.files[0];
-							var allowTypes="image.*";
-							if (file.type.match(allowTypes)){
-								btn.disabled = false;
-								var reader=new FileReader();
-								reader.onload=function(e){
-									img.src=e.target.result;
-									img.title=file.name;
-								};
-								reader.readAsDataURL(file);
+                        }
+                    }
+                },
+                readURL:function(inputTypeFile,img,btn){
+                        if(inputTypeFile.files[0]!=null){
+                            var file=inputTypeFile.files[0];
+                            var allowTypes="image.*";
+                            if (file.type.match(allowTypes)){
+                                btn.disabled = false;
+                                var reader=new FileReader();
+                                reader.onload=function(e){
+                                    img.src=e.target.result;
+                                    img.title=file.name;
+                                };
+                                reader.readAsDataURL(file);
 
-							}
-							else{
-								alert("不允許的檔案上傳類型！");
-								btn.disabled = true;
-								inputTypeFile.value="";
-							}
-						}
-					},
-				editFileChange:function(inputTypeFile){
-					//alert(`Change:${inputTypeFile.files[0].name}`);
-					let _this=this;
-					 _this.readURL(inputTypeFile,inputTypeFile.parentElement.previousSibling,$("#update"));
-					},
-				insertFileChange:function(inputTypeFile){
-					//alert(`Change:${inputTypeFile.files[0].name}`);
-					let _this=this;
-					_this.readURL(inputTypeFile,inputTypeFile.previousSibling,$("#insert"));
-				},
-				update:function(obtain){
-					// alert(`update:${obtain.obtainId}`);
-					let _this=this;
-						var form=new FormData();
-						form.append("obtainID",obtain.obtainID);
-						form.append("name",obtain.name);
-						form.append("condition",obtain.condition);
-						form.append("price",obtain.price);
-						form.append("type",obtain.type);
-						let fileInput = document.querySelector(`#editFile${obtain.obtainID}`);
-						if (fileInput && fileInput.files.length > 0) {
-							form.append("picture", fileInput.files[0]);
-						}
-							axios.put(`/api/ObtainsApi/${obtain.obtainID}`,form,{
-							headers:{
-								"content-type":"multipart/form-data"
-							}
-						}).then(response=>{
-							alert(response.data);
-							_this.filterObtains();
-							_this.rand=new Date().getTime();
-							obtain.preview = null;
-						}).catch(err=>{
-							alert("error");
-						});
+                            }
+                            else{
+                                alert("不允許的檔案上傳類型！");
+                                btn.disabled = true;
+                                inputTypeFile.value="";
+                            }
+                        }
+                    },
+                editFileChange:function(inputTypeFile){
+                    //alert(`Change:${inputTypeFile.files[0].name}`);
+                    let _this=this;
+                     _this.readURL(inputTypeFile,inputTypeFile.parentElement.previousSibling,$("#update"));
+                    },
+                insertFileChange:function(inputTypeFile){
+                    //alert(`Change:${inputTypeFile.files[0].name}`);
+                    let _this=this;
+                    _this.readURL(inputTypeFile,inputTypeFile.previousSibling,$("#insert"));
+                },
+                update:function(obtain){
+                    // alert(`update:${obtain.obtainId}`);
+                    let _this=this;
+                        var form=new FormData();
+                        form.append("obtainID",obtain.obtainID);
+                        form.append("name",obtain.name);
+                        form.append("condition",obtain.condition);
+                        form.append("price",obtain.price);
+                        form.append("type",obtain.type);
+                        let fileInput = document.querySelector(`#editFile${obtain.obtainID}`);
+                        if (fileInput && fileInput.files.length > 0) {
+                            form.append("picture", fileInput.files[0]);
+                        }
+                            axios.put(`/api/ObtainsApi/${obtain.obtainID}`,form,{
+                            headers:{
+                                "content-type":"multipart/form-data"
+                            }
+                        }).then(response=>{
+                            alert(response.data);
+                            _this.filterObtains();
+                            _this.rand=new Date().getTime();
+                            obtain.preview = null;
+                        }).catch(err=>{
+                            alert("error");
+                        });
 
-				},
+                },
 
-				insert:function(){
-					//alert("insert");
-					let _this=this;
-					console.log("typeof type:", typeof _this.type, "value:", _this.type);
+                insert:function(){
+                    //alert("insert");
+                    let _this=this;
+                    console.log("typeof type:", typeof _this.type, "value:", _this.type);
 
-					var form=new FormData();
-					form.append("name",_this.name);
-					form.append("condition",_this.condition);
-					form.append("price",_this.price);
-					form.append("type",parseInt(_this.type));
-					let fileInput = document.querySelector("#insertFile");
-						if (fileInput && fileInput.files.length > 0) {
-							form.append("picture", fileInput.files[0]);
-						}
-							  axios.post("/api/ObtainsApi/",form,{}).then(response=>{
-							 alert(response.data);
-							 _this.filterObtains();
-							 document.querySelector("#insertFile").previousSibling.src="@Url.Content("~/images/noimage.jpg")";
-							 document.querySelector("#insertFile").previousSibling.title="待上傳";
-						}).catch(err=>{
-							alert(err.message);
-						});
+                    var form=new FormData();
+                    form.append("name",_this.name);
+                    form.append("condition",_this.condition);
+                    form.append("price",_this.price);
+                    form.append("type",parseInt(_this.type));
+                    let fileInput = document.querySelector("#insertFile");
+                        if (fileInput && fileInput.files.length > 0) {
+                            form.append("picture", fileInput.files[0]);
+                        }
+                              axios.post("/api/ObtainsApi/",form,{}).then(response=>{
+                             alert(response.data);
+                             _this.filterObtains();
+                             document.querySelector("#insertFile").previousSibling.src="@Url.Content("~/images/noimage.jpg")";
+                             document.querySelector("#insertFile").previousSibling.title="待上傳";
+                        }).catch(err=>{
+                            alert(err.message);
+                        });
 
 
-				},
-				deleteobtain:function(obtainID){
-					//alert(`刪除:${obtainID}`);
-					var ret=confirm("確定要刪除嗎?")
-					if (ret==true){
-						let _this=this;
-						axios.delete(`/api/ObtainsApi/${obtainID}`).then(response=>{
-							alert(response.data)
-							_this.filterObtains();
-						}).catch(err=>{
-							alert("Error");
-						});
-					}
-				},
-				//查使用者的wallet
-				getCoins(id){
-					let self = this;
-					fetch("/api/User/GetUserCoins?id="+id).then(x => x.json()).then(coins => self.coins = coins)
-				},
-				buyObtain(obtainID){
-					//alert("buyObtain");
-					var ret=confirm("確定要購買此稱號嗎?")
-					if (ret==true){
-						let _this=this;
-						axios.post(`/api/ObtainsApi/${obtainID}`).then(response=>{
-							console.log(response.data);
-							alert(response.data)
-							_this.filterObtains();
-						}).catch(err=>{
-							if (err.response){
-								alert(err.response.data);
-							}else{
-								alert("購買失敗");
-							}
-						});
-					}
-				},
+                },
+                deleteobtain:function(obtainID){
+                    //alert(`刪除:${obtainID}`);
+                    var ret=confirm("確定要刪除嗎?")
+                    if (ret==true){
+                        let _this=this;
+                        axios.delete(`/api/ObtainsApi/${obtainID}`).then(response=>{
+                            alert(response.data)
+                            _this.filterObtains();
+                        }).catch(err=>{
+                            alert("Error");
+                        });
+                    }
+                },
+                //查使用者的wallet
+                updateCoins(){
+                    let _this = this;
+                    fetch('/api/User/updateCoins', {
+                        credentials: 'include',
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            _this.coins = data;
+                            console.log(data);
+                    });
+                },
+                buyObtain(obtainID){
+                    //alert("buyObtain");
+                    var ret=confirm("確定要購買此稱號嗎?")
+                    if (ret==true){
+                        let _this=this;
+                        axios.post(`/api/ObtainsApi/${obtainID}`).then(response=>{
+                            console.log(response.data);
+                            alert(response.data)
+                            _this.filterObtains();
+                        }).catch(err=>{
+                            if (err.response){
+                                alert(err.response.data);
+                            }else{
+                                alert("購買失敗");
+                            }
+                        });
+                    }
+                },
+                // 顯示金幣獲取紀錄 正常運作但資料庫資料不足無法完整驗證
+                 getCoinsLog() {
 
-			},
-			mounted:function() {
-				let _this=this;
-				_this.filterObtains();
-				_this.getCoins(3);
+                    axios.get("/api/User/GetCoinsLog")
+                        .then(response => {
+                            alert(response.data);
+                        })
+                        .catch(err => {
+                                alert("沒有紀錄");
+                        });
+                 },
+                 // 顯示金幣獲取紀錄 正常運作但資料庫資料不足無法完整驗證
 
-			},
 
-		}).mount("#app")
+            },
+            mounted:function() {
+                let _this=this;
+                _this.filterObtains();
+                _this.updateCoins();
 
-	</script>
-	}
+            },
+
+        }).mount("#app")
+
+    </script>
+}
