@@ -191,20 +191,45 @@ namespace T1_Wormhole_2._0._1.Controllers
             if (obtain.Price == 0)
                 return BadRequest(new { message = "此稱號無法購買" });
 
+            // 取得目前總餘額
+            var wallet = _context.ForumCoins
+                .Where(x => x.UserId == userID && x.Status == "已發放")
+                .Sum(x => (int?)x.CoinAmount) ?? 0;
+
             if (user.Wallet < obtain.Price)
-                return BadRequest(new { message = "餘額不足" });
+            return BadRequest(new { message = "餘額不足" });
 
             bool alreadyOwned = _context.ObtainStatuses.Any(x => x.UserId == userID && x.ObtainId == id);
             if (alreadyOwned)
                 return BadRequest(new { message = "您已擁有此稱號" });
-            user.Wallet -= obtain.Price;
+            
+            //寫入稱號狀態表
             var status = new ObtainStatus
             {
                 UserId = userID,
                 ObtainId = id,
-                Time = DateTime.Now
+                Time = DateTime.Now,
+                Count = 1
             };
             _context.ObtainStatuses.Add(status);
+
+            //寫入扣款紀錄
+            var coinRecord = new ForumCoin
+            {
+                UserId = userID,
+                CoinSource = $"購買稱號：{obtain.Name}", // 改成你的實際欄位
+                AccessTime = DateTime.Now,
+                CoinAmount = -obtain.Price,
+                Status = "已發放"
+            };
+            _context.ForumCoins.Add(coinRecord);
+
+            // 再次更新 Wallet
+            var totalCoins = _context.ForumCoins
+                .Where(x => x.UserId == userID && x.Status == "已發放")
+                .Sum(x => (int?)x.CoinAmount) ?? 0;
+
+            user.Wallet = totalCoins;
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "購買成功" });
