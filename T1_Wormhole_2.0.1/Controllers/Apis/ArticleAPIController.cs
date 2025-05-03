@@ -75,7 +75,6 @@ namespace T1_Wormhole_2._0._1.Controllers
                 // 嘗試查找使用者是否已經對這篇文章評價過
                 var rating = await _context.Ratings
                     .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId && r.UserId == UserId);
-
                 if (rating == null)
                 {
                     // 如果使用者沒有評價過，新增一筆新的評價資料
@@ -90,14 +89,31 @@ namespace T1_Wormhole_2._0._1.Controllers
                 }
                 else
                 {
-                    // 如果使用者已經評價過，則更新其評價
+                    // 判斷是否是取消行為
+                    bool isCancel =
+                        (request.IsPositive && rating.PositiveRating == 1) ||
+                        (!request.IsPositive && rating.NegativeRating == 1);
 
-                    rating.PositiveRating = request.IsPositive ? 1 : 0;
-                    rating.NegativeRating = request.IsPositive ? 0 : 1;
+                    if (isCancel)
+                    {
+                        // 使用者點兩次相同評價 → 取消
+                        rating.PositiveRating = 0;
+                        rating.NegativeRating = 0;
+                    }
+                    else
+                    {
+                        // 切換評價
+                        rating.PositiveRating = request.IsPositive ? 1 : 0;
+                        rating.NegativeRating = request.IsPositive ? 0 : 1;
+                    }
+
                     _context.Ratings.Update(rating);
                 }
 
-                await _context.SaveChangesAsync();
+                
+
+
+                    await _context.SaveChangesAsync();
 
                 // 計算更新後的統計資料
                 var posCount = await _context.Ratings
@@ -197,6 +213,30 @@ namespace T1_Wormhole_2._0._1.Controllers
                 return "刪除文章失敗";
             }
             return "刪除文章成功";
+        }
+
+        //amy新增
+        //比對是否是作者
+        //get:/api/Comments/isArticleAuthor?id=
+        [HttpGet]
+        public async Task<bool> isArticleAuthor(int id)
+        {
+            var art = await _context.Articles.FindAsync(id);
+            if (art.Type)//true==討論版
+            {
+                if (art.WriterId == Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+                {
+                    return true;
+                }
+            }
+            else 
+            {
+                if (art.ReleaseBy == Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
