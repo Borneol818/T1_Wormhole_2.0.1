@@ -35,7 +35,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Article Art = new Article
                     {
                         Title = DTOModel.Title,
-                        Type = false,//讀取是否為使用者(使用者=文章=false)
+                        Type = true,//讀取是否為使用者(使用者=文章=true)
                         CreateTime = DateTime.Now,
                         Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
                         WriterId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取使用者ID
@@ -57,7 +57,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Article Art = new Article
                     {
                         Title = DTOModel.Title,
-                        Type = true,
+                        Type = false,
                         CreateTime = DateTime.Now,
                         Content = DTOModel.Content,
                         ReleaseBy = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取管理員ID

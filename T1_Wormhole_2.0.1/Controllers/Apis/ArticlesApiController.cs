@@ -9,6 +9,8 @@ using T1_Wormhole_2._0._1.Models.DTOs;
 using T1_Wormhole_2._0._1.Models.Database;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace T1_Wormhole_2._0._1.Controllers
 {
@@ -28,22 +30,22 @@ namespace T1_Wormhole_2._0._1.Controllers
         [EnableQuery]
         public IQueryable<ArticleDTO> GetArticles()
         {
-            
-            return  _context.Articles
+
+            return _context.Articles
                 .Include(a => a.Writer)
                 .Include(a => a.ReleaseByNavigation)
                 .Include(a => a.ArticleResponses)
                 .Select(e => new ArticleDTO
                 {
-                ArticleID = e.ArticleId,
-                Title = e.Title,
-                Type = e.Type,
-                CreateTime = e.CreateTime,
-                Content = e.Content,
-                WriterNickname = e.Writer.Nickname,
-                ReleaseByName = e.ReleaseByNavigation.Name,
-                CommentCount= e.ArticleResponses.Count(),
-                ArticleCover=null
+                    ArticleID = e.ArticleId,
+                    Title = e.Title,
+                    Type = e.Type,
+                    CreateTime = e.CreateTime,
+                    Content = e.Content,
+                    WriterNickname = e.Writer.Nickname,
+                    ReleaseByName = e.ReleaseByNavigation.Name,
+                    CommentCount = e.ArticleResponses.Count(),
+                    ArticleCover = null
                 });
 
         }
@@ -93,6 +95,34 @@ namespace T1_Wormhole_2._0._1.Controllers
         private bool ArticleExists(int id)
         {
             return _context.Articles.Any(e => e.ArticleId == id);
+        }
+
+        //GET: api/ArticlesApi/isUser
+        [HttpGet("isUser")]
+        public bool isUser()
+        {
+            if (User.FindFirst(ClaimTypes.Role)?.Value == "User")
+            {
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
+
+        //GET: api/ArticlesApi/isUser
+        [HttpGet("isAdmin")]
+        public bool isAdmin()
+        {
+            if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

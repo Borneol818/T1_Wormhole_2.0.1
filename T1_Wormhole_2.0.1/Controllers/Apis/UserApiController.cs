@@ -28,54 +28,137 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [Authorize]
         //4/15 晚上改動
         [HttpGet]
-        public async Task<IEnumerable<UserInfo>> Get() //這是撈使用者資料的
+        public async Task<IEnumerable<InfoDto>> Get() //這是撈使用者資料的
         {
-            var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            //if (currentUserId != id)
-            //{
-            //    return Enumerable.Empty<UserInfo>(); //先回傳空列舉,看要回傳自己的資料還是怎麼樣
-            //}
-            var result = _db.UserInfos.Where(x => x.UserId == currentUserId)
-                .Select(e => new UserInfo
+            var EmpInfo = new List<InfoDto>();
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                var EmpInfoErr = new List<InfoDto>()
+                {
+                    new InfoDto()
+                    {
+                        EmpInfo = "請先登入或註冊帳號，謝謝",
+                    }
+                };
+                
+                EmpInfo =  EmpInfoErr;
+                return EmpInfoErr;
+                //EmpInfo.Add(new InfoDto() { EmpInfo= "請先登入或註冊帳號，謝謝"}); //這邊是為了讓前端可以撈到資料,不然會報錯 
+
+                //return EmpInfo;
+                //return Enumerable.Empty<UserInfo>(); //先回傳空列舉,看要回傳自己的資料還是怎麼樣
+            }
+            var id = Convert.ToInt32(currentUserId.Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "User")
+            {
+                var resultU = _db.UserInfos.Where(x => x.UserId == id)
+                .Select(e => new InfoDto
                 {
                     UserId = e.UserId,
                     Name = e.Name,
                     Nickname = e.Nickname,
                     Phone = e.Phone,
-                    Brithday = e.Brithday,
-                    SignatureLine = e.SignatureLine,
+                    Birthday = e.Birthday,
+                    Signature = e.SignatureLine,
                     Sex = e.Sex,
                     Photo = null,
                     Wallet = e.Wallet,
+                    IsAdmin = false,
                 });
-            return result;
+                return resultU;
+            }
+            else if (role == "Admin")
+            {
+                var resultM = _db.BoManagers.Where(x => x.ManagerId == id)
+               .Select(e => new InfoDto
+               {
+                   ManagerName = e.Name,
+                   ManagerTeam = e.Team,
+                   IsAdmin = true,
+               });
+                return resultM;
+            }
+            return EmpInfo; //這邊是為了讓前端可以撈到資料,不然會報錯
         }
         [HttpGet]
-        public async Task<IEnumerable<UserStatus>> GetStatus()
+        public async Task<IEnumerable<UserStatusDto>> GetStatus()
         {
-            var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var result = _db.UserStatuses.Where(x => x.Id == currentUserId);
+            //var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                var EmpInfoErr = new List<UserStatusDto>()
+                {
+                    new UserStatusDto()
+                    {
+                        EmpInfo = "0",
+                    }
+                };
+                return EmpInfoErr;
+            }
+            var id = Convert.ToInt32(currentUserId.Value);
+            var result = _db.UserStatuses.Where(x => x.Id == id)
+                .Select(x=>new UserStatusDto
+                {
+                    Id = x.Id,
+                    CommentCount = x.CommentCount,
+                    ReadCount = x.ReadCount,
+                    PostCount = x.PostCount,
+                    Status = x.Status,
+                    Level = x.Level,
+                });
             return result;
         }
 
         [HttpGet]
         public async Task<int?> updateCoins() //這是計算使用者的錢包餘額的
         {
-            var currentUserId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var result = _db.ForumCoins.Where(x => x.UserId == currentUserId && x.Status.Contains("已發放"));                
-            var totalCoins = result.Sum(x => x.CoinAmount);
-            var user =await _db.UserInfos.FindAsync(currentUserId);
-            
-            if (user != null)
-            {                                
-                user.Wallet = totalCoins;
-                await _db.SaveChangesAsync();
-                return user.Wallet;
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                var EmpInfoErr = new List<InfoDto>()
+                {
+                    new InfoDto()
+                    {
+                        EmpInfo = "0",
+                    }
+                };
+                return Convert.ToInt32(EmpInfoErr[0].EmpInfo);
+            }
+
+            var id = Convert.ToInt32(currentUserId.Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "User")
+            {
+                var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放"));
+                var totalCoins = result.Sum(x => x.CoinAmount);
+                var user = await _db.UserInfos.FindAsync(id);
+
+                if (user != null)
+                {
+                    user.Wallet = totalCoins;
+                    await _db.SaveChangesAsync();
+                    return user.Wallet;
+                }
+                else
+                {
+                    return user.Wallet;
+                }
             }
             else
             {
-                return null;
-            }          
+                var EmpInfoErr = new List<InfoDto>()
+                {
+                    new InfoDto()
+                    {
+                        EmpInfo = "0",
+                    }
+                };
+                return Convert.ToInt32(EmpInfoErr[0].EmpInfo);
+
+            }
         }
 
         //[HttpGet]
@@ -108,7 +191,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
             data.Name = model.Name;
             data.Nickname = model.Nickname;
-            data.Brithday = DateOnly.Parse(model.Birthday);
+            data.Birthday = DateOnly.Parse(model.Birthday);
             data.SignatureLine = model.Signature;
             data.Sex = model.Sex;
             data.Phone = model.Phone;
@@ -261,7 +344,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         }
         //Borneol 04/24 使用者升級判定-製作中
 
-        //Borneol 04/29 使用者PO文&留言歷史-製作中
+        //Borneol 04/29 使用者PO文&留言歷史
         [HttpGet]
         public async Task<List<ArticleDTO>> GetArticlesHistory()
         {
@@ -300,6 +383,6 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
             return commentHistory;
         }
-        //Borneol 04/29 使用者PO文&留言歷史-製作中
+        //Borneol 04/29 使用者PO文&留言歷史
     }
 }

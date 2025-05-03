@@ -135,17 +135,17 @@
             /*--------------跳轉用--------------*/
             getArticles(id) {
             //let self = this;
-            fetch('/api/ArticlesApi')
-            .then(x => x.json())
-            .then(res => {
-                console.log(res);
-                this.articles = res.find(x => x.articleID == id);;
-            })
+                fetch('/api/ArticlesApi')
+                .then(x => x.json())
+                .then(res => {
+                    console.log(res);
+                    this.articles = res.find(x => x.articleID == id);;
+                })
 
 
             //alert(self.articles);
                 //self.articles = res.find(x=>x.articleID==parseInt(id)))
-        },
+            },
 
         //取得好負評數量
             getRatingcount(id){

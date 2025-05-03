@@ -332,14 +332,13 @@
             getArticleUrl(popularArticle)
             {
                 var url;
-                if(popularArticle.type)//typeof true==新聞
+                if(popularArticle.type)//typeof false==新聞
                 {
-                    url=`/NewsArticle/NewsArticle?id=${popularArticle.articlesId}`
-                    
+                    url=`/DiscussArticleView/DiscussArticle?id=${popularArticle.articlesId}`
                 }
                 else
                 {
-                    url=`/DiscussArticleView/DiscussArticle?id=${popularArticle.articlesId}`
+                    url=`/NewsArticle/NewsArticle?id=${popularArticle.articlesId}`
                 }
                 return url;
             },

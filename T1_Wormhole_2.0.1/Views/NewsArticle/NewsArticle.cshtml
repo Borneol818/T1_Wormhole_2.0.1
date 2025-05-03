@@ -237,6 +237,31 @@
                     }
                 });
             },
+             /*--------------進行文章刪除--------------*/
+            async ArticleDelete(){
+                var ret=confirm("確定要刪除嗎?");
+                let artId=this.currentArticleID;
+                    if(ret){
+                await fetch(`/api/Comments/DeleteArticle?id=${artId}`, {
+                    method: 'Delete'
+                    }).then(res=>res.text())
+                    .then(res=>{
+                        alert(res);
+                    }).then(()=>window.location.href="/NewsArticle")
+                    .catch(Err=>{
+                    alert("刪除失敗");
+                });
+                }
+            },
+            //送到後端比對是否是文章作者
+            async UsersArticleORNot(artId){
+                self=this;
+                await fetch(`/api/Comments/isArticleAuthor?id=${artId}`, {
+                    credentials: 'include'
+                    }).then(res=>res.json())
+                    .then(res=>self.isUserArticle=res);
+            },
+            /*--------------進行文章刪除--------------*/
         },
         mounted() {
 
@@ -252,6 +277,7 @@
             this.currentArticleID=id;
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
             this.loadRating(id);
+            this.UsersArticleORNot(id);
         }
 
     }).mount('#app')

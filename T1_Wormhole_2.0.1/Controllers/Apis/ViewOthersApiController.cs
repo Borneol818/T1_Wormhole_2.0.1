@@ -37,7 +37,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Name = e.Name,
                     Nickname = e.Nickname,
                     Phone = e.Phone,
-                    Brithday = e.Brithday,
+                    Birthday = e.Birthday,
                     SignatureLine = e.SignatureLine,
                     Sex = e.Sex,
                     Photo = null,
@@ -123,5 +123,46 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             return fileName;
         }
         //Borneol 04/19 撈Obtain status 資料表中符合UserId的資料，再依照撈出的資料去撈Obtains中找到該Obtaib的圖片來顯示
+
+        //Borneol 04/29 使用者PO文&留言歷史
+        [HttpGet]
+        public async Task<List<ArticleDTO>> GetOtherArticlesHistory(int id)
+        {
+            
+            var result = _db.Articles.Where(x => x.WriterId == id)
+                .Select(e => new ArticleDTO
+                {
+                    ArticleID = e.ArticleId,
+                    Title = e.Title,
+                    Type = e.Type,
+                    //CreateTime = e.CreateTime,
+                    Content = e.Content,
+                });
+            return result.ToList();
+        }
+        [HttpGet]
+        public async Task<List<CommentDto>> GetOtherCommentHistory(int id)
+        {
+            
+            var ArtTitles = _db.Articles.Select(e => new { e.Title, e.ArticleId });
+            var commentHistory = _db.ArticleResponses.Where(x => x.UserId == id)
+                .Select(e => new CommentDto
+                {
+                    ArticleID = e.ArticleId,
+                    Id = e.Id,
+                    Comment = e.Comment,
+                    //CreateTime = e.CreateTime,
+                }).ToList();
+            foreach (var item in commentHistory)
+            {
+                var article = ArtTitles.FirstOrDefault(x => x.ArticleId == item.ArticleID);
+                if (article != null)
+                {
+                    item.Title = article.Title;
+                }
+            }
+            return commentHistory;
+        }
+        //Borneol 04/29 使用者PO文&留言歷史
     }
 }

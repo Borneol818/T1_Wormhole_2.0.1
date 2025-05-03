@@ -421,7 +421,7 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.UserId)
                 .HasComment("使用者ID")
                 .HasColumnName("UserID");
-            entity.Property(e => e.Brithday).HasComment("使用者生日");
+            entity.Property(e => e.Birthday).HasComment("使用者生日");
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(50)
