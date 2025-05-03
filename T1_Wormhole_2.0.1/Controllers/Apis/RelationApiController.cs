@@ -69,7 +69,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Invite = "申請中",
                 };
                 _db.Relations.Add(relation);
-                _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return "已成功送出邀請";
             }
             else
@@ -96,7 +96,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 if (relation != null)
                 {
                     relation.Invite = "已接受";
-                    _db.SaveChangesAsync();
+                    _db.SaveChanges();
                     return "已接受邀請";
                 }
                 else
@@ -125,7 +125,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 if (relation != null)
                 {
                     _db.Relations.Remove(relation);
-                    _db.SaveChangesAsync();
+                    _db.SaveChanges();
                     return "已拒絕邀請";
                 }
                 else
@@ -156,7 +156,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 if (relation != null)
                 {
                     _db.Relations.Remove(relation);
-                    _db.SaveChangesAsync();
+                    _db.SaveChanges();
                     return "已刪除邀請";
                 }
                 else

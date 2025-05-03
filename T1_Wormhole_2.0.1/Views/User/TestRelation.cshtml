@@ -14,7 +14,7 @@
 							@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button> *@
 							@* </div> *@
 							<div class="col-2">
-								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(friend.inviteeId)">Break</button>
+								<button id="break" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(friend.inviteeId)">Break</button>
 							</div>
 						</div>
 					</li>
@@ -34,7 +34,7 @@
 							@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitee.inviteeId)">Accept</button> *@
 							@* </div> *@
 							<div class="col-2">
-								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(invitee.inviteeId)">Cancel</button>
+								<button id="cancel" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(invitee.inviteeId)">Cancel</button>
 							</div>
 						</div>
 					</li>
@@ -51,10 +51,10 @@
 								<p class="ellipsis-text">{{self.invite}}</p>
 							</a>
 							<div class="col-2">
-								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button>
+								<button id="accept" type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button>
 							</div>
 							<div class="col-2">
-								<button type="button" class="btn btn-warning" style="width: 100%;" @@click="refuseInvite(self.inviterId)">Refuse</button>
+								<button id="refuse" type="button" class="btn btn-warning" style="width: 100%;" @@click="refuseInvite(self.inviterId)">Refuse</button>
 							</div>
 						</div>
 					</li>
@@ -79,19 +79,18 @@
 			async getRelations(){
 				let _this=this;	
 				var i;
-				this.getUserId();
 				await fetch('/api/Relation/GetRelation',{
 					credentials: 'include',
 				}).then(x=>x.json()).then(res=>{
 					for(i=0;i<res.length;i++){
-						if(res[i].invite!="申請中"&&res[i].inviterId==_this.myUserId){
+						if(res[i].invite=="已接受"&&res[i].inviterId==_this.myUserId){
 							_this.relations.push({
 								inviteeId: res[i].inviteeId,
 								inviteeName: res[i].inviteeName,
 								relationType: res[i].relationType
 							});
 						}
-						else if(res[i].invite!="申請中"&&res[i].inviteeId==_this.myUserId){
+						else if(res[i].invite=="已接受"&&res[i].inviteeId==_this.myUserId){
 							_this.relations.push({
 								inviteeId: res[i].inviterId,
 								inviteeName: res[i].inviterName,
@@ -115,8 +114,7 @@
 					}
 				});
 			},
-			 async breakInvite(inviteeId){				 
-				 this.getUserId();
+			 async breakInvite(inviteeId){
 				 var request={};
 					request.inviterId=this.myUserId;
 					request.inviteeId = inviteeId;
@@ -140,7 +138,6 @@
 			},
 			 // cancelInvite(){},
 			 async acceptInvite(inviterId){
-				this.getUserId();
 				 var request={};
 					request.inviterId= inviterId;
 					request.inviteeId = this.myUserId;
@@ -162,8 +159,7 @@
 						window.location.href="/User/TestRelation",
 					);
 			 },
-			 async refuseInvite(inviterId){
-				this.getUserId();
+			 async refuseInvite(inviterId){				
 				 var request={};
 					request.inviterId= inviterId;
 					request.inviteeId = this.myUserId;
@@ -195,6 +191,7 @@
 		},
 		mounted(){			
 			this.getRelations();
+			this.getUserId();
 		},
 	}).mount("#RelationList");
 </script>
