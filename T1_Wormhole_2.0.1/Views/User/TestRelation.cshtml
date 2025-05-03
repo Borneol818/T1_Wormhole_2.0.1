@@ -8,7 +8,7 @@
 						<div class="row">
 							<a class="col-10" :href="'/User/ViewProfile?id='+friend.inviteeId">
 								<h3 style="margin:0px;">{{friend.inviteeName}}</h3>
-								<p class="ellipsis-text">{{friend.relationTypre}}</p>
+								<p class="ellipsis-text">{{friend.relationType}}</p>
 							</a>
 							@* <div class="col-2"> *@
 							@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button> *@
@@ -88,14 +88,14 @@
 							_this.relations.push({
 								inviteeId: res[i].inviteeId,
 								inviteeName: res[i].inviteeName,
-								relationTypre: res[i].relationTypre
+								relationType: res[i].relationType
 							});
 						}
 						else if(res[i].invite!="申請中"&&res[i].inviteeId==_this.myUserId){
 							_this.relations.push({
 								inviteeId: res[i].inviterId,
 								inviteeName: res[i].inviterName,
-								relationTypre: res[i].relationTypre
+								relationType: res[i].relationType
 							});
 						}
 						else if(res[i].invite=="申請中"&&res[i].inviteeId==_this.myUserId){
@@ -121,7 +121,7 @@
 					request.inviterId=this.myUserId;
 					request.inviteeId = inviteeId;
 					request.invite = "取消邀請";
-					request.relationTypre = "無關係";
+					request.relationType = "無關係";
 					request.inviterName = "";
 					request.inviteeName = "";
 
