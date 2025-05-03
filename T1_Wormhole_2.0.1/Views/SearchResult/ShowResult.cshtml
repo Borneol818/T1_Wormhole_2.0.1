@@ -19,6 +19,9 @@
                         <p class="card-text" style="color: #666666;">{{user.userSignature}}</p>
                     </div>
                 </a>
+                <div class="card-body">
+                    <button type="button" class="btn btn-warning" style="width: 100%;" @@click ="sendInvite(user.resultUserId)">Send Invite</button>            
+                </div>
             </div>
         </div>        
 
@@ -70,6 +73,7 @@
             return{
                 searchResultU: [],
                 searchResultA:[],
+                myUserId:0,
             };
         },
 		methods:{
@@ -107,12 +111,42 @@
 				})
 				.then(x=>x.json())
 				.then(res=>self.searchResultA=res);
-			},		   			
+			},	
+            async getUserId(){
+                 await fetch('/api/User/Get',{
+                    credentials: 'include',
+                }).then(x=>x.json()).then(res=>{
+                    this.myUserId=res[0].userId;
+                });
+             },
+            async sendInvite(resultUserId){
+                let self=this;                
+                var request={};
+                    request.inviterId=self.myUserId;
+                    request.inviterName="";
+                    request.inviteeId = resultUserId;
+                    request.inviteeName = "";
+                    request.invite = "邀請中";
+                    request.relationType = "無關係";
+
+                    await fetch('/api/Relation/AddRelation',{
+                     body:JSON.stringify(request),
+                     credentials: 'include',
+                    headers:{
+                        "Content-Type":"application/json",
+                        // "Accept":"application/json",
+                    },
+                    method:"PUT",
+                    }).then(x=>
+                        alert("已成功送出邀請"),
+                    );
+            },
         },        
 		mounted(){
             let urlParams = new URLSearchParams(window.location.search);
             var keyword=decodeURIComponent(urlParams.get('keyword')) ;
             this.getSearchResult(keyword);
+            this.getUserId();
 		},
     }).mount("#showResult")
 </script>
