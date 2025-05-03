@@ -98,7 +98,7 @@
 				data.append("content",self.posterComment);
 				data.append("signature",self.signatureString);
                 data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
-                alert(JSON.stringify(data));
+                // alert(JSON.stringify(data));
 				fetch("/api/Poster/postArticle", {
 					body:data, // must match 'Content-Type' header
 					// headers: {
@@ -109,7 +109,8 @@
 				}).then((response) => response.json()).then(res => {
 					if (res) {
 						// alert('ok');
-						//self.rand=new Date().getTime(); //用時間控制rand擷取版本
+						self.rand=new Date().getTime(); //用時間控制rand擷取版本
+                        alert("上傳文章成功");
                         self.jumpToDiscussArticleView(); //Borneol 4/24 我加來測試，可依需求刪留
 					} else {
 					  alert('上傳文章失敗')
@@ -166,6 +167,7 @@
                 if(res.ok)
                 {
                     var message=await res.text();
+                    self.rand=new Date().getTime();
                     alert(message);
                     self.EditMode=false;
                     self.jumpToDiscussArticleView();
