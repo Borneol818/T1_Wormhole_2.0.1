@@ -172,26 +172,26 @@
 		<div class="footer-wrappper section-bg">
 			<div class="footer-area footer-padding">
 				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-xl-3 col-lg-5 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
-								<div class="single-footer-caption mb-30">
+					<div class="row justify-content-between" style="height:250px">
+						<div class="col-xl-3 col-lg-5 col-md-4 col-sm-6 d-flex align-items-center" style="height:100%">
+							<div class="single-footer-caption">
+								<div class="single-footer-caption">
 									<!-- logo -->
-									<div class="footer-logo mb-25">
-										<a href="index.html"><img src="~/assets/img/logo/logo.png" alt=""></a>
+									<div class="footer-logo">
+										<a asp-controller="Home" asp-action="Index"><img src="~/assets/img/logo/logo.png" alt=""></a>
 									</div>
-									<div class="footer-tittle">
-										<div class="footer-pera">
-											<p>Get the breathing space now, and we’ll extend your term at the other end year for go.</p>
-										</div>
-									</div>
+									@* <div class="footer-tittle"> *@
+									@* 	<div class="footer-pera"> *@
+									@* 		<p>Get the breathing space now, and we’ll extend your term at the other end year for go.</p> *@
+									@* 	</div> *@
+									@* </div> *@
 									<!-- social -->
-									<div class="footer-social">
-										<a href="https://bit.ly/sai4ull"><i class="fab fa-facebook"></i></a>
-										<a href="#"><i class="fab fa-instagram"></i></a>
-										<a href="#"><i class="fab fa-linkedin-in"></i></a>
-										<a href="#"><i class="fab fa-youtube"></i></a>
-									</div>
+									@* <div class="footer-social"> *@
+									@* 	<a href="https://bit.ly/sai4ull"><i class="fab fa-facebook"></i></a> *@
+									@* 	<a href="#"><i class="fab fa-instagram"></i></a> *@
+									@* 	<a href="#"><i class="fab fa-linkedin-in"></i></a> *@
+									@* 	<a href="#"><i class="fab fa-youtube"></i></a> *@
+									@* </div> *@
 								</div>
 							</div>
 						</div>
@@ -224,15 +224,20 @@
 						@* 	</div> *@
 						@* </div> *@
 						<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6">
-							<div class="single-footer-caption mb-50">
+							<div class="single-footer-caption">
 								<div class="footer-tittle">
 									<h4>Site Map</h4>
-									<ul class="mb-20">
-										<li><a href="#">Home</a></li>
-										<li><a href="#">About Us</a></li>
-										<li><a href="#">FAQs</a></li>
-										<li><a href="#">Blog</a></li>
-										<li><a href="#">Contact</a></li>
+									<ul>
+										<li><a asp-controller="Home" asp-action="Index">首頁</a></li>
+										<li><a asp-controller="Event" asp-action="Index">活動</a></li>
+										<li><a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a></li>
+										<li><a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a></li>
+										<li><a asp-controller="Obtain" asp-action="Index">Wormhole Shop</a></li>
+										@* <li><a href="#">Home</a></li> *@
+										@* <li><a href="#">About Us</a></li> *@
+										@* <li><a href="#">FAQs</a></li> *@
+										@* <li><a href="#">Blog</a></li> *@
+										@* <li><a href="#">Contact</a></li> *@
 									</ul>
 								</div>
 							</div>
@@ -249,10 +254,11 @@
 	</div>
 	<!-- Scroll Up -->
 
-	<button class="sidebar-toggle">
-		<!-- 使用Font Awesome的Icon -->
-		<i class="fas fa-bars"></i>
-	</button>
+	@* <button class="sidebar-toggle"> *@
+	@* 	<!-- 使用Font Awesome的Icon --> *@
+	@* 	<i class="fas fa-bars"></i> *@
+	@* </button> *@
+	
 	<!-- JS here -->
 	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
 	<script>
