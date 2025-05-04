@@ -39,8 +39,80 @@
 	<header>
 		<div class="header-area">
 			<div class="main-header ">
-				<div class="header-top ">
-					<div id="onlyLayout">
+				<div id="onlyLayout">
+					<!--好友列表-->
+					<div>
+						<button class="toggleBtn" :class="{active:isSidebarOpen}" @@click="sidebarController()">{{sidebarControllerText}}</button>
+
+						<div class="sidebar" :class="{active:isSidebarOpen}">
+							<div style="width:100%; padding:3px;">
+								@* <li><a href="#">首頁</a></li> *@
+								@* <li><a href="#">關於我們</a></li> *@
+								@* <li><a href="#">服務</a></li> *@
+								@* <li><a href="#">聯絡</a></li> *@								
+								<div style="border-bottom:2px solid black; margin-bottom:20px;">
+									<h1 style="margin-bottom: 10px; color: antiquewhite;">Relation List</h1>
+									<ul v-for="friend in relations" :key="friend.inviteeId">
+										<li>
+											<div class="row">
+												<a class="col-8" :href="'/User/ViewProfile?id='+friend.inviteeId">
+													<h3 style="margin:0px; color:antiquewhite;">{{friend.inviteeName}}</h3>
+													<p class="ellipsis-text" style="color: antiquewhite;">{{friend.relationType}}</p>
+												</a>
+												@* <div class="col-2"> *@
+												@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button> *@
+												@* </div> *@
+												<div class="col-4">
+													<button id="break" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(friend.inviteeId)">Break</button>
+												</div>
+											</div>
+										</li>
+									</ul>
+									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
+								</div>
+								<div style="border-bottom:2px solid black; margin-bottom:20px;">
+									<h1 style="margin-bottom: 10px; color: antiquewhite;">Inviting List</h1>
+									<ul v-for="invitee in invitings" :key="invitee.inviteeId">
+										<li>
+											<div class="row">
+												<a class="col-7" :href="'/User/ViewProfile?id='+invitee.inviteeId">
+													<h3 style="margin:0px; color: antiquewhite;">{{invitee.inviteeName}}</h3>
+													<p class="ellipsis-text" style="color: antiquewhite;">{{invitee.invite}}</p>
+												</a>
+												@* <div class="col-2"> *@
+												@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitee.inviteeId)">Accept</button> *@
+												@* </div> *@
+												<div class="col-5">
+													<button id="cancel" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(invitee.inviteeId)">Cancel</button>
+												</div>
+											</div>
+										</li>
+									</ul>
+									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
+								</div>
+								<div style="border-bottom:2px solid black; margin-bottom:20px;">
+									<h1 style="margin-bottom: 10px; color: antiquewhite;">Inviting Me</h1>
+									<ul v-for="invitingMe in myInvitings" :key="invitingMe.inviterId">
+										<li>
+											<div class="row">
+												<a class="col-7" :href="'/User/ViewProfile?id='+invitingMe.inviterId">
+													<h3 style="margin:10px 0; color: antiquewhite;">{{invitingMe.inviterName}}</h3>
+													<p class="ellipsis-text" style="color: antiquewhite;">{{invitingMe.invite}}</p>
+												</a>
+												<div class="col-5">
+													<button id="accept" type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitingMe.inviterId)">Accept</button>
+													<button id="refuse" type="button" class="btn btn-warning" style="width: 100%;" @@click="refuseInvite(invitingMe.inviterId)">Refuse</button>
+												</div>												
+											</div>
+										</li>
+									</ul>
+									@*     @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@ 
+								</div>								
+							</div>
+						</div>
+					</div>
+					<!--好友列表-->
+					<div class="header-top ">
 						<div class="container">
 							<div class="row">
 								<div class="col-xl-12">
@@ -63,7 +135,7 @@
 											<ul>
 												@* <li><a href="#">FAQ</a></li> *@
 												@* <li><a href="#">Track Order</a></li>*@
-												<li class="nav-item dropdown">
+												<li class="nav-item dropdown" style="z-index:9999;">
 													<a class="nav-link dropdown-toggle"
 														style="color:whitesmoke;"
 													   href="#"
@@ -77,19 +149,19 @@
 													<div class="dropdown-menu"
 														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
 														<template v-if="layoutItem.isAdmin==false">
-															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" >
+															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;">
 																<h3>My Account</h3>
 																<label>User Name</label>
 																<p>{{layoutItem.name}}</p>
 																<label>Nickname</label>
 																<p>{{layoutItem.nickname}}</p>
 															</div>
-															<a class="dropdown-item" asp-controller="User" asp-action="TestRelation" >TestRelation</a>
+															@* <a class="dropdown-item" asp-controller="User" asp-action="TestRelation">TestRelation</a> *@
 															<a class="dropdown-item" href="#">使用者設定</a>
 															<a class="dropdown-item" href="/Account/Logout">登出</a>
 														</template>
 														<template v-else-if="layoutItem.isAdmin==true">
-															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;" >
+															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;">
 																<h3>Manager Account</h3>
 																<label>Manager Name</label>
 																<p>{{layoutItem.managerName}}</p>
@@ -139,7 +211,7 @@
 															<li><a asp-controller="DiscussArticleView" asp-action="Index">討論版</a></li>
 															<li><a asp-controller="NewsArticle" asp-action="Index">新聞版</a></li>
 															<li><a asp-controller="Obtain" asp-action="Index">Wormhole Shop</a></li>
-															
+
 														</ul>
 													</nav>
 												</div>
@@ -159,7 +231,7 @@
 		</div>
 	</header>
 	<!-- Header End -->
-	
+
 	<div class="container">
 		<main role="main" class="ph-3">
 			@RenderBody()
@@ -260,12 +332,6 @@
 		<a title="Go to Top" href="#"><i class="fas fa-level-up-alt"></i></a>
 	</div>
 	<!-- Scroll Up -->
-
-	@* <button class="sidebar-toggle"> *@
-	@* 	<!-- 使用Font Awesome的Icon --> *@
-	@* 	<i class="fas fa-bars"></i> *@
-	@* </button> *@
-	
 	<!-- JS here -->
 	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
 	<script>
@@ -273,7 +339,13 @@
 			data(){
 				return{
 					userInfoForLayout:[],
+					relations:[],
+					invitings:[],
+					myInvitings:[],
 					keyword:"",
+					isSidebarOpen: false,
+					sidebarControllerText:"☰ 開啟側邊欄",					
+					// myUserId:0,
 				};
 			},
 			watch:{
@@ -304,9 +376,152 @@
 					});
 				},
 				//Search Box  4/24 Borneol sendSearchText() 配合實際搜尋功能輸入並跳轉頁面至ShowResult
+				sidebarController(){
+					let self = this;
+					if(self.isSidebarOpen == false){
+						self.isSidebarOpen = true;
+						self.sidebarControllerText = "✖ 關閉";
+						this.getRelations();
+					}
+					else{
+						self.isSidebarOpen = false;
+						self.sidebarControllerText = "☰ 開啟側邊欄";
+						this.clear();
+					}
+				},
+				// 5/04 Borneol sidebar()
+				async getRelations(){
+				let _this=this;
+				let myId=_this.userInfoForLayout[0].userId;
+				var i;
+				await fetch('/api/Relation/GetRelation',{
+						credentials: 'include',
+					}).then(x=>x.json()).then(res=>{
+						for(i=0;i<res.length;i++){							
+							const item = res[i];
+							if (item.invite.trim() === "申請中") {
+								if (item.inviteeId === parseInt(myId)) {
+									_this.myInvitings.push({
+									  inviterId: item.inviterId,
+									  inviterName: item.inviterName,
+									  invite: item.invite
+									});
+								} else {
+									_this.invitings.push({
+									  inviteeId: item.inviteeId,
+									  inviteeName: item.inviteeName,
+									  invite: item.invite
+									});
+								}
+							} else {
+								if (item.inviterId === parseInt(myId)) {
+									_this.relations.push({
+									  inviteeId: item.inviteeId,
+									  inviteeName: item.inviteeName,
+									  relationType: item.relationType
+									});
+								} else {
+									_this.relations.push({
+									  inviteeId: item.inviterId,
+									  inviteeName: item.inviterName,
+									  relationType: item.relationType
+									});
+								}
+							}
+						}
+						// alert(myId);
+						// alert(JSON.stringify(_this.invitings)+JSON.stringify(_this.relations)+JSON.stringify(_this.myInvitings));
+					});
+				},
+			
+				async breakInvite(inviteeId){
+					 var request={};
+						request.inviterId=this.userInfoForLayout[0].userId;
+						request.inviteeId = inviteeId;
+						request.invite = "取消邀請";
+						request.relationType = "無關係";
+						request.inviterName = "";
+						request.inviteeName = "";
+
+					 await fetch('/api/Relation/DeleteRelation',{
+						 body:JSON.stringify(request),
+						 credentials: 'include',
+						headers:{
+							"Content-Type":"application/json",
+							// "Accept":"application/json",
+						},
+						method:"DELETE",
+						}).then(x=>
+							alert("以後別做朋友！"),
+							this.clear(),							
+						);
+						this.getRelations();
+				},
+			 
+				 async acceptInvite(inviterId){
+					 var request={};
+						request.inviterId= inviterId;
+						request.inviteeId = this.userInfoForLayout[0].userId;
+						request.invite = "同意邀請";
+						request.relationType = "Friend";
+						request.inviterName = "";
+						request.inviteeName = "";
+
+					 await fetch('/api/Relation/AcceptRelation',{
+						 body:JSON.stringify(request),
+						 credentials: 'include',
+						headers:{
+							"Content-Type":"application/json",
+							// "Accept":"application/json",
+						},
+						method:"PUT",
+						}).then(x=>
+							alert("恭喜你們成為了朋友！"),
+							this.clear(),							
+						);
+						this.getRelations();
+				 },
+				 async refuseInvite(inviterId){
+					 var request={};
+						request.inviterId= inviterId;
+						request.inviteeId = this.userInfoForLayout[0].userId;
+						request.invite = "拒絕邀請";
+						request.relationType = "Friend";
+						request.inviterName = "";
+						request.inviteeName = "";
+
+					 await fetch('/api/Relation/RefuseRelation',{
+						 body:JSON.stringify(request),
+						 credentials: 'include',
+						headers:{
+							"Content-Type":"application/json",
+							// "Accept":"application/json",
+						},
+						method:"PUT",
+						}).then(x=>
+							this.clear(),
+							// this.getRelations(),
+						);
+						this.getRelations();
+				 },
+				 // async getUserId(){
+					//  await fetch('/api/User/Get',{
+					// 	credentials: 'include',
+					// }).then(x=>x.json()).then(res=>{
+					// 	this.myUserId=res[0].userId;
+					// });
+				 // },
+				 clear(){
+					 this.relations=[];
+					 this.invitings=[];
+					 this.myInvitings=[];
+				 },
+				// 5/04 Borneol sidebar()
 			},
 			mounted(){
 				this.getForLayout();
+				// this.getRelations();
+				// this.getUserId();
 			}
 		}).mount("#onlyLayout");
 	</script>
