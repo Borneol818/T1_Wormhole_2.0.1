@@ -2,7 +2,7 @@
 {
     public class RelationDto
     {
-        public string RelationTypre { get; set; }
+        public string RelationType { get; set; }
 
         public int InviterId { get; set; }
 
