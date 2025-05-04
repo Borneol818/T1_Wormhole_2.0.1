@@ -395,7 +395,7 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.Invite)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.RelationTypre)
+            entity.Property(e => e.RelationType)
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
