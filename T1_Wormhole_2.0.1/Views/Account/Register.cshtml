@@ -42,28 +42,32 @@
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Name</label>
-                            <input type="text" name="Name" v-model="Name" @@input="checkName" placeholder="Enter Your Name" style="margin-bottom: 10px;" minlength="3" maxlength="20">
+                            <input type="text" name="Name" v-model="Name"  placeholder="Enter Your Name" @@input="checkName" style="margin-bottom: 10px;" minlength="3" maxlength="20">
                             <label v-show="isEmptyName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="isInvalidName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Name is too short</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>NickName</label>
-                            <input type="text" name="Nickname" v-model="Nickname" @@input="checkNickname" placeholder="Enter Your Nickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
+                            <input type="text" name="Nickname" v-model="Nickname" placeholder="Enter Your Nickname" @@input="checkNickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
                             <label v-show="isEmptyNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="isInvalidNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Nickname is too short</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
                             <label>Phone</label>
                             <input type="text" name="Phone" v-model="Phone" @@input="checkPhone" placeholder="09XXXXXXXX" style="margin-bottom: 10px;" minlength="10" maxlength="10">
                             <label v-show="isEmptyPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="isNotPhoneFormat" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Incorrect Phone format</label>
                         </div>
                         <div class="row">
                             <div class="single-input-fields col-6" style="margin-left: 10px; margin-right:20px;">
                                 <label>Birthday</label>
-                                <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" @@input="checkBirthday" placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
+                                <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday"  placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
                                 <label v-show="isEmptyBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             </div>
                             <div class="single-input-fields col-5">
                                 <label>Sex</label>
-                                <select class="country_select" style="height: 50px; width: 100%; margin-bottom:10px;">
+                                <select class="country_select" name="Sex" v-model="Sex" style="height: 50px; width: 100%; margin-bottom:10px;">
+                                    <option value="2"></option>
                                     <option value="0">Male</option>
                                     <option value="1">Female</option>
                                 </select>
@@ -101,6 +105,11 @@
                 ConfirmPassword:'',
                 isMatchPassword: false,
                 isNotMatchPassword: false,
+                Name:'',
+                Nickname:'',
+                Phone:'',
+                Birthday:'',
+                Sex:'',
                 isEmptyAccount:true,
                 isEmptyEmail:true,
                 isEmptyPassword:true,
@@ -110,7 +119,9 @@
                 isEmptyPhone:true,
                 isEmptyBirthday:true,
                 isEmptySex:true,
-                Name:'',
+                isNotPhoneFormat: false,
+                isInvalidName: false,
+                isInvalidNickname: false
             };
         },
         methods: {
@@ -184,7 +195,43 @@
                     self.isNotMatchPassword = true;
                 }
             },
-            
+            checkPhone(){
+                let self = this;
+                if (self.Phone == '') {
+                    self.isNotPhoneFormat = false;
+                    return;
+                }
+                let phoneRule = /^09\d{8}$/;
+                self.isNotPhoneFormat = !(phoneRule.test(self.Phone));
+            },
+            checkName(){
+                let self = this;
+                if(self.Name.length == 0){
+                    self.isInvalidName = false;
+                    return;
+                }
+
+                if(self.Name.length < 3){
+                    self.isInvalidName = true;
+                }
+                else{
+                    self.isInvalidName = false;
+                }
+            },
+            checkNickname(){
+                let self = this;
+                if(self.Nickname.length == 0){
+                    self.isInvalidNickname = false;
+                    return;
+                }
+
+                if(self.Nickname.length < 3){
+                    self.isInvalidNickname = true;
+                }
+                else{
+                    self.isInvalidNickname = false;
+                }
+            }
         },
         computed:{
             formIsValid() {
@@ -192,23 +239,104 @@
                 return self.isAccountAvailable &&
                        self.isEmailFormat &&
                        self.isValidPassword &&
-                       self.isMatchPassword;
+                       self.isMatchPassword &&
+                       !self.isEmptyName &&
+                       !self.isInvalidName &&
+                       !self.isEmptyNickname &&
+                       !self.isInvalidNickname &&
+                       !self.isEmptyPhone &&
+                       !self.isNotPhoneFormat &&
+                       !self.isEmptyBirthday &&
+                       !self.isEmptySex;
             }
         },
         mounted() {
 
         },
         watch:{
-            account(text){
+            Sex(){
                 let self = this;
-                if(text.length > 0){
-                    //console.log("function is working");
-                    self.isEmptyAccount = false;
+                if(self.Sex != "2"){
+                    self.isEmptySex = false;
                 }
                 else{
-                    self.isEmptyAccount = true;
+                    self.isEmptySex = true;
                 }
             }
+        },
+        updated(){
+                let self = this;
+                if(self.account.length > 0){
+                    self.isEmptyAccount = false;
+                }
+                else
+                {
+                    self.isEmptyAccount = true;
+                }
+
+                if(self.Email.length > 0){
+                    self.isEmptyEmail = false;
+                }
+                else
+                {
+                    self.isEmptyEmail = true;
+                }
+
+                if(self.Password.length > 0){
+                    self.isEmptyPassword = false;
+                }
+                else
+                {
+                    self.isEmptyPassword = true;
+                }
+
+                if(self.Password.length > 0){
+                    self.isEmptyPassword = false;
+                }
+                else
+                {
+                    self.isEmptyPassword = true;
+                }
+
+                if(self.ConfirmPassword.length > 0){
+                    self.isEmptyConfirmPassword = false;
+                }
+                else
+                {
+                    self.isEmptyConfirmPassword = true;
+                }
+
+                if(self.Name.length > 0){
+                    self.isEmptyName = false;
+                }
+                else
+                {
+                    self.isEmptyName = true;
+                }
+
+                if(self.Nickname.length > 0){
+                    self.isEmptyNickname = false;
+                }
+                else
+                {
+                    self.isEmptyNickname = true;
+                }
+
+                if(self.Phone.length > 0){
+                    self.isEmptyPhone = false;
+                }
+                else
+                {
+                    self.isEmptyPhone = true;
+                }
+
+                if(self.Birthday && self.Birthday.trim() !== ''){
+                    //console.log("function is working");
+                    self.isEmptyBirthday = false;
+                }
+                else{
+                    self.isEmptyBirthday = true;
+                }
         }
     }).mount("#app")
 </script>
