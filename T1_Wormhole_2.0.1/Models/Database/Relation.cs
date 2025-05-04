@@ -7,7 +7,7 @@ namespace T1_Wormhole_2._0._1.Models.Database;
 
 public partial class Relation
 {
-    public string RelationTypre { get; set; }
+    public string RelationType { get; set; }
 
     public int InviterId { get; set; }
 

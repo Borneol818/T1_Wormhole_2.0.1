@@ -62,7 +62,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Type = type,
                 });
             }
-
+            if (RatingsDTO.Count>6) 
+            {
+                RatingsDTO = RatingsDTO.OrderByDescending(n => n.popularCount).Take(6).ToList();
+            }
+            
 
             return RatingsDTO;
         }

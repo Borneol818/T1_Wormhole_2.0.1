@@ -31,11 +31,11 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
                 var id = Convert.ToInt32(currentUserId.Value);
                 var relations = _db.Relations
-                    .Where(r => r.InviterId == id && r.RelationTypre != "Block" || r.InviteeId == id && r.RelationTypre != "Block")
+                    .Where(r => r.InviterId == id && r.RelationType != "Block" || r.InviteeId == id && r.RelationType != "Block")
                     .Include(r => r.Inviter).Include(r => r.Invitee) // Join 資料
                     .Select(r => new RelationDto
                     {
-                        RelationTypre=r.RelationTypre,
+                        RelationType = r.RelationType,
                         InviterId = r.InviterId,
                         InviterName = r.Inviter.Name,
                         InviteeId = r.InviteeId,
@@ -65,7 +65,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 {
                     InviterId = relationDto.InviterId,
                     InviteeId = relationDto.InviteeId,
-                    RelationTypre = "Friend",
+                    RelationType = "Friend",
                     Invite = "申請中",
                 };
                 _db.Relations.Add(relation);
@@ -150,7 +150,9 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             else if (role == "User")
             {
                 var relation = await _db.Relations
-                    .FirstOrDefaultAsync(r => r.InviterId == relationDto.InviterId && r.InviteeId == relationDto.InviteeId);
+                    .FirstOrDefaultAsync(
+                    r => r.InviterId == relationDto.InviterId && r.InviteeId == relationDto.InviteeId ||
+                    r.InviteeId == relationDto.InviterId && r.InviterId == relationDto.InviteeId);
                 if (relation != null)
                 {
                     _db.Relations.Remove(relation);
@@ -183,7 +185,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 {
                     InviterId = relationDto.InviterId,
                     InviteeId = relationDto.InviteeId,
-                    RelationTypre = "Block",
+                    RelationType = "Block",
                     Invite = "已阻擋",
                 };
                 _db.Relations.Add(relation);

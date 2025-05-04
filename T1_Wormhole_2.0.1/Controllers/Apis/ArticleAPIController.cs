@@ -55,7 +55,7 @@ namespace T1_Wormhole_2._0._1.Controllers
         public async Task<FileResult> GetArticlePhoto(int articleId)
         {
             string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
-            Article e = await _context.Articles.FindAsync(articleId);
+            Article? e = await _context.Articles.FindAsync(articleId);
             byte[] ImageContent = e?.Picture != null ? e.Picture : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");
         }
@@ -75,7 +75,6 @@ namespace T1_Wormhole_2._0._1.Controllers
                 // 嘗試查找使用者是否已經對這篇文章評價過
                 var rating = await _context.Ratings
                     .FirstOrDefaultAsync(r => r.ArticleId == request.ArticleId && r.UserId == UserId);
-
                 if (rating == null)
                 {
                     // 如果使用者沒有評價過，新增一筆新的評價資料
@@ -90,14 +89,31 @@ namespace T1_Wormhole_2._0._1.Controllers
                 }
                 else
                 {
-                    // 如果使用者已經評價過，則更新其評價
+                    // 判斷是否是取消行為
+                    bool isCancel =
+                        (request.IsPositive && rating.PositiveRating == 1) ||
+                        (!request.IsPositive && rating.NegativeRating == 1);
 
-                    rating.PositiveRating = request.IsPositive ? 1 : 0;
-                    rating.NegativeRating = request.IsPositive ? 0 : 1;
+                    if (isCancel)
+                    {
+                        // 使用者點兩次相同評價 → 取消
+                        rating.PositiveRating = 0;
+                        rating.NegativeRating = 0;
+                    }
+                    else
+                    {
+                        // 切換評價
+                        rating.PositiveRating = request.IsPositive ? 1 : 0;
+                        rating.NegativeRating = request.IsPositive ? 0 : 1;
+                    }
+
                     _context.Ratings.Update(rating);
                 }
 
-                await _context.SaveChangesAsync();
+                
+
+
+                    await _context.SaveChangesAsync();
 
                 // 計算更新後的統計資料
                 var posCount = await _context.Ratings
@@ -136,34 +152,44 @@ namespace T1_Wormhole_2._0._1.Controllers
         /// <summary>
         /// 新增留言
         /// </summary>
+     
         [HttpPost]
-        public async Task<IActionResult> ArticleResponse([FromBody] ArticleResponse request)
+        public async Task<IActionResult> AddArticleResponse([FromBody] ResponseDTO request)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(request.Comment))
                 {
-                    return BadRequest("留言內容不能為空白");
+                    return BadRequest(new { success = false, message = "留言內容不能為空白" });
                 }
 
+                var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdStr == null) return Unauthorized(new { success = false, message = "請先登入" });
+
+                int userId = int.Parse(userIdStr);
+                var username=await _context.UserInfos.FirstOrDefaultAsync(x => x.UserId == userId);
                 var newResponse = new ArticleResponse
                 {
-                    ArticleId = request.ArticleId,
+                    ArticleId = request.ArticleID,
                     Comment = request.Comment,
-                    UserId = request.UserId,   // 這裡必須傳正確的UserId
+                    UserId = userId,
+                    User = username,
                     CreateTime = DateTime.Now
                 };
 
                 _context.ArticleResponses.Add(newResponse);
                 await _context.SaveChangesAsync();
 
-                return Ok(new { success = true });
+                return Ok(new { success = true,
+                    nickname= username.Nickname
+                });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
+
 
         //amy新增
         //刪除文章用
