@@ -6569,8 +6569,9 @@ hr {
     }
 
 .order_box {
-    background: #f4f4f4;
-    padding: 30px;
+    background-color: #333;
+    padding: 10px;
+    color: white;
 }
 
     .order_box h2 {
