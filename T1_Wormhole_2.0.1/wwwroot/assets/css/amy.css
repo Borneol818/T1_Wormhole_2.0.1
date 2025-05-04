@@ -20,3 +20,8 @@
     width:500px;
     margin:0 auto;
 }
+
+.top-layer {
+    position: absolute; /*定位 */
+    z-index: 9999; /* 數字越大越上層 */
+}
