@@ -62,8 +62,6 @@ public partial class UserInfo
     /// </summary>
     public int? Wallet { get; set; }
 
-    //public bool edit { get; set; } = false;
-
     public virtual ICollection<ArticleResponse> ArticleResponses { get; set; } = new List<ArticleResponse>();
 
     public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
@@ -76,8 +74,9 @@ public partial class UserInfo
 
     public virtual ICollection<Participation> Participations { get; set; } = new List<Participation>();
 
+    public virtual ICollection<Relation> RelationInvitees { get; set; } = new List<Relation>();
+
+    public virtual ICollection<Relation> RelationInviters { get; set; } = new List<Relation>();
+
     public virtual UserStatus UserStatus { get; set; }
-    public virtual ICollection<Relation> Invitees { get; set; }
-    public virtual ICollection<Relation> Inviters { get; set; }
-    
 }

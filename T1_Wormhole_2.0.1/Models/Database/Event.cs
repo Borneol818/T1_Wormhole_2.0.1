@@ -62,8 +62,14 @@ public partial class Event
     /// </summary>
     public string Type { get; set; }
 
+    /// <summary>
+    /// 用來新增活動目標數量
+    /// </summary>
     public int? EventTarget { get; set; }
 
+    /// <summary>
+    /// 用來記錄文章標題是否符合條件
+    /// </summary>
     public string? KeyWord { get; set; }
 
     public virtual ICollection<EventObtain> EventObtains { get; set; } = new List<EventObtain>();

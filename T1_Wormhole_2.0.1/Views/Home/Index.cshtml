@@ -2,11 +2,17 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<!-- 開場動畫區塊 -->
+<div id="splash" class="splash-animate">
+    <img src="/assets/img/hero/home02.gif" alt="Logo" class="splash-logo" />
 
+
+</div>
 <main id="app">
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1>我是管理員</h1>
+        <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
     </template>    
     <!--管理員介面區結束-->
 
@@ -256,6 +262,8 @@
             return{
                 popularArticles:[],
                 isAdmin:false,
+                isCheckOpen:false,
+                LevelUpCheckText:"✖ 關閉",
             }
         },
         methods:{
@@ -284,9 +292,15 @@
                 }
                 return url;
             },
-            getArticleImage()
+            openLevelUpCheck()
             {
-
+                let self = this;
+                fetch("/api/User/CheckLevelDaily").then(x=>{
+                    if(self.isCheckOpen == false){
+                        self.isCheckOpen = true;
+                        self.sidebarControllerText = "☰ 開啟";
+                    }
+                });                                       
             },
         },
         mounted() {
@@ -296,6 +310,25 @@
             // this.transWords();
         }
     }).mount("#app");
+
+    //首頁動圖效果
+        document.addEventListener("DOMContentLoaded", function() {
+      // 用 localStorage 控制一次性動畫
+      if (!localStorage.getItem('splashPlayed')) {
+        document.getElementById('splash').style.display = 'flex';
+        document.getElementById('main-content').style.display = 'none';
+        // 動畫結束後自動隱藏
+        setTimeout(function() {
+          document.getElementById('splash').style.display = 'none';
+          document.getElementById('main-content').style.display = 'block';
+          localStorage.setItem('splashPlayed', 'true');
+        }, 3000); // 3秒後隱藏動畫
+      } else {
+        // 已經看過動畫，直接顯示主內容
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      }
+    });
 </script>
 
 
