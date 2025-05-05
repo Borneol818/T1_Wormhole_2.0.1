@@ -89,7 +89,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         //get:/api/EventObtain/DistributeEventRewards
         public bool DistributeEventRewards() {
             RecurringJob.AddOrUpdate("GiveEventReward", ()=>this.findExpiredEvents(),Cron.Daily());
-
+            
             //測試用
             //注意:定時活動會永久存在，不用每次打開都執行一次(再次執行同名會覆蓋)
             //RecurringJob.AddOrUpdate("GiveEventReward", () => this.findExpiredEvents(), Cron.Minutely());
