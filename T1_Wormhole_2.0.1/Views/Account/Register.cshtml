@@ -47,7 +47,7 @@
                             <label v-show="isInvalidName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Name is too short</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
-                            <label>NickName</label>
+                            <label>Nickname</label>
                             <input type="text" name="Nickname" v-model="Nickname" placeholder="Enter Your Nickname" @@input="checkNickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
                             <label v-show="isEmptyNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             <label v-show="isInvalidNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Nickname is too short</label>
@@ -61,15 +61,15 @@
                         <div class="row">
                             <div class="single-input-fields col-6" style="margin-left: 10px; margin-right:20px;">
                                 <label>Birthday</label>
-                                <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday"  placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
+                                <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" placeholder="Birthday" :max="today" style="margin-bottom: 10px; margin-right: 10px">
                                 <label v-show="isEmptyBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             </div>
                             <div class="single-input-fields col-5">
                                 <label>Sex</label>
                                 <select class="country_select" name="Sex" v-model="Sex" style="height: 50px; width: 100%; margin-bottom:10px;">
-                                    <option value="2"></option>
-                                    <option value="0">Male</option>
-                                    <option value="1">Female</option>
+                                    <option value=""></option>
+                                    <option value="false">Male</option>
+                                    <option value="true">Female</option>
                                 </select>
                                 <label v-show="isEmptySex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                             </div>
@@ -121,16 +121,11 @@
                 isEmptySex:true,
                 isNotPhoneFormat: false,
                 isInvalidName: false,
-                isInvalidNickname: false
+                isInvalidNickname: false,
+                today:""
             };
         },
         methods: {
-            isNullAccount(){
-                let self = this;
-                if(self.account.length > 0){
-                    self.hasAccount = false;
-                }
-            },
             checkAccount() {
                 let self = this;
                 self.isAccountAvailable = false;
@@ -231,6 +226,14 @@
                 else{
                     self.isInvalidNickname = false;
                 }
+            },
+            getTodayDate() {
+                let self = this;
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0'); 
+                const day = String(today.getDate()).padStart(2, '0'); 
+                self.today = `${year}-${month}-${day}`;
             }
         },
         computed:{
@@ -248,15 +251,16 @@
                        !self.isNotPhoneFormat &&
                        !self.isEmptyBirthday &&
                        !self.isEmptySex;
-            }
+            },
         },
         mounted() {
-
+            this.getTodayDate();
         },
         watch:{
-            Sex(){
+            Sex(newValue){
                 let self = this;
-                if(self.Sex != "2"){
+                console.log('Sex changed to:', newValue);
+                if(self.Sex != ""){
                     self.isEmptySex = false;
                 }
                 else{
