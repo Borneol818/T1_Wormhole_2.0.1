@@ -25,6 +25,8 @@ public partial class WormHoleContext : DbContext
 
     public virtual DbSet<ForumCoin> ForumCoins { get; set; }
 
+    public virtual DbSet<Judge> Judges { get; set; }
+
     public virtual DbSet<Login> Logins { get; set; }
 
     public virtual DbSet<Obtain> Obtains { get; set; }
@@ -252,6 +254,24 @@ public partial class WormHoleContext : DbContext
                 .HasConstraintName("FK_ForumCoins_User");
         });
 
+        modelBuilder.Entity<Judge>(entity =>
+        {
+            entity.ToTable("Judge");
+
+            entity.Property(e => e.JudgeId).HasColumnName("JudgeID");
+            entity.Property(e => e.Content).HasComment("推薦遊戲內容");
+            entity.Property(e => e.Picture)
+                .HasComment("遊戲圖")
+                .HasColumnName("picture");
+            entity.Property(e => e.Price).HasComment("官方售價");
+            entity.Property(e => e.Rate).HasComment("蟲洞編推薦分數");
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(50)
+                .HasComment("遊戲名稱");
+            entity.Property(e => e.Type).HasComment("遊戲平台類型");
+        });
+
         modelBuilder.Entity<Login>(entity =>
         {
             entity.HasKey(e => e.Account);
@@ -362,13 +382,16 @@ public partial class WormHoleContext : DbContext
 
 
             entity.ToTable("Rating");
-            
 
             entity.Property(e => e.ArticleId)
                 .HasComment("文章ID")
                 .HasColumnName("ArticleID");
-            entity.Property(e => e.NegativeRating).HasComment("負評數");
-            entity.Property(e => e.PositiveRating).HasComment("好評數");
+            entity.Property(e => e.NegativeRating)
+                .HasDefaultValue(0)
+                .HasComment("負評數");
+            entity.Property(e => e.PositiveRating)
+                .HasDefaultValue(0)
+                .HasComment("好評數");
             entity.Property(e => e.UserId)
                 .HasComment("使用者ID")
                 .HasColumnName("UserID");

@@ -63,7 +63,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             });
             }
 
-        //GET: api/ObtainsApi/GetPhoto/1
+        //GET: api/ObtainsApi/GetPicture/1
         [HttpGet("GetPicture/{id}")]
         public async Task<FileResult> GetPicture(int id)
         {

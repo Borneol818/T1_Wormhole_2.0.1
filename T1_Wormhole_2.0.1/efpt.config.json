@@ -39,6 +39,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Judge]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Login]",
          "ObjectType": 0
       },
