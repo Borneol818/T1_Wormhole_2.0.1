@@ -27,7 +27,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             .Where(r => (r.ArticleId == articleId))
             .Select(r => new
             {
-                writer = r.User.Nickname,
+                writer = r.User.Name,
                 content = r.Comment,
                 date = r.CreateTime.ToString("yyyy年MM月dd日 HH點mm分")
 
