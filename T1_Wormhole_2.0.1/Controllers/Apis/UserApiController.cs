@@ -177,30 +177,29 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
             if (currentUserId == null)
             {
-
-                return "沒有紀錄";
+               return "沒有紀錄";
             }
 
             var id = Convert.ToInt32(currentUserId.Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             if (role == "User")
             {
-                var result = _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放")).Select(x => x.CoinSource).ToListAsync();
+                var result = await _db.ForumCoins.Where(x => x.UserId == id && x.Status.Contains("已發放")).Select(x => x.CoinSource).ToListAsync();
 
-                var user = await _db.UserInfos.FindAsync(id);
+                //var user = await _db.UserInfos.FindAsync(id);
 
-                if (user != null)
-                {
+                //if (user != null)
+                //{
 
-                    await _db.SaveChangesAsync();
-                    return string.Join("\n", result);
-                }
+                //await _db.SaveChangesAsync();
+                //return string.Join("\n", result);
+                //}
+                return result.Any() ? string.Join("\n", result) : "沒有紀錄";
             }
             else
             {
                 return "沒有紀錄";
             }
-            return "沒有紀錄";
         }
 
         [HttpGet]

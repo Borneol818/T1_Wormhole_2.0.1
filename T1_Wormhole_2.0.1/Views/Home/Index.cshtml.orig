@@ -12,7 +12,10 @@
     <link href="~/css/Sam.css" rel="stylesheet">
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
+<<<<<<< HEAD
         <h1 class="wormhole-word">我是管理員</h1>
+=======
+        <h1>我是管理員</h1>
         <div>
             <table>
                 <tr>
@@ -36,6 +39,7 @@
             </table>
         </div>
 
+>>>>>>> master
         <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
     </template>    
     <!--管理員介面區結束-->
