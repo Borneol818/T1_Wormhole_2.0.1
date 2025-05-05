@@ -379,9 +379,7 @@ public partial class WormHoleContext : DbContext
         modelBuilder.Entity<Rating>(entity =>
         {
             entity.HasKey(e => new { e.ArticleId, e.UserId }).HasName("PK_Rating");
-
-
-            entity.ToTable("Rating");
+                entity.ToTable("Rating");
 
             entity.Property(e => e.ArticleId)
                 .HasComment("文章ID")
@@ -422,12 +420,12 @@ public partial class WormHoleContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Invitee).WithMany(p => p.Invitees)
+            entity.HasOne(d => d.Invitee).WithMany(p => p.RelationInvitees)
                 .HasForeignKey(d => d.InviteeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Relation_UserInfo1");
 
-            entity.HasOne(d => d.Inviter).WithMany(p => p.Inviters)
+            entity.HasOne(d => d.Inviter).WithMany(p => p.RelationInviters)
                 .HasForeignKey(d => d.InviterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Relation_UserInfo");

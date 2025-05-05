@@ -12,6 +12,7 @@
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1>我是管理員</h1>
+        <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
     </template>    
     <!--管理員介面區結束-->
 
@@ -261,6 +262,8 @@
             return{
                 popularArticles:[],
                 isAdmin:false,
+                isCheckOpen:false,
+                LevelUpCheckText:"✖ 關閉",
             }
         },
         methods:{
@@ -289,9 +292,15 @@
                 }
                 return url;
             },
-            getArticleImage()
+            openLevelUpCheck()
             {
-
+                let self = this;
+                fetch("/api/User/CheckLevelDaily").then(x=>{
+                    if(self.isCheckOpen == false){
+                        self.isCheckOpen = true;
+                        self.sidebarControllerText = "☰ 開啟";
+                    }
+                });                                       
             },
         },
         mounted() {
