@@ -12,10 +12,34 @@
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1>我是管理員</h1>
+        <div>
+            <table>
+                <tr>
+                    <th>ID        </th>
+                    <th>姓名      </th>
+                    <th>Email     </th>
+                    <th>暱稱      </th>
+                    <th>性別      </th>
+                    <th>電話      </th>
+                    <th>生日      </th>
+                    <th>在線      </th>
+                </tr>
+                <tr v-for="user in users" :key="user.id">
+                    <td>{{ user.userId }}       </td>
+                    <td>{{ user.name }}     </td>
+                    <td>{{ user.email }}        </td>
+                    <td>{{ user.nickname }}     </td>
+                    <td>{{ user.sex ? '男' : '女' }}      </td>
+                    <td>{{ user.phone }}        </td>
+                    <td>{{ user.birthday }}     </td>
+                    <td>{{ user.status ? '在線' : '離線'}}      </td>
+                </tr>
+            </table>
+        </div>
+
         <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
     </template>    
     <!--管理員介面區結束-->
-
     <!--使用者介面區開始-->
     <template v-else>
         @* <div class="header-bottom  header-sticky"> *@
@@ -53,45 +77,45 @@
                                 <div class="container">
                                     @* <div class="row justify-content-center"> *@
                                     @*     <div class="col-xxl-4 col-xl-4 col-lg-5 col-md-6 col-sm-7"> *@
-                                            @* <div class="hero-caption "> *@
-                                            <div class="circle-image row text-center gx-4">
-                                                <div class="col-4">
-                                                 <a class="nav-link text-dark" asp-controller="Event" asp-action="Index">
+                                    @* <div class="hero-caption "> *@
+                                    <div class="circle-image row text-center gx-4">
+                                        <div class="col-4">
+                                            <a class="nav-link text-dark" asp-controller="Event" asp-action="Index">
                                                 <img class="img-fluid" src="~/assets/img/hero/image3.jpg" />
                                                 <h5>活動</h5>
-                                                 </a>
-                                                </div>
-                                                <div class="col-4 image-hover-group">
-                                                    <div class="main-image-wrapper">
-                                                    <img class="img-fluid" src="~/assets/img/hero/image17.jpg"/>
-                                                    <h5>討論板/新聞板</h5>
-                                                        <div class="sub-images">
-                                                            <div>
-                                                            <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">
+                                            </a>
+                                        </div>
+                                        <div class="col-4 image-hover-group">
+                                            <div class="main-image-wrapper">
+                                                <img class="img-fluid" src="~/assets/img/hero/image17.jpg" />
+                                                <h5>討論板/新聞板</h5>
+                                                <div class="sub-images">
+                                                    <div>
+                                                        <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">
                                                             <img class="img-fluid" src="~/assets/img/hero/image4.jpg" />
                                                             <p>討論板</p>
-                                                            </a>
-                                                            </div>
-                                                            <div>
-                                                            <a asp-area="" asp-controller="NewsArticle" asp-action="Index">
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <a asp-area="" asp-controller="NewsArticle" asp-action="Index">
                                                             <img class="img-fluid" src="~/assets/img/hero/image8.jpg" />
                                                             <p>新聞板</p>
-                                                            </a>
-                                                            </div>
-												        </div>
-											        </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <a class="nav-link text-dark" asp-controller="Obtain" asp-action="Index">
-                                                    <img class="img-fluid" src="~/assets/img/hero/image18.jpg"/>
-                                                <h5>WormShop</h5>
-                                                     </a>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                                @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
-                                                @* <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1>
+                                        </div>
+                                        <div class="col-4">
+                                            <a class="nav-link text-dark" asp-controller="Obtain" asp-action="Index">
+                                                <img class="img-fluid" src="~/assets/img/hero/image18.jpg" />
+                                                <h5>WormShop</h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @* <span data-animation="fadeInUp" data-delay=".2s">Science Fiction</span> *@
+                                    @* <h1 data-animation="fadeInUp" data-delay=".4s">The History<br> of Phipino</h1>
                                                 <a href="#" class="btn hero-btn" data-animation="bounceIn" data-delay=".8s">Browse Store</a> *@
-                                            @* </div> *@
+                                    @* </div> *@
                                     @*     </div> *@
                                     @* </div> *@
                                 </div>
@@ -104,15 +128,15 @@
         <!-- slider Area End-->
         <!-- Best Selling start -->
         <div class="most-popular section-bg">
-        @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
-        @* <div class="marquee"> *@
+            @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
+            @* <div class="marquee"> *@
             @* <div class="marquee-content"> *@
-                @* <span v-for="item in popularArticles" :key="item.id" class="marquee-item"> *@
-                    @* {{ item.articleTitle }} *@
-                @* </span> *@
+            @* <span v-for="item in popularArticles" :key="item.id" class="marquee-item"> *@
+            @* {{ item.articleTitle }} *@
+            @* </span> *@
             @* </div> *@
-        @* </div> *@
-        @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
+            @* </div> *@
+            @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8">
@@ -262,6 +286,7 @@
             return{
                 popularArticles:[],
                 isAdmin:false,
+                users:[],
                 isCheckOpen:false,
                 LevelUpCheckText:"✖ 關閉",
             }
@@ -302,10 +327,19 @@
                     }
                 });                                       
             },
+            getUser()
+            {
+                fetch("api/AccountApi/GetUser")
+                .then(response => response.json())
+                .then(result => {
+                    this.users = result;
+                })
+            },
         },
         mounted() {
             this.sortArticles();
             this.checkAdmin();
+            this.getUser();
             // this.getSignature();
             // this.transWords();
         }

@@ -12,7 +12,7 @@
 </head>
 
 <div id="app">
-    
+
     <h1>{{articles.title}}</h1>
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
@@ -37,22 +37,27 @@
                     <div class="thumb">
                         <img src="assets/img/blog/comment_1.png" alt="">
                     </div>
-                    <div class="desc">
-                        <p class="comment">
-                            {{ Response.content }}
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <h5>
-                                    <a href="#">{{ Response.writer }}</a>
-                                </h5>
-                                
+                    <ul>
+                        <li>
+                            <div class="desc">
+                                <p class="comment">
+                                    {{ Response.content }}
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <h5>
+                                            <a href="#">{{ Response.writer }}</a>
+                                        </h5>
+
+                                    </div>
+                                    <div>
+                                        <p class="date">時間{{ Response.date }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p class="date">時間{{ Response.date }}</p>
-                            </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
+
                 </div>
 
             </div>
@@ -247,8 +252,8 @@
                     alert("留言失敗");
                 });
             },
-	    
-	    
+
+
 
             loadRating(id) {
                 fetch('/api/Comments/GetRating?articleId=' + id)

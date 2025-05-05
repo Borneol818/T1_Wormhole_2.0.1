@@ -13,7 +13,7 @@
 </head>
 
 <div id="app">
-    
+
     <h1>{{articles.title}}</h1>
 
     <p>{{articles.content}}</p>
@@ -25,36 +25,41 @@
         @*amy新增，之後請負責人放至適合位置*@
         <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
     </div>
-    
+
     @* 先新增要驗證修改 *@
     <div class="comments-area">
         <div class="comment-list">
             <button type="button" v-on:click="submitRating(true)" class="btn-liked">喜歡: {{ ratingcount.positive }}</button>
             <button type="button" v-on:click="submitRating(false)" class="btn-disliked">不喜歡: {{ ratingcount.negative }}</button>
         </div>
-       
+
         <div>
             <div class="single-comment justify-content-between d-flex">
                 <div class="user justify-content-between d-flex" v-for="Response in comments">
                     <div class="thumb">
                         <img src="assets/img/blog/comment_1.png" alt="">
                     </div>
-                    <div class="desc">
-                        <p class="comment">
-                            {{ Response.content }}
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <h5>
-                                    <a href="#">{{ Response.writer }}</a>
-                                </h5>
+                    <ul>
+                        <li>
+                            <div class="desc">
+                                <p class="comment">
+                                    {{ Response.content }}
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <h5>
+                                            <a href="#">{{ Response.writer }}</a>
+                                        </h5>
+                                    </div>
+                                    <div>
+                                        <br />
+                                        <p class="date">時間{{ Response.date }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <br />
-                                <p class="date">時間{{ Response.date }}</p>
-                            </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
             <textarea v-model="textResponse" placeholder="輸入留言" class="textarea"></textarea>
