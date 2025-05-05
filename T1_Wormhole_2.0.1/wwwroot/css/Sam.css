@@ -19,16 +19,6 @@
     }
 }
 
-/*.btn-like {
-    background-color: gray;
-    color: white;
-}
-
-.btn-dislike {
-    background-color: gray;
-    color: white;
-}*/
-
 .btn-liked {
     color: black;
     background-color: green;
@@ -41,4 +31,18 @@
 textarea{
     width:50%;
     height:150px;
+}
+table {
+    border-style: solid;
+}
+
+th, td {
+    color:gray;
+    width: 150px;
+    border: solid;
+    text-align: center;
+    border-color: gray;
+}
+h1, p, h5 {
+    color: gray;
 }
