@@ -13,7 +13,7 @@
 
 <div id="app">
 
-    <h1>{{articles.title}}</h1>
+    <h1 class="sam">{{articles.title}}</h1>
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
@@ -23,7 +23,7 @@
         <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
         <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
     </div>
-    <p>{{articles.content}}</p>
+    <p class="sam">{{articles.content}}</p>
 
 
     <div class="comments-area">
@@ -40,17 +40,17 @@
                     <ul>
                         <li>
                             <div class="desc">
-                                <p class="comment">
+                                <p class="comment" class="sam">
                                     {{ Response.content }}
                                 </p>
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex align-items-center">
-                                        <h5>
+                                        <h5 class="sam">
                                             <a href="#">{{ Response.writer }}</a>
                                         </h5>
 
                                     </div>
-                                    <div>
+                                    <div class="sam">
                                         <p class="date">時間{{ Response.date }}</p>
                                     </div>
                                 </div>

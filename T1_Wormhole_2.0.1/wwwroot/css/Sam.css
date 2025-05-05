@@ -32,17 +32,17 @@ textarea{
     width:50%;
     height:150px;
 }
-table {
+table.sam {
     border-style: solid;
 }
 
-th, td {
-    color:gray;
+th.sam, td.sam {
+    color: gray;
     width: 150px;
     border: solid;
     text-align: center;
     border-color: gray;
 }
-h1, p, h5 {
+.sam{
     color: gray;
 }

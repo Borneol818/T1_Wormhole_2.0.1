@@ -14,24 +14,24 @@
     <template v-if="isAdmin">
         <h1 class="wormhole-word">我是管理員</h1>
         <div>
-            <table>
-                <tr>
-                    <th>姓名          </th>
-                    <th>Email         </th>
-                    <th>暱稱          </th>
-                    <th>性別          </th>
-                    <th>電話          </th>
-                    <th>生日          </th>
-                    <th>在線狀態      </th>
+            <table class="sam">
+                <tr class="sam">
+                    <th class="sam">姓名          </th>
+                    <th class="sam">Email         </th>
+                    <th class="sam">暱稱          </th>
+                    <th class="sam">性別          </th>
+                    <th class="sam">電話          </th>
+                    <th class="sam">生日          </th>
+                    <th class="sam">在線狀態      </th>
                 </tr>
-                <tr v-for="user in users" :key="user.id">
-                    <td>{{ user.name }}                         </td>
-                    <td>{{ user.email }}                        </td>
-                    <td>{{ user.nickname }}                     </td>
-                    <td>{{ user.sex ? '男' : '女' }}            </td>
-                    <td>{{ user.phone }}                        </td>
-                    <td>{{ user.birthday }}                     </td>
-                    <td>{{ user.status ? '在線' : '離線'}}      </td>
+                <tr v-for="user in users" :key="user.id" class="sam">
+                    <td class="sam">{{ user.name }}                         </td>
+                    <td class="sam">{{ user.email }}                        </td>
+                    <td class="sam">{{ user.nickname }}                     </td>
+                    <td class="sam">{{ user.sex ? '女' : '男' }}            </td>
+                    <td class="sam">{{ user.phone }}                        </td>
+                    <td class="sam">{{ user.birthday }}                     </td>
+                    <td class="sam">{{ user.status ? '在線' : '離線'}}      </td>
                 </tr>
             </table>
         </div>
