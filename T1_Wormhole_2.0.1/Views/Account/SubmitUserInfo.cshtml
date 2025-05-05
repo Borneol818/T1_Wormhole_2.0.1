@@ -14,37 +14,41 @@
                     <div class="single-input-fields" style="overflow: hidden;">
                         <label>Name</label>
                         <input type="text" name="Name" v-model="Name" @@input="checkName" placeholder="Enter Your Name" style="margin-bottom: 10px;" minlength="3" maxlength="20">
-                        <label v-show="isName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        <label v-show="isEmptyName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        <label v-show="isInvalidName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Name is too short</label>
                     </div>
                     <div class="single-input-fields" style="overflow: hidden;">
-                        <label>NickName</label>
+                        <label>Nickname</label>
                         <input type="text" name="Nickname" v-model="Nickname" @@input="checkNickname" placeholder="Enter Your Nickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
-                        <label v-show="isNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        <label v-show="isEmptyNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        <label v-show="isInvalidNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Nickname is too short</label>
                     </div>
                     <div class="single-input-fields" style="overflow: hidden;">
                         <label>Phone</label>
                         <input type="text" name="Phone" v-model="Phone" @@input="checkPhone" placeholder="09XXXXXXXX" style="margin-bottom: 10px;" minlength="10" maxlength="10">
-                        <label v-show="isPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        <label v-show="isEmptyPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                        <label v-show="isNotPhoneFormat" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Incorrect Phone format</label>
                     </div>
                     <div class="row">
                         <div class="single-input-fields col-6" style="margin-left: 10px; margin-right:20px;">
                             <label>Birthday</label>
-                            <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" @@input="checkBirthday" placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
-                            <label v-show="isBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" :max="today" placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
+                            <label v-show="isEmptyBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                         </div>
                         <div class="single-input-fields col-5">
                             <label>Sex</label>
-                            <select class="country_select" style="height: 50px; width: 100%;">
-                                <option value="0">Male</option>
-                                <option value="1">Female</option>
+                            <select name="Sex" v-model="Sex" class="country_select" style="height: 50px; width: 100%; margin-bottom:10px;">
+                                <option value=""></option>
+                                <option value="false">Male</option>
+                                <option value="true">Female</option>
                             </select>
-                            <label v-show="isSex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="isEmptySex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- form Footer -->
-                <div class="register-footer">
+                <div class="register-footer" style="float:right;">
                     <button v-bind:disabled="!formIsValid" class="submit-btn3">Submit</button>
                 </div>
             </form>
@@ -52,3 +56,132 @@
     </div>
     <!-- Register Area End -->
 </main>
+<script>
+     Vue.createApp({
+        data() {
+            return {
+                Name:'',
+                Nickname:'',
+                Phone:'',
+                Birthday:'',
+                Sex:'',
+                isEmptyName: true,
+                isEmptyNickname: true,
+                isEmptyPhone:true,
+                isEmptyBirthday:true,
+                isEmptySex:true,
+                isNotPhoneFormat: false,
+                isInvalidName: false,
+                isInvalidNickname: false,
+                today:""
+            };
+        },
+        methods: {
+            checkPhone(){
+                let self = this;
+                if (self.Phone == '') {
+                    self.isNotPhoneFormat = false;
+                    return;
+                }
+                let phoneRule = /^09\d{8}$/;
+                self.isNotPhoneFormat = !(phoneRule.test(self.Phone));
+            },
+            checkName(){
+                let self = this;
+                if(self.Name.length == 0){
+                    self.isInvalidName = false;
+                    return;
+                }
+
+                if(self.Name.length < 3){
+                    self.isInvalidName = true;
+                }
+                else{
+                    self.isInvalidName = false;
+                }
+            },
+            checkNickname(){
+                let self = this;
+                if(self.Nickname.length == 0){
+                    self.isInvalidNickname = false;
+                    return;
+                }
+
+                if(self.Nickname.length < 3){
+                    self.isInvalidNickname = true;
+                }
+                else{
+                    self.isInvalidNickname = false;
+                }
+            },
+            getTodayDate() {
+                let self = this;
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                self.today = `${year}-${month}-${day}`;
+            }
+        },
+        computed:{
+            formIsValid() {
+                let self = this;
+                return !self.isInvalidName &&
+                       !self.isEmptyNickname &&
+                       !self.isInvalidNickname &&
+                       !self.isEmptyPhone &&
+                       !self.isNotPhoneFormat &&
+                       !self.isEmptyBirthday &&
+                       !self.isEmptySex;
+            }
+        },
+        mounted() {
+            this.getTodayDate();
+        },
+        watch:{
+            Sex(){
+                let self = this;
+                if(self.Sex != ""){
+                    self.isEmptySex = false;
+                }
+                else{
+                    self.isEmptySex = true;
+                }
+            }
+        },
+        updated(){
+                let self = this;
+                if(self.Name.length > 0){
+                    self.isEmptyName = false;
+                }
+                else
+                {
+                    self.isEmptyName = true;
+                }
+
+                if(self.Nickname.length > 0){
+                    self.isEmptyNickname = false;
+                }
+                else
+                {
+                    self.isEmptyNickname = true;
+                }
+
+                if(self.Phone.length > 0){
+                    self.isEmptyPhone = false;
+                }
+                else
+                {
+                    self.isEmptyPhone = true;
+                }
+
+                if(self.Birthday && self.Birthday.trim() !== ''){
+                    //console.log("function is working");
+                    self.isEmptyBirthday = false;
+                }
+                else{
+                    self.isEmptyBirthday = true;
+                }
+        }
+    }).mount("#app")
+</script>

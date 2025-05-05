@@ -20,146 +20,172 @@
 }
 
 .header-area {
-    .header-top{
-        padding:20px 0;
-        @media #{$sm}{
+    .header-top {
+        padding: 20px 0;
+
+        @media #{$sm} {
             padding-bottom: 8px;
         }
-        @media #{$xs}{
+
+        @media #{$xs} {
             padding-bottom: 8px;
         }
-        .flex-sm{
-            @media #{$xs}{
+
+        .flex-sm {
+            @media #{$xs} {
                 @include flex-wrap(wrap);
             }
         }
-        .header-info-left{
-            
-            .logo{
-                @media #{$md}{
+
+        .header-info-left {
+
+            .logo {
+                border: 2px solid #333;
+
+                @media #{$md} {
                     margin-bottom: 20px;
                     display: none;
                 }
-                @media #{$sm}{
+
+                @media #{$sm} {
                     margin-bottom: 20px;
                     display: none;
                 }
-                @media #{$xs}{
+
+                @media #{$xs} {
                     margin-bottom: 20px;
                     display: none;
                 }
             }
-
             // Search box
-            .form-box{
+            .form-box {
                 position: relative;
                 width: 530px;
                 margin-left: 38px;
-                @media #{$large1}{
+
+                @media #{$large1} {
                     width: 430px;
                 }
-                @media #{$lg}{
+
+                @media #{$lg} {
                     width: 360px;
                     margin-left: 20px;
                 }
-                @media #{$md}{
+
+                @media #{$md} {
                     width: 347px;
                     margin-left: 0px;
                 }
-                @media #{$sm}{
+
+                @media #{$sm} {
                     width: 262px;
                     margin-left: 0px;
                 }
-                @media #{$xs}{
+
+                @media #{$xs} {
                     width: 289px;
                     margin-left: 0px;
                 }
-                input{
+
+                input {
                     border: 1px solid rgba(35, 47, 85,.15s);
                     border-radius: 30px;
                     padding: 10px 20px;
                     width: 100%;
                     height: 50px;
-                    @media #{$xs}{
+
+                    @media #{$xs} {
                         height: 40px;
                         margin-bottom: 16px;
                     }
-                    &::placeholder{
+
+                    &::placeholder {
                         color: #9498A7;
                         font-size: 16px;
-                        @media #{$sm}{
+
+                        @media #{$sm} {
                             font-size: 12px;
                         }
-                        @media #{$xs}{
+
+                        @media #{$xs} {
                             font-size: 14px;
                         }
                     }
                 }
-                .search-icon{
+
+                .search-icon {
                     position: absolute;
                     top: 14px;
                     right: 20px;
-                    @media #{$xs}{
+
+                    @media #{$xs} {
                         top: 10px;
                         right: 16px;
                     }
-                    i{
-                        color:$theme-color;
+
+                    i {
+                        color: $theme-color;
                         cursor: pointer;
                         font-size: 22px;
-                        @media #{$xs}{
+
+                        @media #{$xs} {
                             font-size: 19px;
                         }
                     }
-                    
                 }
             }
         }
-        .header-info-mid{
-            
+
+        .header-info-mid {
         }
-        .header-info-right{
-            ul{
-                li{
+
+        .header-info-right {
+            ul {
+                li {
                     display: inline-block;
                     position: relative;
                     margin-left: 33px;
-                    @media #{$lg}{
+
+                    @media #{$lg} {
                         margin-left: 20px;
                     }
-                    @media #{$md}{
+
+                    @media #{$md} {
                         margin-left: 20px;
                     }
-                    @media #{$sm}{
+
+                    @media #{$sm} {
                         margin-left: 8px;
                     }
-                    @media #{$xs}{
+
+                    @media #{$xs} {
                         margin-left: 20px;
                     }
-                    a{
+
+                    a {
                         font-size: 14px;
                         text-transform: capitalize;
                         color: #454E6D;
                         font-weight: 400;
                         display: inline-block;
-                         &:hover{
+
+                        &:hover {
                             color: $theme-color;
-                         }
+                        }
                     }
-                     
                 }
             }
             // Shopping card
-            .shopping-card{
+            .shopping-card {
                 position: relative;
-                
-                &::before{
+
+                &::before {
                     position: absolute;
                     content: "0";
                     width: 24px;
                     height: 24px;
-                    background:$theme-color;
-                    color:#fff;
+                    background: $theme-color;
+                    color: #fff;
                     line-height: 24px;
                     text-align: center;
                     border-radius: 30px;
@@ -169,22 +195,25 @@
                     @include transition(.3s);
                     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
                 }
-                i{
+
+                i {
                     width: 50px;
                     height: 50px;
                     line-height: 50px;
                     text-align: center;
                     border-radius: 50%;
                     border: 1px solid rgb(238, 238, 238);
-                    color:#4e4e4e;
+                    color: #4e4e4e;
                     font-size: 14px;
                     cursor: pointer;
                 }
-                img{
+
+                img {
                     cursor: pointer;
                 }
-                &:hover{
-                    &::before{
+
+                &:hover {
+                    &::before {
                         top: -10px;
                     }
                 }

@@ -225,6 +225,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     {
                         new Claim(ClaimTypes.Name, user.Account),
                         new Claim(ClaimTypes.NameIdentifier, userId),
+                        new Claim("UserID", userId),
                         new Claim(ClaimTypes.Role, "User"),
                     };
 

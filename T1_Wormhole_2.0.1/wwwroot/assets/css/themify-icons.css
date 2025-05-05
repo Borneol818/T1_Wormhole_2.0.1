@@ -75,6 +75,8 @@
 }
 .ti-search:before {
 	content: "\e610";
+   /*amy¼W¥[*/
+	color:darkslateblue;
 }
 .ti-zoom-in:before {
 	content: "\e611";
