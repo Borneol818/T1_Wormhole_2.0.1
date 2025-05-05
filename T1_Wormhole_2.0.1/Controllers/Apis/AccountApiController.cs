@@ -85,5 +85,24 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 return false;
             }
         }
+
+        [HttpGet]
+        public IActionResult GetUser()
+        {
+            var users = _context.UserInfos.Select(
+                r=>new
+                {
+                    UserId = r.UserId,
+                    Email = r.Email,
+                    Name = r.Name,
+                    Nickname = r.Nickname,
+                    Sex = r.Sex,
+                    Phone = r.Phone,
+                    Birthday = r.Birthday,
+                    Status = r.Status
+
+                }).ToList();
+            return Ok(users);
+        }
     }
 }
