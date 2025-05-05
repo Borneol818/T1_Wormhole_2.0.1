@@ -1638,7 +1638,7 @@ hr {
 }
 
 #scrollUp, #back-top {
-    background: #FF1616;
+    background: #80A6C6;
     height: 50px;
     width: 50px;
     right: 31px;
@@ -1651,6 +1651,10 @@ hr {
     line-height: 48px;
     border: 2px solid transparent;
     box-shadow: 0 0 10px 3px rgba(108, 98, 98, 0.2);
+    /*amy 新增 Flex 居中 */
+/*    display: flex;
+    align-items: center;
+    justify-content: center;*/
 }
 
 @media (max-width: 575px) {
@@ -1660,8 +1664,12 @@ hr {
 }
 
 #scrollUp a i, #back-top a i {
-    display: block;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+/*    display: block;*/
+/*    line-height: 50px;*/
 }
 
 #scrollUp:hover {
@@ -3160,7 +3168,9 @@ hr {
 }
 
     .header-area .header-top .header-info-right ul li a:hover {
-        color: #FF1616;
+/*amy修改*/
+/*        color: #FF1616;*/
+        color:whitesmoke;
     }
 
 .header-area .header-top .header-info-right .shopping-card {
@@ -3384,13 +3394,13 @@ hr {
         }
 
         .mobile_menu .slicknav_menu .slicknav_btn .slicknav_icon-bar {
-            background-color: #295361 !important;/* 改導覽列背景色   */
+            background-color: steelblue !important;/* 改導覽列背景色   */
             
         }
 
         .mobile_menu .slicknav_menu .slicknav_nav {
             margin-top: 1px !important;
-            background: #295361;/* 改導覽列背景色   */
+            background: steelblue; /* 改導覽列背景色   */
             border-bottom: 0;
         }
 

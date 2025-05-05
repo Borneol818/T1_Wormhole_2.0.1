@@ -119,12 +119,12 @@
 									<div class="d-flex justify-content-between align-items-center flex-sm">
 										<div class="header-info-left d-flex align-items-center">
 											<!-- logo -->
-											<div class="logo">
+											<div class="logo ">
 												<a class="nav-link" asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
 											</div>
 											<!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
 											<div class="form-box">
-												<input class="form-control" type="text" name="Search" placeholder="Search book by author or publisher" v-model="keyword" @@keyup.enter="sendSearchText" />
+												<input class="form-control" type="text" name="Search" placeholder="Search Articles by Author or Title" v-model="keyword" @@keyup.enter="sendSearchText" />
 												<div class="search-icon">
 													<i class="ti-search"></i>
 												</div>
@@ -137,15 +137,16 @@
 												@* <li><a href="#">Track Order</a></li>*@
 												<li class="nav-item dropdown" style="z-index:9999;">
 													<a class="nav-link dropdown-toggle"
+														style="color:whitesmoke;"
 													   href="#"
 													   id="dropdownId"
 													   data-bs-toggle="dropdown"
 													   aria-haspopup="true"
-													   aria-expanded="false">Dropdown</a>
+													   aria-expanded="false">Account</a>
 													@* <div class="shopping-card"> *@
 													<a class="shopping-card" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" src="~/images/phototest.jpg" alt=""></a>
 													@* </div> *@
-													<div class="dropdown-menu "
+													<div class="dropdown-menu"
 														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
 														<template v-if="layoutItem.isAdmin==false">
 															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;">
@@ -179,8 +180,8 @@
 														@* <a class="dropdown-item" href="/Account/Logout">登出</a> *@
 													</div>
 												</li>
-												<li><a href="/Account/Login" class="btn header-btn">Login</a></li>
-												<li><a href="/Account/Register" class="btn header-btn">Sign in</a></li>
+												<li><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li>
+												<li><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>
 											</ul>
 										</div>
 									</div>
@@ -195,7 +196,7 @@
 							<div class="col-xl-12">
 								<!-- logo 2 -->
 								<div class="logo2">
-									<a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+									<a asp-controller="Home" asp-action="Index"><img src="assets/img/logo/logo.png" alt=""></a>
 								</div>
 								<div class="header-bottom  header-sticky">
 									<div class="container">
@@ -207,8 +208,8 @@
 														<ul id="navigation">
 															<li><a asp-controller="Home" asp-action="Index">首頁</a></li>
 															<li><a asp-controller="Event" asp-action="Index">活動</a></li>
-															<li><a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a></li>
-															<li><a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a></li>
+															<li><a asp-controller="DiscussArticleView" asp-action="Index">討論版</a></li>
+															<li><a asp-controller="NewsArticle" asp-action="Index">新聞版</a></li>
 															<li><a asp-controller="Obtain" asp-action="Index">Wormhole Shop</a></li>
 
 														</ul>
@@ -320,9 +321,15 @@
 		</div>
 	</footer>
 
+	<!-- Scroll Up 圖片版 -->
+	@* <div id="back-top"> *@
+	@* 	<a title="Go to Top" href="#"><img src="~/images/layout/topicon2.png" style="width:50px;" /></a> *@
+	@* </div> *@
 	<!-- Scroll Up -->
-	<div id="back-top">
-		<a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+
+	<!-- Scroll Up --> 
+	<div id="back-top"> 
+		<a title="Go to Top" href="#"><i class="fas fa-level-up-alt"></i></a>
 	</div>
 	<!-- Scroll Up -->
 	<!-- JS here -->
