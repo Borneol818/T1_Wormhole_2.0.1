@@ -92,14 +92,14 @@
 }
 
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: "Roboto", sans-serif,"微軟正黑體";
     font-weight: normal;
     font-style: normal;
     font-size: 16px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Playfair Display", serif;
+    font-family: "Roboto", sans-serif,"微軟正黑體";
     color: #1a1a1a;
     margin-top: 0px;
     font-style: normal;
@@ -4603,7 +4603,7 @@ hr {
 
 .footer-wrappper .footer-area .footer-tittle h4 {
     font-family: "Roboto", sans-serif;
-    color: #232F55;
+    color: whitesmoke;
     font-size: 17px;
     margin-bottom: 40px;
     font-weight: 700;
@@ -4614,7 +4614,7 @@ hr {
 }
 
     .footer-wrappper .footer-area .footer-tittle ul li a {
-        color: #454E6D;
+        color: whitesmoke;
         font-weight: 400;
         font-size: 14px;
         text-decoration: underline transparent;

@@ -20,7 +20,7 @@
     <div>
 
         @*amy新增，之後請負責人放至適合位置*@
-        <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+        <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
         <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
     </div>
     <p>{{articles.content}}</p>
