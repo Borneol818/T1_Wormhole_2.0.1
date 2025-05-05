@@ -12,7 +12,10 @@
     <link href="~/css/Sam.css" rel="stylesheet">
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
+<<<<<<< HEAD
         <h1 class="wormhole-word">我是管理員</h1>
+=======
+        <h1>我是管理員</h1>
         <div>
             <table>
                 <tr>
@@ -36,6 +39,7 @@
             </table>
         </div>
 
+>>>>>>> master
         <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
     </template>    
     <!--管理員介面區結束-->
@@ -126,9 +130,15 @@
         </div>
         <!-- slider Area End-->
         <!-- Best Selling start -->
+<<<<<<< HEAD
         <div class="most-popular wormhole-popularArticle-bg">
         @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
         @* <div class="marquee"> *@
+=======
+        <div class="most-popular section-bg">
+            @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
+            @* <div class="marquee"> *@
+>>>>>>> master
             @* <div class="marquee-content"> *@
             @* <span v-for="item in popularArticles" :key="item.id" class="marquee-item"> *@
             @* {{ item.articleTitle }} *@

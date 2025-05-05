@@ -25,3 +25,40 @@
     position: absolute; /*定位 */
     z-index: 9999; /* 數字越大越上層 */
 }
+
+.wormhole-darkblue {
+    background-color: #040329 !important;
+}
+
+.wormhole-word-noColor {
+    font-family: "Roboto", sans-serif,"微軟正黑體";
+}
+
+.wormhole-word {
+    font-family: "Roboto", sans-serif,"微軟正黑體";
+    color: whitesmoke;
+}
+
+.wormhole-popularArticle-bg {
+    background-image: url('../../images/home/artbg.jpg');
+    background-size: cover;
+}
+
+.wormhole-userInfo {
+    display: block;
+    width: 100%;
+    padding: .25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+    .wormhole-userInfo:hover {
+        color: #1e2125;
+        background-color: #f8f9fa;
+    }
