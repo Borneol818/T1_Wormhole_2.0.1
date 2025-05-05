@@ -9,29 +9,28 @@
 
 </div>
 <main id="app">
+    <link href="~/css/Sam.css" rel="stylesheet">
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1>我是管理員</h1>
         <div>
             <table>
                 <tr>
-                    <th>ID        </th>
-                    <th>姓名      </th>
-                    <th>Email     </th>
-                    <th>暱稱      </th>
-                    <th>性別      </th>
-                    <th>電話      </th>
-                    <th>生日      </th>
-                    <th>在線      </th>
+                    <th>姓名          </th>
+                    <th>Email         </th>
+                    <th>暱稱          </th>
+                    <th>性別          </th>
+                    <th>電話          </th>
+                    <th>生日          </th>
+                    <th>在線狀態      </th>
                 </tr>
                 <tr v-for="user in users" :key="user.id">
-                    <td>{{ user.userId }}       </td>
-                    <td>{{ user.name }}     </td>
-                    <td>{{ user.email }}        </td>
-                    <td>{{ user.nickname }}     </td>
-                    <td>{{ user.sex ? '男' : '女' }}      </td>
-                    <td>{{ user.phone }}        </td>
-                    <td>{{ user.birthday }}     </td>
+                    <td>{{ user.name }}                         </td>
+                    <td>{{ user.email }}                        </td>
+                    <td>{{ user.nickname }}                     </td>
+                    <td>{{ user.sex ? '男' : '女' }}            </td>
+                    <td>{{ user.phone }}                        </td>
+                    <td>{{ user.birthday }}                     </td>
                     <td>{{ user.status ? '在線' : '離線'}}      </td>
                 </tr>
             </table>
