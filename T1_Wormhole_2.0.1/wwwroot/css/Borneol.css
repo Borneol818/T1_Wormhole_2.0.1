@@ -36,12 +36,10 @@ body {
 }
 
 .TabBar-a {
-    
-    color: #272727;
+    color: #888ECF;
     display: block;
     width: 100%;
-    text-align:center;
-    
+    text-align: center;
 }
 
 .event-context {
