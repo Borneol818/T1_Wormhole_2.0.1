@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -310,6 +311,13 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         //Borneol 04/19 撈Obtain status 資料表中符合UserId的資料，再依照撈出的資料去撈Obtains中找到該Obtaib的圖片來顯示
 
         //Borneol 04/24 使用者升級判定-製作中
+        [HttpGet]
+        public bool CheckLevelDaily()
+        {
+            RecurringJob.AddOrUpdate("CheckLevelDaily", () => this.UserLevelUp(), Cron.Daily());
+           
+            return true;
+        }
         //依照瀏覽文章次數、註冊天數、評論數量、發文數量等決定user等級
         //(等級如何評斷可以自己設計，不一定這邊舉例都要用到)
         [NonAction]

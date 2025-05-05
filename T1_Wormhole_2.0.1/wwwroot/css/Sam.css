@@ -42,3 +42,14 @@ textarea{
     width:50%;
     height:150px;
 }
+table {
+    border-style: solid;
+}
+
+th, td {
+    color:gray;
+    width: 150px;
+    border: solid;
+    text-align: center;
+    border-color: gray;
+}

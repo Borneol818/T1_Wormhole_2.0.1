@@ -2,37 +2,42 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<!-- 開場動畫區塊 -->
+<div id="splash" class="splash-animate">
+    <img src="/assets/img/hero/home02.gif" alt="Logo" class="splash-logo" />
 
+
+</div>
 <main id="app">
+    <link href="~/css/Sam.css" rel="stylesheet">
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1>我是管理員</h1>
         <div>
             <table>
                 <tr>
-                    <th>ID        </th>
-                    <th>姓名      </th>
-                    <th>Email     </th>
-                    <th>暱稱      </th>
-                    <th>性別      </th>
-                    <th>電話      </th>
-                    <th>生日      </th>
-                    <th>在線      </th>
+                    <th>姓名          </th>
+                    <th>Email         </th>
+                    <th>暱稱          </th>
+                    <th>性別          </th>
+                    <th>電話          </th>
+                    <th>生日          </th>
+                    <th>在線狀態      </th>
                 </tr>
                 <tr v-for="user in users" :key="user.id">
-                    <td>{{ user.userId }}       </td>
-                    <td>{{ user.name }}     </td>
-                    <td>{{ user.email }}        </td>
-                    <td>{{ user.nickname }}     </td>
-                    <td>{{ user.sex ? '男' : '女' }}      </td>
-                    <td>{{ user.phone }}        </td>
-                    <td>{{ user.birthday }}     </td>
+                    <td>{{ user.name }}                         </td>
+                    <td>{{ user.email }}                        </td>
+                    <td>{{ user.nickname }}                     </td>
+                    <td>{{ user.sex ? '男' : '女' }}            </td>
+                    <td>{{ user.phone }}                        </td>
+                    <td>{{ user.birthday }}                     </td>
                     <td>{{ user.status ? '在線' : '離線'}}      </td>
                 </tr>
             </table>
         </div>
 
-    </template>
+        <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
+    </template>    
     <!--管理員介面區結束-->
     <!--使用者介面區開始-->
     <template v-else>
@@ -281,6 +286,8 @@
                 popularArticles:[],
                 isAdmin:false,
                 users:[],
+                isCheckOpen:false,
+                LevelUpCheckText:"✖ 關閉",
             }
         },
         methods:{
@@ -309,9 +316,15 @@
                 }
                 return url;
             },
-            getArticleImage()
+            openLevelUpCheck()
             {
-
+                let self = this;
+                fetch("/api/User/CheckLevelDaily").then(x=>{
+                    if(self.isCheckOpen == false){
+                        self.isCheckOpen = true;
+                        self.sidebarControllerText = "☰ 開啟";
+                    }
+                });                                       
             },
             getUser()
             {
@@ -330,6 +343,25 @@
             // this.transWords();
         }
     }).mount("#app");
+
+    //首頁動圖效果
+        document.addEventListener("DOMContentLoaded", function() {
+      // 用 localStorage 控制一次性動畫
+      if (!localStorage.getItem('splashPlayed')) {
+        document.getElementById('splash').style.display = 'flex';
+        document.getElementById('main-content').style.display = 'none';
+        // 動畫結束後自動隱藏
+        setTimeout(function() {
+          document.getElementById('splash').style.display = 'none';
+          document.getElementById('main-content').style.display = 'block';
+          localStorage.setItem('splashPlayed', 'true');
+        }, 3000); // 3秒後隱藏動畫
+      } else {
+        // 已經看過動畫，直接顯示主內容
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      }
+    });
 </script>
 
 
