@@ -67,6 +67,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Photo = null,
                     Wallet = e.Wallet,
                     IsAdmin = false,
+                    isLogin=true,
                 });
                 return resultU;
             }
@@ -78,6 +79,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                    ManagerName = e.Name,
                    ManagerTeam = e.Team,
                    IsAdmin = true,
+                   isLogin=true,
                });
                 return resultM;
             }

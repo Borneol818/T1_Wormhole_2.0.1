@@ -42,7 +42,7 @@
 				<div id="onlyLayout">
 					<!--好友列表-->
 					<div>
-						<button class="toggleBtn" :class="{active:isSidebarOpen}" @@click="sidebarController()">{{sidebarControllerText}}</button>
+						<button class="toggleBtn" :class="{active:isSidebarOpen}" @@click="sidebarController()" style="background-color:#333; border-radius:0 100% 100% 0;">{{sidebarControllerText}}</button>
 
 						<div class="sidebar" :class="{active:isSidebarOpen}">
 							<div style="width:100%; padding:3px;">															
@@ -176,8 +176,9 @@
 														@* <a class="dropdown-item" href="/Account/Logout">登出</a> *@
 													</div>
 												</li>
-												<li><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li>
-												<li><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>
+												<li v-if="isLogin==false"><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li>
+												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>
+												
 											</ul>
 										</div>
 									</div>
@@ -340,7 +341,8 @@
 					myInvitings:[],
 					keyword:"",
 					isSidebarOpen: false,
-					sidebarControllerText:"☰ 開啟側邊欄",					
+					sidebarControllerText:"☰ 開啟",
+					isLogin:false,
 					// myUserId:0,
 				};
 			},
@@ -354,6 +356,12 @@
 					await fetch('/api/User/Get',{
 					credentials: 'include',
 				}).then(x => x.json()).then(res => self.userInfoForLayout = res);
+				if(self.userInfoForLayout[0].isLogin==true){
+					self.isLogin=true;
+				}
+				else{
+					self.isLogin=false;
+				}
 				},
 				// 4/20 Borneol getForLayout() Layout使用者下拉選單
 
@@ -381,7 +389,7 @@
 					}
 					else{
 						self.isSidebarOpen = false;
-						self.sidebarControllerText = "☰ 開啟側邊欄";
+						self.sidebarControllerText = "☰ 開啟";
 						this.clear();
 					}
 				},
