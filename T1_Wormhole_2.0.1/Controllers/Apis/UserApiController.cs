@@ -256,7 +256,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 foreach (var item in findUserObtain)
                 {
                     var obtain = await _db.Obtains
-                        .Where(y => y.ObtainId == item.ObtainId && y.Type == 2) //用這裡的Type決定留下的是徽章
+                        .Where(y => y.ObtainId == item.ObtainId && y.ItemType == 2) //用這裡的Type決定留下的是徽章
                         .Select(y => new ObtainDTO
                         {
                             ObtainID = y.ObtainId,
@@ -290,7 +290,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 foreach (var item in findUserObtain)
                 {
                     var obtain = await _db.Obtains
-                        .Where(y => y.ObtainId == item.ObtainId && y.Type == 1) //用這裡的Type決定留下的是成就
+                        .Where(y => y.ObtainId == item.ObtainId && y.ItemType == 1) //用這裡的Type決定留下的是成就
                         .Select(y => new ObtainDTO
                         {
                             ObtainID = y.ObtainId,

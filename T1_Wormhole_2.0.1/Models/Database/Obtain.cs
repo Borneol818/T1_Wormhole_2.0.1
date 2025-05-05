@@ -40,6 +40,7 @@ public partial class Obtain
     /// 條件類型的值(尚未確定)
     /// </summary>
     public int? ConditionValue { get; set; }
+    public int? ItemType { get; set; }
 
     public virtual ICollection<EventObtain> EventObtains { get; set; } = new List<EventObtain>();
 
