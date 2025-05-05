@@ -29,6 +29,13 @@
 .wormhole-darkblue {
     background-color: #040329 !important;
 }
+.wormhole-word-darkblue {
+    color: #7D93FF !important;
+}
+
+.wormhole-word-darkblue:hover {
+    color: #040329 !important;
+}
 
 .wormhole-word-noColor {
     font-family: "Roboto", sans-serif,"·L³n¥¿¶ÂÅé";
