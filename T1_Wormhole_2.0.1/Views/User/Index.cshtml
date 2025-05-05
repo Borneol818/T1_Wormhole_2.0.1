@@ -49,8 +49,8 @@
 							</div>
 							<div class="col-md-10 form-group p_star">
 								<select class="country_select" name="sex" v-model="sex">
-									<option :value="true">Male</option>
-									<option :value="false">Female</option>
+									<option :value="true">Female</option>
+									<option :value="false">Male</option>
 								</select>
 							</div>
 							<div class="col-md-10 form-group p_star">
@@ -244,10 +244,10 @@
 					self.userinfo = res;
 					var item=self.userinfo[0];
 					if(item.sex==true){
-						item.sex="男性";
+						item.sex="女性";
 					}
 					else if(item.sex==false){
-						item.sex="女性";
+						item.sex="男性";
 					}
 					else{
 						item.sex= "未填寫";
