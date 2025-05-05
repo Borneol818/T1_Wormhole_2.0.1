@@ -101,18 +101,23 @@
                     console.log('Error in Getting Password', error);
                 });
             },
-            checkIdentifier(){
+        },
+        computed:{
+            formIsValid() {
                 let self = this;
-                if(self.UserIdentifier == ""){
-                    self.isEmptyUserIdentifier = true;
-                    return
-                }
-                else{
+                return !self.isEmptyUserIdentifier && !self.isEmptyPassword;
+            }
+        },
+        updated(){
+                let self = this;
+                if(self.UserIdentifier.length > 0){
                     self.isEmptyUserIdentifier = false;
                 }
-            },
-            checkPassword(){
-                let self = this;
+                else
+                {
+                    self.isEmptyUserIdentifier = true;
+                }
+
                 if(self.Password == ""){
                     self.isEmptyPassword = true;
                     return
@@ -120,13 +125,6 @@
                 else{
                     self.isEmptyPassword = false;
                 }
-            }
-        },
-        computed:{
-            formIsValid() {
-                let self = this;
-                return !self.isEmptyUserIdentifier && !self.isEmptyPassword;
-            }
         },
         mounted() {
             this.GetAccount();
