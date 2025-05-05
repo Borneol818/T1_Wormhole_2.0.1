@@ -15,7 +15,7 @@
         <h1 class="wormhole-word">我是管理員</h1>
         <div>
             <table>
-                <tr>
+                <tr id="sam">
                     <th>姓名          </th>
                     <th>Email         </th>
                     <th>暱稱          </th>
@@ -24,11 +24,11 @@
                     <th>生日          </th>
                     <th>在線狀態      </th>
                 </tr>
-                <tr v-for="user in users" :key="user.id">
+                <tr v-for="user in users" :key="user.id" id="sam">
                     <td>{{ user.name }}                         </td>
                     <td>{{ user.email }}                        </td>
                     <td>{{ user.nickname }}                     </td>
-                    <td>{{ user.sex ? '男' : '女' }}            </td>
+                    <td>{{ user.sex ? '女' : '男' }}            </td>
                     <td>{{ user.phone }}                        </td>
                     <td>{{ user.birthday }}                     </td>
                     <td>{{ user.status ? '在線' : '離線'}}      </td>
