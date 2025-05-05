@@ -6,7 +6,7 @@
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "Models",
+   "OutputPath": "Models\/Database",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "T1_Wormhole_2._0._1",
    "Schemas": null,
@@ -36,6 +36,10 @@
       },
       {
          "Name": "[dbo].[ForumCoins]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Judge]",
          "ObjectType": 0
       },
       {
