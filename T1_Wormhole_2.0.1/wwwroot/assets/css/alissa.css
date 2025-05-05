@@ -12,14 +12,19 @@
     display: flex;
 }
 
-.circle-image img {
-    border: 4px solid rgba(41 38 46);
-    box-shadow: 0 0 18px 8px rgba(0,0,0,0.18);
-    width: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-}
+    .circle-image img {
+        border: 4px solid rgba(41 38 46);
+/*        box-shadow: 0 0 18px 8px rgba(0,0,0,0.18);*/
+        width: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .circle-image img:hover {
+            border: 6px solid rgba(162, 72, 180, 0.8);
+            border-radius: 50%;
+    }
 
 .circle-image h5 {
     /* background: linear-gradient(transparent 70%, #c6d6e4 70%);  螢光筆效果 效果不佳先註解*/
