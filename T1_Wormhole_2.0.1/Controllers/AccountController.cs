@@ -88,8 +88,10 @@ namespace T1_Wormhole_2._0._1.Controllers
                 {
                     Id = TempUserId,
                     Status = false,
-                    Level = 1
+                    Level = 1,
+                    Logintoday = false
                 };
+
                 _context.UserStatuses.Add(userStatus);
                 _context.SaveChanges();
                 var baseUrl = _configuration["AppSettings:BaseUrl"];
@@ -267,6 +269,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                         claimsPrincipal,
                         authProperties);
 
+                    await _userService.LoginRewardAsync(userInfo.UserId);
+                    _context.UserStatuses.Find(userInfo.UserId).Logintoday = true;
                     userInfo.Status = true;
                     _context.SaveChanges();
                     return RedirectToAction("Index", "Home");
@@ -432,11 +436,11 @@ namespace T1_Wormhole_2._0._1.Controllers
             else
             {
                 var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, payload.Name),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Role, "User"),
-            };
+                {
+                    new Claim(ClaimTypes.Name, payload.Name),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, "User"),
+                };
 
                 //做一張身分證叫做cookies
                 var claimsIdentity = new ClaimsIdentity(
@@ -456,8 +460,11 @@ namespace T1_Wormhole_2._0._1.Controllers
                     claimsPrincipal,
                     authProperties);
 
+                await _userService.LoginRewardAsync(user.UserId);
+                _context.UserStatuses.Find(user.UserId).Logintoday = true;
                 user.Status = true;
                 _context.SaveChanges();
+                TempData["RewardMessage"] = "您已獲得每日登入獎勵2枚金幣！";
                 return RedirectToAction("Index", "Home");
             }
         }
