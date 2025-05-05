@@ -144,8 +144,8 @@
 													@* </div> *@
 													<div class="dropdown-menu"
 														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
-														<template v-if="layoutItem.isAdmin==false">
-															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;">
+														<template v-if="layoutItem.isAdmin==false" class="wormhole-word-noColor">
+															<div class="wormhole-userInfo" style="width:300px; border-bottom:2px solid gray;">
 																<h3>My Account</h3>
 																<label>User Name</label>
 																<p>{{layoutItem.name}}</p>
@@ -239,7 +239,7 @@
 		@*     &copy; 2025 - t1_tmpcut - <a asp-area="" asp-controller="home" asp-action="privacy">privacy</a> *@
 		@* </div> *@
 		<div class="footer-wrappper section-bg">
-			<div class="footer-area footer-padding">
+			<div class="footer-area footer-padding wormhole-darkblue">
 				<div class="container">
 					<div class="row justify-content-between" style="height:250px">
 						<div class="col-xl-3 col-lg-5 col-md-4 col-sm-6 d-flex align-items-center" style="height:100%">
