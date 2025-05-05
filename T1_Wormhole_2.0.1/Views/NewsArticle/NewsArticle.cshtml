@@ -14,16 +14,17 @@
 
 <div id="app">
 
-    <h1>{{articles.title}}</h1>
+    <h1 id="sam">{{articles.title}}</h1>
 
-    <p>{{articles.content}}</p>
+    <p id="sam">{{articles.content}}</p>
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
 
     <div>
         @*amy新增，之後請負責人放至適合位置*@
-        <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+        <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+        <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
     </div>
 
     @* 先新增要驗證修改 *@
@@ -42,18 +43,18 @@
                     <ul>
                         <li>
                             <div class="desc">
-                                <p class="comment">
+                                <p class="comment" id="sam">
                                     {{ Response.content }}
                                 </p>
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex align-items-center">
-                                        <h5>
+                                        <h5 id="sam">
                                             <a href="#">{{ Response.writer }}</a>
                                         </h5>
                                     </div>
                                     <div>
                                         <br />
-                                        <p class="date">時間{{ Response.date }}</p>
+                                        <p class="date" id="sam">時間{{ Response.date }}</p>
                                     </div>
                                 </div>
                             </div>

@@ -1,54 +1,63 @@
-.footer-wrappper{
-    .footer-area{
-        .footer-pera{
-            p{
-                color:#454E6D;
+.footer-wrappper {
+    .footer-area {
+        .footer-pera {
+            p {
+                color: whitesmoke;
                 font-size: 14px;
                 margin-bottom: 21px;
                 line-height: 1.8;
                 font-weight: 400;
             }
-            &.footer-pera2 p{
+
+            &.footer-pera2 p {
                 padding: 0;
             }
         }
-        .footer-tittle{
-            h4{
+
+        .footer-tittle {
+            h4 {
                 font-family: $font_2;
-                color: #232F55;
+                color: whitesmoke;
                 font-size: 17px;
                 margin-bottom: 40px;
                 font-weight: 700;
             }
-            ul{
-                li{
+
+            ul {
+                li {
                     margin-bottom: 15px;
-                     a{
-                        color: #454E6D;
+
+                    a {
+                        color: whitesmoke;
                         font-weight: 400;
                         font-size: 14px;
                         text-decoration: underline transparent;
-                        &:hover{
-                            color:#232F55;
+
+                        &:hover {
+                            color: #232F55;
                             text-decoration: underline;
                         }
-                       
                     }
-                    span{
-                        color: red;
+
+                    span {
+                        color: whitesmoke;
                     }
                 }
             }
-            p{
-                color: #454E6D;
+
+            p {
+                color:whitesmoke;
                 font-size: 16px;
             }
         }
-        .footer-form{
+
+        .footer-form {
             margin-top: 40px;
-             form{
+
+            form {
                 position: relative;
-                 input{
+
+                input {
                     width: 100%;
                     height: 43px;
                     padding: 10px 20px;
@@ -57,13 +66,15 @@
                     background: none;
                     color: #454E6D;
                     background: #fff;
-                    &::placeholder{
+
+                    &::placeholder {
                         color: #454E6D;
                         font-size: 16px;
                     }
                 }
-                .form-icon{
-                    button{
+
+                .form-icon {
+                    button {
                         position: absolute;
                         top: 0;
                         right: 0;
@@ -78,46 +89,52 @@
                 }
             }
         }
+
         .info.error {
-            color:  $theme-color;
+            color: $theme-color;
         }
     }
-    
-    //copy Right 
+    //copy Right
     .footer-bottom-area {
-        .footer-border{
+        .footer-border {
             // border-top: 1px solid #d7e7fe;
             padding-top: 45px;
             padding-bottom: 1px;
-            @media #{$md}{
-                padding-top:0;
+
+            @media #{$md} {
+                padding-top: 0;
             }
-            @media #{$sm}{
-                padding-top:0;
+
+            @media #{$sm} {
+                padding-top: 0;
             }
-            @media #{$xs}{
-                padding-top:0;
+
+            @media #{$xs} {
+                padding-top: 0;
             }
         }
-        .footer-copy-right{
-            p{
+
+        .footer-copy-right {
+            p {
                 color: #454E6D;
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 2;
-                i{
+
+                i {
                     color: $theme-color;
                 }
-                a{
+
+                a {
                     color: $theme-color;
-                    &:hover{
+
+                    &:hover {
                         // color: #C2C5DB;
                     }
                 }
             }
         }
     }
-    
 }
 
 

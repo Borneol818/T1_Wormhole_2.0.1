@@ -490,6 +490,7 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.PostCount).HasComment("使用者發文數");
             entity.Property(e => e.ReadCount).HasComment("使用者閱讀數");
             entity.Property(e => e.Status).HasComment("使用者是否達瀏覽數上限");
+            entity.Property(e => e.Logintoday).HasComment("今日是否登入過");
 
             entity.HasOne(d => d.IdNavigation).WithOne(p => p.UserStatus)
                 .HasForeignKey<UserStatus>(d => d.Id)
