@@ -366,7 +366,8 @@
         document.getElementById('main-content').style.display = 'block';
       }
     });
-         // 例如連按三次 Shift 顯示管理員輸入框
+    
+    // 連按三次 Shift 顯示管理員輸入框
     let shiftCount = 0;
     document.addEventListener('keydown', function(e){
         if(e.key === 'Shift'){
@@ -385,7 +386,7 @@
         // 按下 Enter 鍵
         if(e.key === 'Enter'){
             if(this.value.trim().toLowerCase() === 'bomanager'){
-                // 導向 bomanager 的登入頁（請依實際路徑調整）
+                // 導向 bomanager 的登入頁
                 window.location.href = '/bomanager/login';
             } else {
                 alert('關鍵字錯誤');
