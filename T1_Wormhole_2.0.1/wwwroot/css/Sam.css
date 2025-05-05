@@ -19,16 +19,6 @@
     }
 }
 
-/*.btn-like {
-    background-color: gray;
-    color: white;
-}
-
-.btn-dislike {
-    background-color: gray;
-    color: white;
-}*/
-
 .btn-liked {
     color: black;
     background-color: green;
@@ -52,4 +42,7 @@ th, td {
     border: solid;
     text-align: center;
     border-color: gray;
+}
+h1, p, h5 {
+    color: gray;
 }
