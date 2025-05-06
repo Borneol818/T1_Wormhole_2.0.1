@@ -89,7 +89,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Id = TempUserId,
                     Status = false,
                     Level = 1,
-                    Logintoday = false
+                    //Logintoday = false
                 };
 
                 _context.UserStatuses.Add(userStatus);
@@ -269,8 +269,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                         claimsPrincipal,
                         authProperties);
 
-                    await _userService.LoginRewardAsync(userInfo.UserId);
-                    _context.UserStatuses.Find(userInfo.UserId).Logintoday = true;
+                    //await _userService.LoginRewardAsync(userInfo.UserId);
+                    //_context.UserStatuses.Find(userInfo.UserId).Logintoday = true;
                     userInfo.Status = true;
                     _context.SaveChanges();
                     return RedirectToAction("Index", "Home");
@@ -460,8 +460,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                     claimsPrincipal,
                     authProperties);
 
-                await _userService.LoginRewardAsync(user.UserId);
-                _context.UserStatuses.Find(user.UserId).Logintoday = true;
+                //await _userService.LoginRewardAsync(user.UserId);
+                //_context.UserStatuses.Find(user.UserId).Logintoday = true;
                 user.Status = true;
                 _context.SaveChanges();
                 TempData["RewardMessage"] = "您已獲得每日登入獎勵2枚金幣！";

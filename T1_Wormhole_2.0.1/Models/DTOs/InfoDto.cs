@@ -19,6 +19,6 @@
         public int? Wallet { get; set; }
         public string? EmpInfo { get; set; }
         public bool? IsAdmin { get; set; }
-        public bool? isLogin { get; set; }
+        public bool? IsLogin { get; set; }
     }
 }

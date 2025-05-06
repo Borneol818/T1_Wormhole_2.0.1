@@ -99,3 +99,14 @@
     .wormhole-articlesListCard:hover {
         background-color: #022c64;
     }
+.wormhole-articleBG {
+    background-color: #2F3547;
+    padding:20px;
+}
+.wormhole-article-commentCards {
+    background-color: whitesmoke;
+    margin: 15px;
+    margin-left: -10px;
+    padding: 5px;
+    border-radius: 5px;
+}

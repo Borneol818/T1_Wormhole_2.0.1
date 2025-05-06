@@ -46,10 +46,10 @@ namespace T1_Wormhole_2._0._1.LoginScripts
             _context.SaveChanges();
         }
 
-        public async Task LoginRewardAsync(int userId) 
+        public async Task LoginRewardAsync(int userId)
         {
             var LoginStatus = _context.UserStatuses.FirstOrDefault(u => u.Id == userId).Logintoday;
-            if (!LoginStatus) 
+            if (!LoginStatus)
             {
                 var LoginCoin = new ForumCoin
                 {
@@ -64,7 +64,7 @@ namespace T1_Wormhole_2._0._1.LoginScripts
                 _context.ForumCoins.Add(LoginCoin);
                 await _context.SaveChangesAsync();
             }
-            
+
         }
     }
 }
