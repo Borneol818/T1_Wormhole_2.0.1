@@ -86,8 +86,9 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         }
 
         //呼叫簽名檔
-        public IEnumerable<string> getSignature(int userID)
+        public IEnumerable<string> getSignature()
         {
+            var userID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var result = _db.UserInfos.Where(x => x.UserId == userID).Select(x => x.SignatureLine);
             return result;
         }
