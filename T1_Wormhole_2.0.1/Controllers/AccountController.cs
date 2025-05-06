@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Google.Apis.Auth;
+using AspNetCoreGeneratedDocument;
 
 
 namespace T1_Wormhole_2._0._1.Controllers
@@ -88,8 +89,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                 {
                     Id = TempUserId,
                     Status = false,
-                    Level = 1,
-                    //Logintoday = false
+                    Level = 1
                 };
 
                 _context.UserStatuses.Add(userStatus);
@@ -269,12 +269,23 @@ namespace T1_Wormhole_2._0._1.Controllers
                         claimsPrincipal,
                         authProperties);
 
-                    //await _userService.LoginRewardAsync(userInfo.UserId);
-                    //_context.UserStatuses.Find(userInfo.UserId).Logintoday = true;
+                    var GetReward = await _userService.DailyRewardAsync(userInfo.UserId); //登入獎勵發放
+                    if (GetReward)
+                    {
+                        HttpContext.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                    };
                     userInfo.Status = true;
+                    var LoginRecord = new LoginRecord //新增login紀錄
+                    {
+                        Id = 0,
+                        UserId = userInfo.UserId,
+                        Time = DateTime.UtcNow,
+                    };
+                    _context.LoginRecords.Add(LoginRecord);
                     _context.SaveChanges();
-                    return RedirectToAction("Index", "Home");
+                    HttpContext.Session.SetString($"Visit_{userInfo.UserId}", "Active");
 
+                    return RedirectToAction("Index", "Home");
                 }
                 else 
                 {
@@ -460,11 +471,22 @@ namespace T1_Wormhole_2._0._1.Controllers
                     claimsPrincipal,
                     authProperties);
 
-                //await _userService.LoginRewardAsync(user.UserId);
-                //_context.UserStatuses.Find(user.UserId).Logintoday = true;
+
+                var GetReward = await _userService.DailyRewardAsync(user.UserId); //登入獎勵發放
+                if (GetReward)
+                {
+                    HttpContext.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                };
                 user.Status = true;
+                var LoginRecord = new LoginRecord
+                {
+                    Id = 0,
+                    UserId = user.UserId,
+                    Time = DateTime.UtcNow,
+                };
+                _context.LoginRecords.Add(LoginRecord);
                 _context.SaveChanges();
-                TempData["RewardMessage"] = "您已獲得每日登入獎勵2枚金幣！";
+                HttpContext.Session.SetString($"Visit_{user.UserId}", "Active");
                 return RedirectToAction("Index", "Home");
             }
         }

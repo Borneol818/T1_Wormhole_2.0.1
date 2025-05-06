@@ -1,4 +1,5 @@
-﻿using T1_Wormhole_2._0._1.Models.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using T1_Wormhole_2._0._1.Models.Database;
 
 namespace T1_Wormhole_2._0._1.LoginScripts
 {
@@ -9,17 +10,19 @@ namespace T1_Wormhole_2._0._1.LoginScripts
         Login FindByEmail(string email);
         void UpdateUser(Login user);
 
-        Task LoginRewardAsync(int userId);
+        Task <bool> DailyRewardAsync(int userId);
     }
 
-    
+
     public class UserService : IUserService
     {
         private readonly WormHoleContext _context;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(WormHoleContext context)
+        public UserService(WormHoleContext context, ILogger<UserService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public Login CreateUser(Login user)
@@ -46,25 +49,53 @@ namespace T1_Wormhole_2._0._1.LoginScripts
             _context.SaveChanges();
         }
 
-        public async Task LoginRewardAsync(int userId)
+
+        public async Task<bool> DailyRewardAsync(int userId)
         {
-            var LoginStatus = _context.UserStatuses.FirstOrDefault(u => u.Id == userId).Logintoday;
-            if (!LoginStatus)
+            try
             {
-                var LoginCoin = new ForumCoin
+                var taiwanZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
+                var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, taiwanZone);
+                var todayStart = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Unspecified);
+                var todayStartUtc = TimeZoneInfo.ConvertTimeToUtc(todayStart, taiwanZone);
+
+                // 檢查當天是否已有記錄
+                var hasVisitToday = await _context.LoginRecords.AnyAsync(l => l.UserId == userId && l.Time >= todayStartUtc);
+
+
+                if (!hasVisitToday)
                 {
-                    CoinId = 0,
-                    UserId = userId,
-                    CoinSource = "每日登入活動",
-                    AccessTime = DateTime.Now,
-                    CoinAmount = 2,
-                    Status = "已發放"
-                };
-
-                _context.ForumCoins.Add(LoginCoin);
-                await _context.SaveChangesAsync();
+                    var user = await _context.UserInfos.FindAsync(userId);
+                    if (user != null)
+                    {
+                        var LoginAward = new ForumCoin
+                        {
+                            CoinId = 0,
+                            UserId = userId,
+                            CoinSource = "每日登入獎勵",
+                            CoinAmount = 2,
+                            AccessTime = DateTime.UtcNow,
+                            Status = "已發放"
+                        };
+                        var LoginRecord = new LoginRecord
+                        {
+                            Id = 0,
+                            UserId = user.UserId,
+                            Time = DateTime.UtcNow,
+                        };
+                        _context.ForumCoins.Add(LoginAward);
+                        _context.LoginRecords.Add(LoginRecord);
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                }
+                return false;
             }
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "發放每日獎勵失敗，UserId: {UserId}", userId);
+                throw;
+            }
         }
     }
 }
