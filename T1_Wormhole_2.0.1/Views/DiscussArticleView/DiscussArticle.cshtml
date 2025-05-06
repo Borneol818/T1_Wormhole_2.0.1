@@ -23,8 +23,8 @@
                 <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
                 <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
             </div>
+            <p class="wormhole-word ml-3 text-left" style="text-align: left !important;">{{articles.content}}</p>
         </div>
-            <p class="wormhole-word">{{articles.content}}</p>
     </div>
     
 
