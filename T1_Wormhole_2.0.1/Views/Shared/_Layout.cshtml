@@ -127,7 +127,7 @@
 											</div>
 											<!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
 										</div>
-										<div class="header-info-right d-flex align-items-center">
+										<div class="header-info-right d-flex align-items-center" v-for="layoutItem in userInfoForLayout">
 											<ul>
 												@* <li><a href="#">FAQ</a></li> *@
 												@* <li><a href="#">Track Order</a></li>*@
@@ -140,10 +140,10 @@
 													   aria-haspopup="true"
 													   aria-expanded="false">Account</a>
 													@* <div class="shopping-card"> *@
-													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" src="~/images/phototest.jpg" alt=""></a>
+													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" :src="'/api/User/GetPhoto?id='+layoutItem.userId" alt=""></a>
 													@* </div> *@
 													<div class="dropdown-menu"
-														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
+														 aria-labelledby="dropdownId" >
 														<template v-if="layoutItem.isAdmin==false" class="wormhole-word-noColor">
 															<div class="wormhole-userInfo" style="width:300px; border-bottom:2px solid gray;">
 																<h3>My Account</h3>
@@ -177,8 +177,7 @@
 													</div>
 												</li>
 												<li v-if="isLogin==false"><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li>
-												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>
-												
+												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>												
 											</ul>
 										</div>
 									</div>
