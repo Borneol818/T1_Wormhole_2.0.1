@@ -106,6 +106,16 @@
                     .then(response => response.json())
                     .then(data => {
                         this.comments = data;
+                        // 點選文章列表的"x則留言"時會跳轉至內文並滑動至留言區(留言框之上方)
+                        if (window.location.hash === "#comment") {
+                            this.$nextTick(() => {
+                                const commentSection = document.querySelector(".textarea");
+                                if (commentSection) {
+                                    commentSection.scrollIntoView({ behavior: "smooth",block: "start" });
+                                }
+                            });
+                        }
+
                     })
             },
 

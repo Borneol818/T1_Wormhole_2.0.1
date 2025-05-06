@@ -85,7 +85,7 @@
                             </p>
                             <ul class="blog-info-link">
                                 <li style="color:#D5dcff"><i class="fa fa-user" style="color:#D5dcff"></i> {{article.releaseByName}}</li>
-                                <li><a :href="'/NewsArticle/NewsArticle?id=' + article.articleID"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
+                                <li><a :href="'/NewsArticle/NewsArticle?id=' + article.articleID + '#comment'"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
                                 <li style="color:#D5dcff"><i class="far fa-calendar-alt" style="color:#D5dcff"></i> {{article.formattedCreateTime}}</li>
                             </ul>
                         </div>
