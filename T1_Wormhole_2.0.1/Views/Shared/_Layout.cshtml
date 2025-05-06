@@ -34,7 +34,7 @@
 	@* 跑馬燈用css *@
 	<link href="~/css/Sam.css" rel="stylesheet">
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	@* <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 	<header>
@@ -347,6 +347,7 @@
 			data(){
 				return{
 					userInfoForLayout:[],
+					userStatusForLayout:[],
 					relations:[],
 					invitings:[],
 					myInvitings:[],
@@ -373,6 +374,11 @@
 				else{
 					self.isLogin=false;
 				}
+				},
+				async getUserStatusForLayout(){
+					await fetch('/api/User/GetStatus',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.userStatusForLayout = res);
 				},
 				// 4/20 Borneol getForLayout() Layout使用者下拉選單
 
@@ -535,6 +541,7 @@
 			},
 			mounted(){
 				this.getForLayout();
+                this.getUserStatusForLayout();
 				// this.getRelations();
 				// this.getUserId();
 			}

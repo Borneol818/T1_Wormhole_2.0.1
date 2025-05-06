@@ -73,7 +73,7 @@
 							<div class="order_box">
 								<div style="border-bottom:2px solid #333; margin-bottom:30px;">
 									<label class="col-md-12" style="font-size: 20px;">Wallet</label>
-									<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
+									<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;" @@click.prevent="coinsLog">Coins $ {{item.wallet}}</a>
 								</div>
 								<div style="border-bottom:2px solid #333; margin-bottom:20px;">
 									<h2 style="margin-bottom: 10px;">Article History</h2>
@@ -154,7 +154,7 @@
 						<div class="order_box">
 							<div style="border-bottom:2px solid #333; margin-bottom:30px;">
 								<label class="col-md-12" style="font-size: 20px;">Wallet</label>
-								<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
+								<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;" @@click.prevent="coinsLog">Coins $ {{item.wallet}}</a>
 							</div>
 							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
 								<h2 style="margin-bottom: 10px;">Article History</h2>
@@ -218,6 +218,7 @@
 				achievementImg:[],
 				articlesHistory:[],
 				commentHistory:[],
+				myCoinsLog:[],
 				name:"",
 				userId:0,
 				phone:"",
@@ -356,6 +357,15 @@
 				self.readURL(inputTypeFile,inputTypeFile.parentElement.previousElementSibling.firstElementChild,$("#saveEdit"));
 			},
 
+			coinsLog() {
+				 axios.get("/api/User/GetCoinsLog")
+				.then(response => {
+					alert(response.data);
+				})
+				.catch(err => {
+					alert("沒有紀錄");
+				});
+			},
 		},
 		mounted() {
 			this.getAll();
