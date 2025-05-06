@@ -131,7 +131,7 @@
 											<ul>
 												@* <li><a href="#">FAQ</a></li> *@
 												@* <li><a href="#">Track Order</a></li>*@
-												<li class="nav-item dropdown" style="z-index:9999;">
+												<li class="nav-item dropdown" style="z-index:9999;" v-for="user in userInfoForLayout">
 													<a class="nav-link dropdown-toggle"
 														style="color:whitesmoke;"
 													   href="#"
@@ -140,7 +140,7 @@
 													   aria-haspopup="true"
 													   aria-expanded="false">Account</a>
 													@* <div class="shopping-card"> *@
-													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" :src="'/api/User/GetPhoto?id='+userInfoForLayout.userId" alt=""></a>
+													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" :src="'/api/User/GetPhoto?id='+user.userId" alt=""></a>
 													@* </div> *@
 													<div class="dropdown-menu"
 														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
