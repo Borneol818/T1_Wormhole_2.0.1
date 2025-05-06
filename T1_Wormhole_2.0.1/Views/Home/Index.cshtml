@@ -5,8 +5,10 @@
 <!-- 開場動畫區塊 -->
 <div id="splash" class="splash-animate">
     <img src="/assets/img/hero/home02.gif" alt="Logo" class="splash-logo" />
-
-
+</div>
+<div>
+    <!-- 管理者的隱藏入口輸入框 -->
+	<input type="text" id="secret-input" placeholder="請輸入關鍵字..." style="position:fixed;bottom:10px;right:10px;z-index:9999;display:none;">
 </div>
 <main id="app">
     <link href="~/css/Sam.css" rel="stylesheet">
@@ -180,7 +182,7 @@
                         <div class="selling-active">
                             <!-- Single -->
                             <div class="col properties pb-20">
-                                <div class=" properties-card">
+                                <div class="properties-card">
                                     <div class="properties-img">
                                         <a :href="getArticleUrl(item)"><img v-bind:src="'/api/ArticlesApi/GetPicture/'+item.articlesId+'?v='+rand" alt=""></a>
                                     </div>
@@ -462,6 +464,34 @@
         document.getElementById('main-content').style.display = 'block';
       }
     });
+    
+    // 連按三次 Shift 顯示管理員輸入框
+    let shiftCount = 0;
+    document.addEventListener('keydown', function(e){
+        if(e.key === 'Shift'){
+            shiftCount++;
+            if(shiftCount === 3){
+                document.getElementById('secret-input').style.display = 'block';
+                document.getElementById('secret-input').focus();
+                shiftCount = 0;
+            }
+            setTimeout(()=>{ shiftCount = 0; }, 1500); // 1.5秒內未連按歸零
+        }
+    });   
+    
+        //輸入關鍵字導到管理員登入頁
+    document.getElementById('secret-input').addEventListener('keydown', function(e){
+        // 按下 Enter 鍵
+        if(e.key === 'Enter'){
+            if(this.value.trim().toLowerCase() === 'bomanager'){
+                // 導向 bomanager 的登入頁
+                window.location.href = '/bomanager/login';
+            } else {
+                alert('關鍵字錯誤');
+            }
+        }
+    });
+    
 </script>
 
 

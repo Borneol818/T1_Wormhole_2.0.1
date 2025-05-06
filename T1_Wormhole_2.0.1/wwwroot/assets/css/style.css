@@ -108,8 +108,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-    font-family: "Roboto", sans-serif;
-    color: #301A22;
+    font-family: "Roboto", sans-serif,"微軟正黑體";
+    color: #000033;
     font-size: 16px;
     line-height: 30px;
     margin-bottom: 15px;
@@ -3383,7 +3383,7 @@ hr {
 
     .mobile_menu .slicknav_menu {
         background: transparent;
-        margin-top: 0px !important;
+        margin-top: -8px !important;
     }
 
         .mobile_menu .slicknav_menu .slicknav_btn {
@@ -3831,7 +3831,7 @@ hr {
                 font-size: 20px;
                 font-weight: 700;
                 margin-bottom: 6px;
-                color: #1a1a1a;
+                color: #040329;
             }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
@@ -3847,7 +3847,7 @@ hr {
 }
 
     .most-popular .properties .properties-card .properties-caption P span {
-        color: #FF1616;
+        color: #FF8AB5;
         font-size: 16px;
     }
 
@@ -3883,7 +3883,7 @@ hr {
 }
 
     .most-popular .properties .properties-card .properties-caption .properties-footer .review p span {
-        color: #FF7B2E;
+        color: #4372E0;
         font-size: 12px;
     }
 
@@ -3899,7 +3899,7 @@ hr {
 }
 
     .most-popular .properties:hover .properties-caption h3 a {
-        color: #FF1616;
+        color: #7D93FF;
     }
 
 .selling-active button.slick-arrow {
