@@ -127,7 +127,7 @@
 											</div>
 											<!-- Search Box  4/24 Borneol 配合實際搜尋功能修建<form>→<div> class="form-box"，<input> class="form-control"+v-model="keyword"+@@keyup.enter="sendSearchText"-->
 										</div>
-										<div class="header-info-right d-flex align-items-center" v-for="layoutItem in userInfoForLayout">
+										<div class="header-info-right d-flex align-items-center">
 											<ul>
 												@* <li><a href="#">FAQ</a></li> *@
 												@* <li><a href="#">Track Order</a></li>*@
@@ -140,11 +140,11 @@
 													   aria-haspopup="true"
 													   aria-expanded="false">Account</a>
 													@* <div class="shopping-card"> *@
-													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" :src="'/api/User/GetPhoto?id='+layoutItem.userId" alt=""></a>
+													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" :src="'/api/User/GetPhoto?id='+userInfoForLayout.userId" alt=""></a>
 													@* </div> *@
 													<div class="dropdown-menu"
-														 aria-labelledby="dropdownId" >
-														<template v-if="layoutItem.isAdmin==false" class="wormhole-word-noColor">
+														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
+														<template v-if="layoutItem.isAdmin==false && layoutItem.isLogin==true" class="wormhole-word-noColor">
 															<div class="wormhole-userInfo" style="width:300px; border-bottom:2px solid gray;">
 																<h3>My Account</h3>
 																<label>User Name</label>
@@ -156,7 +156,7 @@
 															<a class="dropdown-item" href="#">使用者設定</a>
 															<a class="dropdown-item" href="/Account/Logout">登出</a>
 														</template>
-														<template v-else-if="layoutItem.isAdmin==true">
+														<template v-else-if="layoutItem.isAdmin==true && layoutItem.isLogin==true">
 															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;">
 																<h3>Manager Account</h3>
 																<label>Manager Name</label>
@@ -174,10 +174,14 @@
 														@* </template> *@
 														@* <a class="dropdown-item" href="#">使用者設定</a> *@
 														@* <a class="dropdown-item" href="/Account/Logout">登出</a> *@
-													</div>
+														@* <template v-else> *@
+														@* 	<li><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li> *@
+														@* 	<li><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li> *@
+														@* </template> *@
+													</div>													
 												</li>
 												<li v-if="isLogin==false"><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li>
-												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>												
+												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>
 											</ul>
 										</div>
 									</div>
