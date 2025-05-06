@@ -104,17 +104,54 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 return EmpInfoErr;
             }
             var id = Convert.ToInt32(currentUserId.Value);
-            var result = _db.UserStatuses.Where(x => x.Id == id)
-                .Select(x => new UserStatusDto
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "User")
+            {
+                var articleCount = _db.Articles.Where(x => x.WriterId == id).Count();
+                var commentCount = _db.ArticleResponses.Where(x => x.UserId == id).Count();
+                //var readCount = _db.ArticleReads.Where(x => x.UserId == id).Count();
+                var setUserInStatus = await _db.UserStatuses.FindAsync(id);
+                if (setUserInStatus != null)
                 {
-                    Id = x.Id,
-                    CommentCount = x.CommentCount,
-                    ReadCount = x.ReadCount,
-                    PostCount = x.PostCount,
-                    Status = x.Status,
-                    Level = x.Level,
-                });
-            return result;
+                    setUserInStatus.PostCount = articleCount;
+                    setUserInStatus.CommentCount = commentCount;
+                    
+                    await _db.SaveChangesAsync();
+                }
+                var result = _db.UserStatuses.Where(x => x.Id == id)
+                    .Select(x => new UserStatusDto
+                    {
+                        Id = x.Id,
+                        CommentCount = x.CommentCount,
+                        ReadCount = x.ReadCount,
+                        PostCount = x.PostCount,
+                        Status = x.Status,
+                        Level = x.Level,
+                    });
+                return result;
+            }
+            else
+            {
+                var EmpInfoErr = new List<UserStatusDto>()
+                {
+                    new UserStatusDto()
+                    {
+                        EmpInfo = "0",
+                    }
+                };
+                return EmpInfoErr;
+            }
+            //var result = _db.UserStatuses.Where(x => x.Id == id)
+            //    .Select(x => new UserStatusDto
+            //    {
+            //        Id = x.Id,
+            //        CommentCount = x.CommentCount,
+            //        ReadCount = x.ReadCount,
+            //        PostCount = x.PostCount,
+            //        Status = x.Status,
+            //        Level = x.Level,
+            //    });
+            //return result;
         }
 
         [HttpGet]
