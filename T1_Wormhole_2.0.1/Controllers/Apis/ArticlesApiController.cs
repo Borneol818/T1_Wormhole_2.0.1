@@ -42,6 +42,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Type = e.Type,
                     CreateTime = e.CreateTime,
                     Content = e.Content,
+                    WriterID = e.WriterId,
                     WriterNickname = e.Writer.Nickname,
                     ReleaseByName = e.ReleaseByNavigation.Name,
                     CommentCount = e.ArticleResponses.Count(),
@@ -69,7 +70,6 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Type = e.Type,
                     CreateTime = e.CreateTime,
                     Content = e.Content,
-                    WriterNickname = e.Writer.Nickname,
                     ReleaseByName = e.ReleaseByNavigation.Name,
                     CommentCount = e.ArticleResponses.Count(),
                     ArticleCover = null
@@ -96,8 +96,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                     Type = e.Type,
                     CreateTime = e.CreateTime,
                     Content = e.Content,
+                    WriterID = e.WriterId,
                     WriterNickname = e.Writer.Nickname,
-                    ReleaseByName = e.ReleaseByNavigation.Name,
                     CommentCount = e.ArticleResponses.Count(),
                     ArticleCover = null
                 })
