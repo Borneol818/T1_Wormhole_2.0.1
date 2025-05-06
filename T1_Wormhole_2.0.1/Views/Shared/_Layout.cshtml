@@ -335,12 +335,18 @@
 	<!-- Scroll Up -->
 	<!-- JS here -->
 	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		// 5/6阿鍾新增獎勵發放通知
 		document.addEventListener('DOMContentLoaded', function () {
-			var hasRewardMessage = @((ViewContext.HttpContext.Items.ContainsKey("RewardMessage") ? true : false).ToString().ToLower());
+			var hasRewardMessage = @((ViewContext.HttpContext.Items.ContainsKey("RewardMessage") || TempData["RewardMessage"] != null) ? "true" : "false");
 			if (hasRewardMessage) {
-				alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewContext.HttpContext.Items["RewardMessage"]?.ToString() ?? ""))');
+				Swal.fire({
+					title: '獎勵通知',
+					text: '@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewContext.HttpContext.Items["RewardMessage"]?.ToString() ?? TempData["RewardMessage"]?.ToString() ?? ""))',
+					icon: 'success',
+					confirmButtonText: '確定'
+				});
 			}
 		});
 		Vue.createApp({

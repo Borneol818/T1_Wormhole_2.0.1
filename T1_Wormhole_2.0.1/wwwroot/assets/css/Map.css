@@ -1,6 +1,21 @@
 ﻿#map {
+    height:500px;
     width:700px;
-    height:700px;
+}
+
+/* Styling for the location header */
+.location-header {
+    color: white;
+}
+
+/* Styling for the nearby area header */
+.nearby-area-header {
+    color: white;
+}
+
+/* Styling for the search range label */
+.search-range-label {
+    color: white;
 }
 
 .custom-map-control-button {
@@ -17,6 +32,6 @@
     cursor: pointer;
 }
 
-    .custom-map-control-button:hover {
-        background: rgb(235, 235, 235);
-    }
+.custom-map-control-button:hover {
+    background: rgb(235, 235, 235);
+}

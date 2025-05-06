@@ -272,7 +272,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                     var GetReward = await _userService.DailyRewardAsync(userInfo.UserId); //登入獎勵發放
                     if (GetReward)
                     {
-                        HttpContext.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                        TempData["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
                     }
                     else
                     {
@@ -477,7 +477,7 @@ namespace T1_Wormhole_2._0._1.Controllers
                 var GetReward = await _userService.DailyRewardAsync(user.UserId); //登入獎勵發放
                 if (GetReward)
                 {
-                    HttpContext.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                    TempData["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
                 }
                 else { 
 

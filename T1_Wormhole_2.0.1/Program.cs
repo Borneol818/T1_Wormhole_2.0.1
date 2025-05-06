@@ -82,7 +82,7 @@ app.UseHangfireDashboard("/hangfire");
 
 app.Use(async (context, next) =>
 {
-    if (context.User.Identity.IsAuthenticated)
+    if (context.User.Identity.IsAuthenticated && context.User.FindFirst(ClaimTypes.Role)?.Value == "User")
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!string.IsNullOrEmpty(userId))
