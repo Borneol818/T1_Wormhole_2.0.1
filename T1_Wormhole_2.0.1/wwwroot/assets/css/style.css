@@ -7627,7 +7627,7 @@ hr {
 }
 
     .blog_area a:hover, .blog_area a :hover {
-        background: -webkit-linear-gradient(131deg, #FF1616 0%, #FF1616 99%);
+        background: -webkit-linear-gradient(131deg, #D5DCFF 0%, #D5DCFF 99%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-decoration: none;
@@ -8108,7 +8108,7 @@ hr {
 }
 
     .blog-info-link li a {
-        color: #999999;
+        color: #D5DCFF;
     }
 
     .blog-info-link li i, .blog-info-link li span {
