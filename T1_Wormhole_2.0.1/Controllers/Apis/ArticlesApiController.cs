@@ -46,8 +46,9 @@ namespace T1_Wormhole_2._0._1.Controllers
                     ReleaseByName = e.ReleaseByNavigation.Name,
                     CommentCount = e.ArticleResponses.Count(),
                     ArticleCover = null
-                });
-
+                })
+            .OrderByDescending(e => e.CreateTime)//依照文章時間排序新的在前面
+            .Take(1000);//最多取1000筆資料
         }
         public IQueryable<ArticleDTO> GetArticles(int id)
         {

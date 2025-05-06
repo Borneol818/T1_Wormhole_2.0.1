@@ -209,7 +209,8 @@ namespace T1_Wormhole_2._0._1.Controllers
                 UserId = userID,
                 ObtainId = id,
                 Time = DateTime.Now,
-                Count = 1
+                Count = 1,
+                Status = "使用中"
             };
             _context.ObtainStatuses.Add(status);
 
