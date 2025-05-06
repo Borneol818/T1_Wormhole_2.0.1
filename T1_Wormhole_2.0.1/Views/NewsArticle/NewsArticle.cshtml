@@ -14,9 +14,9 @@
 
 <div id="app">
 
-    <h1 id="sam">{{articles.title}}</h1>
+    <h1 class="sam">{{articles.title}}</h1>
 
-    <p id="sam">{{articles.content}}</p>
+    <p class="sam">{{articles.content}}</p>
     @* 文章圖片 *@
     <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
     @* 文章圖片 *@
@@ -43,18 +43,18 @@
                     <ul>
                         <li>
                             <div class="desc">
-                                <p class="comment" id="sam">
+                                <p class="comment" class="sam">
                                     {{ Response.content }}
                                 </p>
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex align-items-center">
-                                        <h5 id="sam">
+                                        <h5 class="sam">
                                             <a href="#">{{ Response.writer }}</a>
                                         </h5>
                                     </div>
                                     <div>
                                         <br />
-                                        <p class="date" id="sam">時間{{ Response.date }}</p>
+                                        <p class="date" class="sam">時間{{ Response.date }}</p>
                                     </div>
                                 </div>
                             </div>

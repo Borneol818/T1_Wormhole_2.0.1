@@ -32,17 +32,41 @@ textarea{
     width:50%;
     height:150px;
 }
-table {
+table.sam {
     border-style: solid;
 }
 
-th, td {
-    color:gray;
+th.sam, td.sam {
+    color: gray;
     width: 150px;
     border: solid;
     text-align: center;
     border-color: gray;
 }
-#sam{
+.sam{
     color: gray;
 }
+.btnsam {
+    color: black;
+    background-color: gray;
+}
+.edit-modal {
+    position: fixed; /* 固定定位，使其脫離文檔流 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 相對於自身中心點位移 */
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* 確保在其他元素之上 */
+}
+
+    .edit-modal .sam-input,
+    .edit-modal .sam-select {
+        width: 200px; /* 調整輸入框寬度 */
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+    }
