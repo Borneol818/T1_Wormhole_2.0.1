@@ -1,28 +1,32 @@
 ﻿@{
     ViewData["Title"] = "討論版";
 }
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>討論版</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
-    <link href="~/css/Sam.css" rel="stylesheet">
-</head>
+@* <head> *@
+@*     <meta charset="utf-8"> *@
+@*     <meta http-equiv="x-ua-compatible" content="ie=edge"> *@
+@*     <title>討論版</title> *@
+@*     <meta name="description" content=""> *@
+@*     <meta name="viewport" content="width=device-width, initial-scale=1"> *@
+@*     <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png"> *@
+@*     <link href="~/css/Sam.css" rel="stylesheet"> *@
+@* </head> *@
 
 <div id="app">
-
-    <h1 id="sam">{{articles.title}}</h1>
-    @* 文章圖片 *@
-    <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
-    @* 文章圖片 *@
-    <div>
-        @*amy新增，之後請負責人放至適合位置*@
-        <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-        <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
+    <div class="row justify-content-center wrapper">
+        <div class="col-6 text-center">
+            <h1 class="wormhole-word ">{{articles.title}}</h1>
+            @* 文章圖片 *@
+            <img class="img-fluid mx-auto d-block" v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
+            @* 文章圖片 *@
+            <div class="d-flex justify-content-center my-3">
+                @*amy新增，之後請負責人放至適合位置*@
+                <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+                <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
+            </div>
+        </div>
+            <p class="wormhole-word">{{articles.content}}</p>
     </div>
-    <p id="sam">{{articles.content}}</p>
+    
 
 
     <div class="comments-area">

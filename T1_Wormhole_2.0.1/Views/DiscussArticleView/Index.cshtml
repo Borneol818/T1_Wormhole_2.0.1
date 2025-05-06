@@ -6,9 +6,9 @@
 
 
 <body>
-    <header>
-        <div class="header-area">
-            <div class="main-header ">
+    @* <header> *@
+    @*     <div class="header-area"> *@
+    @*         <div class="main-header "> *@
 
                 @* <div class="header-bottom  header-sticky"> *@
                 @*     <div class="container"> *@
@@ -57,10 +57,10 @@
 
 
                 @* </div> *@
-            </div>
+    @*         </div> *@
 
-        </div>
-    </header>
+    @*     </div> *@
+    @* </header> *@
 
 
 
@@ -73,20 +73,20 @@
         @* <!-- Blog Area Start-->文章內容開始 *@
         <section class="blog_area section-padding">
             <div class="container" >
-                <div class="row">
-                     <article class="blog_item">
-                        <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
+                <div class="row justify-content-center">
+                    <article class="blog_item col-8">
+                        <div v-for="article in nowArticles" :key="article.articleID" class="blog_details wormhole-articlesListCard">
                             <img class="img-fluid" v-bind:src="'/api/ArticlesApi/GetPicture/'+article.articleID+'?v='+rand" />
                             <a :href="'/DiscussArticleView/DiscussArticle?id=' + article.articleID">
-                                <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
+                                <h2 class="blog-head" style="color:whitesmoke;">{{article.title}}</h2>
                             </a>
-                            <p class="ellipsis-text">
+                            <p class="ellipsis-text" style="color:whitesmoke;">
                                 {{article.content}}
                             </p>
                             <ul class="blog-info-link">
-                                <li><a href="#"><i class="fa fa-user"></i> {{article.writerNickname}}</a></li>
-                                <li><a href="#"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
-                                <li><a href="#"><i class="far fa-calendar-alt"></i> {{article.createTime}}</a></li>
+                                <li><a href=" "><i class="fa fa-user"></i> {{article.writerNickname}}</a></li>
+                                <li><a :href="'/DiscussArticleView/DiscussArticle?id=' + article.articleID"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
+                                <li><a href=""><i class="far fa-calendar-alt"></i> {{article.createTime}}</a></li>
                             </ul>
                         </div>
                     </article>
@@ -171,7 +171,7 @@
 
             getArticles() {
                 let self = this;
-                fetch("/api/ArticlesApi").then(x => x.json()).then(res => self.articles = res)
+                fetch("/api/ArticlesApi/Discuss").then(x => x.json()).then(res => self.articles = res)
             },
 
             goToPage(page) {
