@@ -54,7 +54,7 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <h5 style="color:dimgray;">
-                                                <a href="#">{{ Response.writer }}</a>
+                                                <a :href="'/User/ViewProfile?id=' + Response.userId">{{ Response.writer }}</a>
                                             </h5>
                                         </div>
                                         <div>
@@ -277,6 +277,9 @@
                     .then(res=>self.isUserArticle=res);
             },
             /*--------------進行文章刪除--------------*/
+            //閱讀文章記數
+            
+            //閱讀文章記數
         },
         mounted() {
 

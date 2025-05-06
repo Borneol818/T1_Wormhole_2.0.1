@@ -34,7 +34,7 @@
 	@* 跑馬燈用css *@
 	<link href="~/css/Sam.css" rel="stylesheet">
 	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	@* <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 	<header>
@@ -48,13 +48,13 @@
 						<div class="sidebar" :class="{active:isSidebarOpen}">
 							<div style="width:100%; padding:3px;">															
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
-									<h1 style="margin-bottom: 10px; color: antiquewhite;">Relation List</h1>
+									<h1 style="margin-bottom: 10px; color: whitesmoke; font-size:36px;">Relation List</h1>
 									<ul v-for="friend in relations" :key="friend.inviteeId">
 										<li>
 											<div class="row">
 												<a class="col-8" :href="'/User/ViewProfile?id='+friend.inviteeId">
-													<h3 style="margin:0px; color:antiquewhite;">{{friend.inviteeName}}</h3>
-													<p class="ellipsis-text" style="color: antiquewhite;">{{friend.relationType}}</p>
+													<h3 style="margin-left:10px; color:whitesmoke;font-size:26px;">{{friend.inviteeName}}</h3>
+													<p class="ellipsis-text" style="margin-left:10px;color: whitesmoke;font-size:18px;">{{friend.relationType}}</p>
 												</a>
 												@* <div class="col-2"> *@
 												@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button> *@
@@ -68,13 +68,13 @@
 									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
 								</div>
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
-									<h1 style="margin-bottom: 10px; color: antiquewhite;">Inviting List</h1>
+									<h1 style="margin-bottom: 10px; color: whitesmoke;font-size:36px;">Inviting List</h1>
 									<ul v-for="invitee in invitings" :key="invitee.inviteeId">
 										<li>
 											<div class="row">
 												<a class="col-7" :href="'/User/ViewProfile?id='+invitee.inviteeId">
-													<h3 style="margin:0px; color: antiquewhite;">{{invitee.inviteeName}}</h3>
-													<p class="ellipsis-text" style="color: antiquewhite;">{{invitee.invite}}</p>
+													<h3 style="margin-left:10px; color:whitesmoke;font-size:26px;">{{invitee.inviteeName}}</h3>
+													<p class="ellipsis-text" style="margin-left:10px;color: whitesmoke;font-size:18px;">{{invitee.invite}}</p>
 												</a>
 												@* <div class="col-2"> *@
 												@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitee.inviteeId)">Accept</button> *@
@@ -88,13 +88,13 @@
 									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
 								</div>
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
-									<h1 style="margin-bottom: 10px; color: antiquewhite;">Inviting Me</h1>
+									<h1 style="margin-bottom: 10px; color: whitesmoke;font-size:36px;">Inviting Me</h1>
 									<ul v-for="invitingMe in myInvitings" :key="invitingMe.inviterId">
 										<li>
 											<div class="row">
 												<a class="col-7" :href="'/User/ViewProfile?id='+invitingMe.inviterId">
-													<h3 style="margin:10px 0; color: antiquewhite;">{{invitingMe.inviterName}}</h3>
-													<p class="ellipsis-text" style="color: antiquewhite;">{{invitingMe.invite}}</p>
+													<h3 style="margin-left:10px; color:whitesmoke;font-size:26px;">{{invitingMe.inviterName}}</h3>
+													<p class="ellipsis-text" style="margin-left:10px;color: whitesmoke;font-size:18px;">{{invitingMe.invite}}</p>
 												</a>
 												<div class="col-5">
 													<button id="accept" type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitingMe.inviterId)">Accept</button>
@@ -353,6 +353,7 @@
 			data(){
 				return{
 					userInfoForLayout:[],
+					userStatusForLayout:[],
 					relations:[],
 					invitings:[],
 					myInvitings:[],
@@ -379,6 +380,11 @@
 				else{
 					self.isLogin=false;
 				}
+				},
+				async getUserStatusForLayout(){
+					await fetch('/api/User/GetStatus',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.userStatusForLayout = res);
 				},
 				// 4/20 Borneol getForLayout() Layout使用者下拉選單
 
@@ -541,6 +547,7 @@
 			},
 			mounted(){
 				this.getForLayout();
+                this.getUserStatusForLayout();
 				// this.getRelations();
 				// this.getUserId();
 			}
