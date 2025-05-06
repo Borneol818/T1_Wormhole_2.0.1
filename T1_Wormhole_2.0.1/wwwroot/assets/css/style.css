@@ -3383,7 +3383,7 @@ hr {
 
     .mobile_menu .slicknav_menu {
         background: transparent;
-        margin-top: 0px !important;
+        margin-top: -8px !important;
     }
 
         .mobile_menu .slicknav_menu .slicknav_btn {
