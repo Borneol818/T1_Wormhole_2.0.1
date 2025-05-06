@@ -102,7 +102,7 @@
 										<div>
 											<button class="btn btn-warning" v-if="isAdmin" v-on:click="edit(obtain.obtainID)">編輯</button>
 											<button class="btn btn-danger" v-if="isAdmin" v-on:click="deleteobtain(obtain.obtainID)">刪除</button>
-											<button v-if="isUser && obtain.price> 0" class="btn btn-outline-secondary" v-on:click="buyObtain(obtain.obtainID)">Get</button>
+											<button v-if="isUser && obtain.price> 0" class="genric-btn primary circle" v-on:click="buyObtain(obtain.obtainID)">Get</button>
 										</div>
 									</div>
 								</div>
