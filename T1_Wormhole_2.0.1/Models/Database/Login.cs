@@ -19,11 +19,6 @@ public partial class Login
     /// </summary>
     public string Password { get; set; }
 
-    [Required]
-    [Compare("Password")]
-    [NotMapped]
-    public string ConfirmPassword { get; set; }
-
     /// <summary>
     /// 電子郵箱
     /// </summary>

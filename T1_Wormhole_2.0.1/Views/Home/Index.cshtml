@@ -15,6 +15,12 @@
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1 class="wormhole-word">我是管理員</h1>
+
+        <li><i class="fas fa-edit" style="color:white"></i><a asp-controller="Obtain" asp-action="Index"> Wormhole Shop編輯頁</a></li>
+        <br />
+        <li><i class="fas fa-edit" style="color:white"></i><a asp-controller="NewsArticle" asp-action="newsPoster"> 新聞發佈</a></li>
+        <br />
+
         <div>
             <table class="sam">
                 <tr class="sam">

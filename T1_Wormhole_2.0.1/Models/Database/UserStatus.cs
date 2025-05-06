@@ -37,10 +37,6 @@ public partial class UserStatus
     /// </summary>
     public int Level { get; set; }
 
-    /// <summary>
-    /// 今日是否登入過
-    /// </summary>
-    public bool Logintoday { get; set; }
 
     public virtual UserInfo IdNavigation { get; set; }
 }
