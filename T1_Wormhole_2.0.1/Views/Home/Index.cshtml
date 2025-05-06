@@ -36,7 +36,7 @@
                     <td class="sam">{{ user.status ? '在線' : '離線'}}      </td>
                     <td class="sam">
                         <button @@click="openEditModal(user.userId)" class="btnsam">編輯</button>
-                        <button @@click="deleteUser(user.userId)" class="btnsam">刪除</button>
+                        @* <button @@click="deleteUser(user.userId)" class="btnsam">刪除</button> *@
                     </td>
                 </tr>
             </table>
@@ -413,28 +413,28 @@
                     alert('更新使用者資料時發生錯誤，請稍後再試。');
                 });
             },
-            deleteUser(userId) {
-                console.log(userId)
-                if (confirm("確定要刪除嗎？")) {
-                    // 在這裡發送刪除請求到後端 API
-                    fetch('api/AccountApi/deleteUser/'+userId, {
-                        method: 'DELETE'
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            this.users = this.users.filter(u => u.userId !== userId);
-                            alert('使用者已刪除！');
-                        } else {
-                            console.error('刪除使用者失敗:', response);
-                            alert('刪除使用者失敗，請檢查錯誤訊息。');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('刪除使用者時發生錯誤:', error);
-                        alert('刪除使用者時發生錯誤，請稍後再試。');
-                    });
-                }
-            }       
+            // deleteUser(userId) {
+                // console.log(userId)
+                // if (confirm("確定要刪除嗎？")) {
+                    //在這裡發送刪除請求到後端 API
+                    // fetch('api/AccountApi/deleteUser/'+userId, {
+                        // method: 'DELETE'
+                    // })
+                    // .then(response => {
+                        // if (response.ok) {
+                            // this.users = this.users.filter(u => u.userId !== userId);
+                            // alert('使用者已刪除！');
+                        // } else {
+                            // console.error('刪除使用者失敗:', response);
+                            // alert('刪除使用者失敗，請檢查錯誤訊息。');
+                        // }
+                    // })
+                    // .catch(error => {
+                        // console.error('刪除使用者時發生錯誤:', error);
+                        // alert('刪除使用者時發生錯誤，請稍後再試。');
+                    // });
+                // }
+            // }       
 
         },
         mounted() {

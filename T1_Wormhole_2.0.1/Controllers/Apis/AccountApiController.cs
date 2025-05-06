@@ -150,26 +150,26 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var userToDelete = await _context.UserInfos.FindAsync(id);
-            if (userToDelete == null)
-            {
-                return NotFound($"找不到 ID 為 {id} 的使用者。");
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteUser(int id)
+        //{
+            //var userToDelete = await _context.UserInfos.FindAsync(id);
+            //if (userToDelete == null)
+            //{
+                //return NotFound($"找不到 ID 為 {id} 的使用者。");
+            //}
 
-            try
-            {
-                _context.UserInfos.Remove(userToDelete);
-                await _context.SaveChangesAsync();
-                return Ok($"ID 為 {id} 的使用者已成功刪除。");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"刪除使用者時發生錯誤: {ex.Message}");
-                return StatusCode(500, "刪除使用者時發生伺服器錯誤。");
-            }
-        }
+            //try
+            //{
+                //_context.UserInfos.Remove(userToDelete);
+                //await _context.SaveChangesAsync();
+                //return Ok($"ID 為 {id} 的使用者已成功刪除。");
+            //}
+            //catch (Exception ex)
+            //{
+                //Console.WriteLine($"刪除使用者時發生錯誤: {ex.Message}");
+                //return StatusCode(500, "刪除使用者時發生伺服器錯誤。");
+            //}
+        //}
     }
 }
