@@ -2,7 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Microsoft.Spatial;
+using NetTopologySuite.Geometries;
 
 namespace T1_Wormhole_2._0._1.Models.Database;
 

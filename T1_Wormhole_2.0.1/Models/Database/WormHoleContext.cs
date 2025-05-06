@@ -485,7 +485,8 @@ public partial class WormHoleContext : DbContext
                 .HasComment("簽名檔");
             entity.Property(e => e.Status).HasComment("是否為登入狀態");
             entity.Property(e => e.Wallet).HasComment("論壇幣數量");
-            entity.Property(e => e.Position);
+            entity.Property(u => u.Position).HasColumnType("geography");
+
 
             entity.HasOne(d => d.EmailNavigation).WithOne(p => p.UserInfo)
                 .HasPrincipalKey<Login>(p => p.Email)

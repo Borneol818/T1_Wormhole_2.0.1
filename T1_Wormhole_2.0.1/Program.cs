@@ -44,7 +44,9 @@ builder.Services.AddHangfire(config => config
 // 加入 Hangfire Server
 builder.Services.AddHangfireServer();
 
-builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
+//啟用 NetTopologySuite
+builder.Services.AddDbContext<WormHoleContext>(x =>
+    x.UseSqlServer(conStr, sqlOptions => sqlOptions.UseNetTopologySuite()));
 //這裡寫一個判定用的方法並存入在這裡new的變數名稱，用來當作登入後的認證跟各項頁面功能的全域變數
 
 // 添加 Session
