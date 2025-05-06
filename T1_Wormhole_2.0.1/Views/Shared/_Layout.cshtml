@@ -347,6 +347,7 @@
 			data(){
 				return{
 					userInfoForLayout:[],
+					userStatusForLayout:[],
 					relations:[],
 					invitings:[],
 					myInvitings:[],
@@ -373,6 +374,11 @@
 				else{
 					self.isLogin=false;
 				}
+				},
+				async getUserStatusForLayout(){
+					await fetch('/api/User/GetStatus',{
+					credentials: 'include',
+				}).then(x => x.json()).then(res => self.userStatusForLayout = res);
 				},
 				// 4/20 Borneol getForLayout() Layout使用者下拉選單
 
@@ -535,6 +541,7 @@
 			},
 			mounted(){
 				this.getForLayout();
+                this.getUserStatusForLayout();
 				// this.getRelations();
 				// this.getUserId();
 			}
