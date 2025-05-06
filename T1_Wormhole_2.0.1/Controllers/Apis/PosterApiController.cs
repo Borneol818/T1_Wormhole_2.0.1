@@ -175,7 +175,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         [HttpGet]
         public async Task<FileResult> GetPhoto(int id)
         {
-            string fileName = Path.Combine("wwwroot", "images", "PhotoTest.jpg");
+            string fileName = Path.Combine("wwwroot", "images", "noimages.jpg");
             Article e = await _db.Articles.FindAsync(id);
             byte[] ImageContent = e?.ArticleCover != null ? e.ArticleCover : System.IO.File.ReadAllBytes(fileName);
             return File(ImageContent, "image/jpeg");

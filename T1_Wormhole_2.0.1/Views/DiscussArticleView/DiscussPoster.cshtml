@@ -15,9 +15,9 @@
                     @*         <button type="submit" class=" btn_1 boxed-btn mt-5">討論版</button> *@
                     @*     </div> *@
                     @* </div> *@
-                    <div class="row">
+                    <div class="row d-flex justify-content-center">
                         <div class="form-group col-3">
-                            <button @@click="jumpToDiscussArticleView" type="submit" class="btn_1 boxed-btn">討論版</button>
+                            <button @@click="jumpToDiscussArticleView" type="button" class="genric-btn primary-border mt-5">討論版</button>
                         </div>
                     </div>
                 </div>
@@ -25,14 +25,14 @@
                 <div class="col-lg-9">
                     <div class="comment-form publishDiv">
                         <div class="row align-items-center">
-                            <h4 class="form-group col-6">發表文章</h4>
+                            <h4 class="form-group col-6" style="font-weight:bold; font-size:36px;">發表文章</h4>
                             <div class="form-group col-3">
-                                <button @@click="jumpToDiscussArticleView" class="button button-contactForm btn_1 boxed-btn py-2 my-3 ">取消編輯</button>
+                                <button @@click="jumpToDiscussArticleView" class="genric-btn primary-border radius py-2 my-3 ">取消編輯</button>
                             </div>
                             
                             <div class="form-group col-3">
-                                <button v-if="EditMode" @@click="putEditArticle" class="button button-contactForm btn_1 py-2 my-3">儲存</button>
-                                <button id="postNewArticle" v-else="EditMode" @@click="add" class="button button-contactForm btn_1 py-2 my-3">發表</button>
+                                <button v-if="EditMode" @@click="putEditArticle" class="genric-btn primary radius py-2 my-3">儲存</button>
+                                <button id="postNewArticle" v-else="EditMode" @@click="add" class="genric-btn primary radius py-2 my-3">發表</button>
                             </div>
                         </div>
                         <form class="form-contact comment_form" action="#" id="commentForm">
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 pb-3 box">
-                                    <button type="button" @@click="getSignature" class="button btn_1 boxed-btn">加入簽名檔</button>
+                                    <button type="button" @@click="getSignature" class="genric-btn primary radius">加入簽名檔</button>
                                     @* <input type="checkbox"  @@click="getSignature" class="button button-contactForm btn_1 boxed-btn"> *@
                                     @* <lable>加入簽名檔</lable> *@
                                 </div>
@@ -184,7 +184,7 @@
                     res= `/api/Poster/GetPhoto?id=${self.EditId}&v=${self.rand}`;
                 }
                 else{
-                    res=`/images/PhotoTest.jpg`;//之後改成無圖片專用顯示圖
+                    res=`/images/noimages.jpg`;//之後改成無圖片專用顯示圖
                 }
                     return res;
             },
