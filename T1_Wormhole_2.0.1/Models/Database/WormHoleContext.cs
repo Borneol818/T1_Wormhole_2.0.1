@@ -300,7 +300,7 @@ public partial class WormHoleContext : DbContext
             entity.ToTable("LoginRecord");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("ID");
             entity.Property(e => e.Time).HasColumnType("smalldatetime");
             entity.Property(e => e.UserId).HasColumnName("UserID");

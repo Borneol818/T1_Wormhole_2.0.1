@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	@* <meta charset="utf-8" />
@@ -335,6 +336,13 @@
 	<!-- JS here -->
 	<!-- 4/20 Borneol 建立Vue .mount("#onlyLayout") -->
 	<script>
+		// 5/6阿鍾新增獎勵發放通知
+		document.addEventListener('DOMContentLoaded', function () {
+			var hasRewardMessage = @((ViewContext.HttpContext.Items.ContainsKey("RewardMessage") ? true : false).ToString().ToLower());
+			if (hasRewardMessage) {
+				alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewContext.HttpContext.Items["RewardMessage"]?.ToString() ?? ""))');
+			}
+		});
 		Vue.createApp({
 			data(){
 				return{

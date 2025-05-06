@@ -29,7 +29,8 @@ namespace T1_Wormhole_2._0._1.Controllers
             {
                 writer = r.User.Nickname,
                 content = r.Comment,
-                date = r.CreateTime.ToString("yyyy年MM月dd日 HH點mm分")
+                date = r.CreateTime.ToString("yyyy年MM月dd日 HH點mm分"),
+                userId = r.UserId
 
             }).ToList();
 
