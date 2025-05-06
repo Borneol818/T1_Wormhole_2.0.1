@@ -109,7 +109,7 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
     font-family: "Roboto", sans-serif,"微軟正黑體";
-    color: #FF8AB5;
+    color: #000033;
     font-size: 16px;
     line-height: 30px;
     margin-bottom: 15px;
@@ -3383,7 +3383,7 @@ hr {
 
     .mobile_menu .slicknav_menu {
         background: transparent;
-        margin-top: 0px !important;
+        margin-top: -8px !important;
     }
 
         .mobile_menu .slicknav_menu .slicknav_btn {
