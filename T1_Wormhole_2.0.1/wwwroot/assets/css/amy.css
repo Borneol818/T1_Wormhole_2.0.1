@@ -122,3 +122,18 @@
 .wormhole-CoinColor {
     color: #FFF6E0;
 }
+.wormhole-artPostBTN {
+    position: fixed;
+    color: #000033;
+    font-weight: bold;
+    background-color: aliceblue;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 99;
+    bottom: 20px;
+    right: 100px;
+}
+
+    .wormhole-artPostBTN:hover {
+        color: darkblue;
+    }
