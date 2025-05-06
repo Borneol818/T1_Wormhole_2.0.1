@@ -36,29 +36,29 @@
 							<h1 style="color:antiquewhite;">Edit Profile</h1>
 							@* <form class="row contact_form" action="#" method="post" novalidate="novalidate" v-for="item in userinfo"> *@
 							<div class="col-md-10 form-group p_star">
-								<input type="text" class="form-control" name="name" v-model="name" placeholder="Username" />
+								<input type="text" class="form-control" name="name" v-model="item.name" placeholder="Username" />
 								@* <span class="placeholder" data-placeholder="Username"></span>*@
 							</div>
 							<div class="col-md-5 form-group p_star">
-								<input type="text" class="form-control" name="phone" v-model="phone" placeholder="Phone number" />
+								<input type="text" class="form-control" name="phone" v-model="item.phone" placeholder="Phone number" />
 								@* <span class="placeholder" data-placeholder="Phone number"></span> *@
 							</div>
 							<div class="col-md-5 form-group p_star">
-								<input type="text" class="form-control" name="nickname" v-model="nickname" placeholder="nickname" />
+								<input type="text" class="form-control" name="nickname" v-model="item.nickname" placeholder="nickname" />
 								@* <span class="placeholder" data-placeholder="nickname"></span> *@
 							</div>
 							<div class="col-md-10 form-group p_star">
-								<select class="country_select" name="sex" v-model="sex">
+								<select class="country_select" name="sex" v-model="item.sex">
 									<option :value="true">Female</option>
 									<option :value="false">Male</option>
 								</select>
 							</div>
 							<div class="col-md-10 form-group p_star">
-								<input placeholder="Birthday" type="text" name="birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="birthday" />
+								<input placeholder="Birthday" type="text" name="birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="item.birthday" />
 							</div>
 							<div class="col-md-10 form-group">
 								<textarea class="form-control" name="message" id="message" rows="1" placeholder="Edit Your Own Signature"
-										  v-model="signature"></textarea>
+										  v-model="item.signature"></textarea>
 							</div>
 							<div style="margin-top: 20px; display: flex; justify-content: center;">
 								<button id="saveEdit" type="button" class="btn btn-primary" @@click="editInfo">Save</button>
@@ -300,12 +300,12 @@
 				let self=this;
 				var data=new FormData();
 				data.append("userId",self.userinfo[0].userId);
-				data.append("name",self.name);
-				data.append("phone",self.phone);
-				data.append("nickname",self.nickname);
-				data.append("birthday",self.birthday);
-				data.append("signature",self.signature);
-				data.append("sex",self.sex);
+				data.append("name",self.userinfo[0].name);
+				data.append("phone",self.userinfo[0].phone);
+				data.append("nickname",self.userinfo[0].nickname);
+				data.append("birthday",self.userinfo[0].birthday);
+				data.append("signature",self.userinfo[0].signature);
+				data.append("sex",self.userinfo[0].sex);
 				data.append("photo",document.querySelector("#editFile").files[0]);
 				// alert(JSON.stringify(data))
 				await fetch('/api/User/Edit',{
