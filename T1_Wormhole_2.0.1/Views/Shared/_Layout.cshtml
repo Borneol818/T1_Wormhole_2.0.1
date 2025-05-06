@@ -338,9 +338,9 @@
 	<script>
 		// 5/6阿鍾新增獎勵發放通知
 		document.addEventListener('DOMContentLoaded', function () {
-			var hasRewardMessage = @((ViewContext.HttpContext.Items.ContainsKey("RewardMessage") ? true : false).ToString().ToLower());
+			var hasRewardMessage = @((ViewContext.HttpContext.Items.ContainsKey("RewardMessage") || TempData["RewardMessage"] != null) ? "true" : "false");
 			if (hasRewardMessage) {
-				alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewContext.HttpContext.Items["RewardMessage"]?.ToString() ?? ""))');
+				alert('@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewContext.HttpContext.Items["RewardMessage"]?.ToString() ?? TempData["RewardMessage"]?.ToString() ?? ""))');
 			}
 		});
 		Vue.createApp({
