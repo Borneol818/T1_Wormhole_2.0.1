@@ -79,7 +79,6 @@ namespace T1_Wormhole_2._0._1.LoginScripts
                         };
                         var LoginRecord = new LoginRecord
                         {
-                            Id = 0,
                             UserId = user.UserId,
                             Time = DateTime.UtcNow,
                         };

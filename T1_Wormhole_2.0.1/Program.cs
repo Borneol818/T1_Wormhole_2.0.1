@@ -88,7 +88,7 @@ app.Use(async (context, next) =>
         if (!string.IsNullOrEmpty(userId))
         {
             var dbContext = context.RequestServices.GetRequiredService<WormHoleContext>();
-            var rewardService = context.RequestServices.GetRequiredService<UserService>();
+            var rewardService = context.RequestServices.GetRequiredService<IUserService>();
             var ConvertUserId = Convert.ToInt32(userId);
 
             // 檢查是否為新會話
@@ -100,16 +100,18 @@ app.Use(async (context, next) =>
                 if (GetReward) 
                 {
                     context.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
-                };
+                }
                 // 新會話，記錄到 LoginRecord 表
-                dbContext.LoginRecords.Add(new LoginRecord
+                else
                 {
-                    Id = 0,
-                    UserId = ConvertUserId,
-                    Time = DateTime.UtcNow
-                });
-                await dbContext.SaveChangesAsync();
-
+                    var LoginRecord = new LoginRecord
+                    {
+                        UserId = ConvertUserId,
+                        Time = DateTime.UtcNow
+                    };
+                    dbContext.LoginRecords.Add(LoginRecord);
+                    await dbContext.SaveChangesAsync();
+                }
                 // 設置 Session 標記
                 context.Session.SetString(sessionKey, "Active");
 
