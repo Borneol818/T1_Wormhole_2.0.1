@@ -1,23 +1,23 @@
 ﻿@using System.Security.Claims
 <link href="~/assets/css/map.css" rel="stylesheet" />
 
-<div class="row">
-    <h2>現在位置</h2>
+<div class="row mt-20 mb-20">
+    <h2 class="location-header">現在位置</h2>
     <div class="col-8 mb-10">
-        <div id="map" style="height: 500px;"></div>
+        <div id="map" ></div>
     </div>
     <div class="col-4 mb-10">
-        <h2>探索附近區域</h2>
+        <h2 class="nearby-area-header">探索附近區域</h2>
         <div class="mb-2">
-            <label for="radiusSelect">搜尋範圍:</label>
+            <label for="radiusSelect" class="search-range-label">搜尋範圍:</label>
             <select id="radiusSelect" class="form-select">
                 <option value="500">500 公尺</option>
                 <option value="1000" selected>1 公里</option>
                 <option value="2000">2 公里</option>
             </select>
         </div>
-        <button onclick="findNearbyFriends()" class="btn btn-primary">搜尋附近好友</button>
-        <button onclick="stopWatchingPosition()" class="btn btn-secondary mt-2">停止追蹤位置</button>
+        <button  onclick="findNearbyFriends()" class="btn btn-primary">搜尋附近好友</button>
+        <button  onclick="stopWatchingPosition()" class="btn btn-secondary mt-2">停止追蹤位置</button>
         <div id="errorMessage" class="text-danger mt-2" style="display: none;"></div>
     </div>
 </div>
