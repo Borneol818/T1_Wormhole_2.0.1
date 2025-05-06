@@ -167,13 +167,13 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             if (role == "User")
             {
-                var checkArticleId =await _db.Articles.FirstOrDefaultAsync(x => x.ArticleId == articleId);
+                var checkArticleId =await _db.Articles.FindAsync(articleId);
                 
                 var setUserInStatus = await _db.UserStatuses.FindAsync(id);
                 if (setUserInStatus != null && checkArticleId!=null)
                 {
                     setUserInStatus.ReadCount += 1;
-
+                    _db.Entry(setUserInStatus).State = EntityState.Modified;
                     await _db.SaveChangesAsync();
                 }
                
