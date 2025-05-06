@@ -84,9 +84,9 @@
                                 {{article.content}}
                             </p>
                             <ul class="blog-info-link">
-                                <li><a href=" "><i class="fa fa-user"></i> {{article.writerNickname}}</a></li>
+                                <li><a :href="'/User/ViewProfile?id='+ article.writerID"><i class="fa fa-user"></i> {{article.writerNickname}}</a></li>
                                 <li><a :href="'/DiscussArticleView/DiscussArticle?id=' + article.articleID"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
-                                <li><a href=""><i class="far fa-calendar-alt"></i> {{article.createTime}}</a></li>
+                                <li style="color:#D5dcff"><i class="far fa-calendar-alt" style="color:#D5dcff"></i> {{article.formattedcreateTime}}</li>
                             </ul>
                         </div>
                     </article>
