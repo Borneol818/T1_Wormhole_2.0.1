@@ -59,7 +59,7 @@
 
 .wormhole-word {
     font-family: "Roboto", sans-serif,"·L³n¥¿¶ÂÅé";
-    color: whitesmoke;
+    color: whitesmoke !important;
 }
 
 .wormhole-popularArticle-bg {
@@ -109,4 +109,16 @@
     margin-left: -10px;
     padding: 5px;
     border-radius: 5px;
+}
+
+.wormhole-shopBG {
+    background-color: #2F3547;
+}
+
+.wormhole-userInfoBG {
+    background-color: #2F3547;
+}
+
+.wormhole-CoinColor {
+    color: #FFF6E0;
 }

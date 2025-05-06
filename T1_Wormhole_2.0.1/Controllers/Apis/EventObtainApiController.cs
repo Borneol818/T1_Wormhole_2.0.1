@@ -161,22 +161,41 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             }
             if (rewardUsers.Count < 1) return null;
 
-
-            //發放獎勵，在forumCoins新增紀錄
-            //*userStatus wallet可能也要更新
-            foreach (var a in rewardUsers) 
-            {
-                //如果有此user的活動發放紀錄就不加入，進入下一個迴圈
-                if (_db.ForumCoins.Any(f => f.UserId == a.Value && f.CoinSource == EventData.First().Title)) continue;
-                _db.ForumCoins.Add(new ForumCoin
+            if (EventData.First().Coin!=null) {
+                //發放獎勵，在forumCoins新增紀錄
+                //*userStatus wallet可能也要更新
+                foreach (var a in rewardUsers)
                 {
-                    UserId = a.Value,
-                    CoinSource=EventData.First().Title,
-                    AccessTime=DateTime.Now,
-                    CoinAmount=EventData.First().Coin.Value,
-                    Status="已發放"
-                });
+                    //如果有此user的活動發放紀錄就不加入，進入下一個迴圈
+                    if (_db.ForumCoins.Any(f => f.UserId == a.Value && f.CoinSource == EventData.First().Title)) continue;
+                    _db.ForumCoins.Add(new ForumCoin
+                    {
+                        UserId = a.Value,
+                        CoinSource = EventData.First().Title,
+                        AccessTime = DateTime.Now,
+                        CoinAmount = EventData.First().Coin.Value,
+                        Status = "已發放"
+                    });
+                }
             }
+
+            if (EventData.First().Obtain != null)
+            {
+                foreach (var a in rewardUsers)
+                {
+                    //如果有此user的活動發放紀錄就不加入，進入下一個迴圈
+                    if (_db.ObtainStatuses.Any(f => f.UserId == a.Value && f.ObtainId == EventData.First().Obtain)) continue;
+                    _db.ObtainStatuses.Add(new ObtainStatus
+                    {
+                        UserId = a.Value,
+                        ObtainId = (int)EventData.First().Obtain,
+                        Time = DateTime.Now,
+                        Count = 1,
+                        Status = "使用中"
+                    });
+                }
+            }
+            
 
             await _db.SaveChangesAsync();
 

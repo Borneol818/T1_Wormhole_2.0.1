@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 pb-3 box">
-                                    <button @@click="getSignature" class="button button-contactForm btn_1 boxed-btn">加入簽名檔</button>
+                                    <button type="button" @@click="getSignature" class="button btn_1 boxed-btn">加入簽名檔</button>
                                     @* <input type="checkbox"  @@click="getSignature" class="button button-contactForm btn_1 boxed-btn"> *@
                                     @* <lable>加入簽名檔</lable> *@
                                 </div>
@@ -96,7 +96,7 @@
 				var data = new FormData();
 				data.append("title",self.posterTitle);
 				data.append("content",self.posterComment);
-				data.append("signature",self.signatureString);
+				data.append("signature",self.signature[0]);
                 data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
                 // alert(JSON.stringify(data));
 				fetch("/api/Poster/postArticle", {
@@ -157,7 +157,7 @@
                 data.append("title",self.posterTitle);
                 data.append("content",self.posterComment);
                 data.append("writerId",self.writerId);
-                data.append("signature",self.signatureString);
+                data.append("signature",self.signature[0]);
                 data.append("ArticleCover",document.querySelector("#ArticleCoverFile").files[0]);
 
                 var res= await fetch(`/api/Poster/EditArticle/${self.EditId}`, {
@@ -193,8 +193,8 @@
             getSignature()
             {
                 let self=this;
-                fetch('/api/Poster/getSignature' + '?userID=' + 5, {
-                    method: 'GET'
+                fetch('/api/Poster/getSignature', {
+                    credentials: 'include',
                 }).then((response) => response.json()).then(res => self.signature=res)
             },
             transWords(){
@@ -235,7 +235,7 @@
             },
         },
         mounted() {
-            // this.getSignature();
+            //this.getSignature();
             // this.transWords();
                 this.getEditArticle();
         }
