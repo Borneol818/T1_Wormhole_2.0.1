@@ -41,13 +41,21 @@
     color: #e600e6 !important;
 }
 
+.wormhole-word-event {
+    color: #000033 !important;
+}
+
+    .wormhole-word-event:hover {
+        color: #3263cd !important;
+    }
+
 .wormhole-word-lightPinkPurple {
     color: #ffe6ff !important;
 }
 
-    .wormhole-word-noColor {
-        font-family: "Roboto", sans-serif,"微軟正黑體";
-    }
+.wormhole-word-noColor {
+    font-family: "Roboto", sans-serif,"微軟正黑體";
+}
 
 .wormhole-word {
     font-family: "Roboto", sans-serif,"微軟正黑體";
