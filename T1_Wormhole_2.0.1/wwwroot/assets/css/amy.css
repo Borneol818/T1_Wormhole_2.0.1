@@ -41,13 +41,21 @@
     color: #e600e6 !important;
 }
 
+.wormhole-word-event {
+    color: #FFF6E0 !important;
+}
+
+    .wormhole-word-event:hover {
+        color: #3263cd !important;
+    }
+
 .wormhole-word-lightPinkPurple {
     color: #ffe6ff !important;
 }
 
-    .wormhole-word-noColor {
-        font-family: "Roboto", sans-serif,"微軟正黑體";
-    }
+.wormhole-word-noColor {
+    font-family: "Roboto", sans-serif,"微軟正黑體";
+}
 
 .wormhole-word {
     font-family: "Roboto", sans-serif,"微軟正黑體";
@@ -77,3 +85,28 @@
         color: #1e2125;
         background-color: #f8f9fa;
     }
+
+.wormhole-aColor-lightBlue {
+    color: #040329;
+}
+
+    .wormhole-aColor-lightBlue:hover {
+        color: #7D93FF;
+    }
+.wormhole-articlesListCard {
+    background-color: #022757;
+}
+    .wormhole-articlesListCard:hover {
+        background-color: #022c64;
+    }
+.wormhole-articleBG {
+    background-color: #2F3547;
+    padding:20px;
+}
+.wormhole-article-commentCards {
+    background-color: whitesmoke;
+    margin: 15px;
+    margin-left: -10px;
+    padding: 5px;
+    border-radius: 5px;
+}

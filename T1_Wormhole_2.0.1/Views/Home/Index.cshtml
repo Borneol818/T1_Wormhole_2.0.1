@@ -15,31 +15,65 @@
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1 class="wormhole-word">我是管理員</h1>
+
+        <li><i class="fas fa-edit" style="color:white"></i><a asp-controller="Obtain" asp-action="Index"> Wormhole Shop編輯頁</a></li>
+        <br />
         <div>
-            <table>
-                <tr id="sam">
-                    <th>姓名          </th>
-                    <th>Email         </th>
-                    <th>暱稱          </th>
-                    <th>性別          </th>
-                    <th>電話          </th>
-                    <th>生日          </th>
-                    <th>在線狀態      </th>
+            <table class="sam">
+                <tr class="sam">
+                    <th class="sam">姓名          </th>
+                    <th class="sam">Email         </th>
+                    <th class="sam">暱稱          </th>
+                    <th class="sam">性別          </th>
+                    <th class="sam">電話          </th>
+                    <th class="sam">生日          </th>
+                    <th class="sam">在線狀態      </th>
                 </tr>
-                <tr v-for="user in users" :key="user.id" id="sam">
-                    <td>{{ user.name }}                         </td>
-                    <td>{{ user.email }}                        </td>
-                    <td>{{ user.nickname }}                     </td>
-                    <td>{{ user.sex ? '女' : '男' }}            </td>
-                    <td>{{ user.phone }}                        </td>
-                    <td>{{ user.birthday }}                     </td>
-                    <td>{{ user.status ? '在線' : '離線'}}      </td>
+                <tr v-for="user in users" :key="user.id" class="sam">
+                    <td class="sam">{{ user.name }}                         </td>
+                    <td class="sam">{{ user.email }}                        </td>
+                    <td class="sam">{{ user.nickname }}                     </td>
+                    <td class="sam">{{ user.sex ? '女' : '男' }}            </td>
+                    <td class="sam">{{ user.phone }}                        </td>
+                    <td class="sam">{{ user.birthday }}                     </td>
+                    <td class="sam">{{ user.status ? '在線' : '離線'}}      </td>
+                    <td class="sam">
+                        <button @@click="openEditModal(user.userId)" class="btnsam">編輯</button>
+                        @* <button @@click="deleteUser(user.userId)" class="btnsam">刪除</button> *@
+                    </td>
                 </tr>
             </table>
         </div>
+        <div v-if="isEditModalVisible" class="edit">
+            <table class="sam">
+                <tr class="sam">
+                    <th class="sam">欄位</th>
+                    <th class="sam">數值</th>
+                </tr>
+                <tr class="sam">
+                    <td class="sam">姓名</td>
+                    <td class="sam"><input v-model="editUser.name" class="sam-input" /></td>
+                </tr>
+                <tr class="sam">
+                    <td class="sam">Email</td>
+                    <td class="sam"><input v-model="editUser.email" class="sam-input" /></td>
+                </tr>
+                <tr class="sam">
+                    <td class="sam">暱稱</td>
+                    <td class="sam"><input v-model="editUser.nickname" class="sam-input" /></td>
+                </tr>
+               
+                <tr class="sam">
+                    <td class="sam">電話</td>
+                    <td class="sam"><input v-model="editUser.phone" class="sam-input" /></td>
+                </tr>
+            </table>
+            <button @@click="saveEditedUser" class="btnsam">儲存</button>
+            <button @@click="closeEditModal" class="btnsam">取消</button>
+        </div>
 
         <button @@click="openLevelUpCheck()">{{LevelUpCheckText}}</button>
-    </template>    
+    </template>
     <!--管理員介面區結束-->
     <!--使用者介面區開始-->
     <template v-else>
@@ -129,8 +163,8 @@
         <!-- slider Area End-->
         <!-- Best Selling start -->
         <div class="most-popular wormhole-popularArticle-bg">
-        @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
-        @* <div class="marquee"> *@
+            @* 跑馬燈目前播放熱門文章  5/3暫時先將跑馬燈註解 先保留*@
+            @* <div class="marquee"> *@
             @* <div class="marquee-content"> *@
             @* <span v-for="item in popularArticles" :key="item.id" class="marquee-item"> *@
             @* {{ item.articleTitle }} *@
@@ -186,70 +220,70 @@
         <!-- Latest-items Start -->
         @* <section class="our-client section-padding best-selling"> *@
         @*     <div class="container"> *@
-                @* <div class="row justify-content-between"> *@
-                @*     <div class="col-xl-5 col-lg-5 col-md-12"> *@
-                @*         <!-- Section Tittle --> *@
-                @*         <div class="section-tittle  mb-40"> *@
-                @*             <h2>媒體評分</h2> *@
-                @*         </div> *@
-                @*     </div> *@
-                @*     <div class="col-xl-7 col-lg-7 col-md-12"> *@
-                @*         <div class="nav-button mb-40"> *@
-                @*             <!--Nav Button  --> *@
-                @*             <nav> *@
-                @*                 <div class="nav nav-tabs" id="nav-tab" role="tablist"> *@
-                @*                     <a class="nav-link active" id="nav-one-tab" data-bs-toggle="tab" href="#nav-one" role="tab" aria-controls="nav-one" aria-selected="true">All</a> *@
-                @*                     <a class="nav-link" id="nav-two-tab" data-bs-toggle="tab" href="#nav-two" role="tab" aria-controls="nav-two" aria-selected="false">分類1</a> *@
-                @*                     <a class="nav-link" id="nav-three-tab" data-bs-toggle="tab" href="#nav-three" role="tab" aria-controls="nav-three" aria-selected="false">分類2</a> *@
-                @*                     <a class="nav-link" id="nav-four-tab" data-bs-toggle="tab" href="#nav-four" role="tab" aria-controls="nav-four" aria-selected="false">分類3</a> *@
-                @*                     <a class="nav-link" id="nav-five-tab" data-bs-toggle="tab" href="#nav-five" role="tab" aria-controls="nav-five" aria-selected="false">分類4</a> *@
-                @*                 </div> *@
-                @*             </nav> *@
-                @*             <!--End Nav Button  --> *@
-                @*         </div> *@
-                @*     </div> *@
-                @* </div> *@
-            @* </div> *@
-            @* <div class="container"> *@
-            @*     <!-- Nav Card --> *@
-            @*     <div class="tab-content" id="nav-tabContent"> *@
-            @*         <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab"> *@
-            @*             <!-- Tab 1 --> *@
-            @*             <div class="row"> *@
-            @*                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6"> *@
-            @*                     <div class="properties pb-30"> *@
-                                    @* <div class="properties-card"> *@
-                                        @* <div class="properties-img"> *@
-                                        @*     <a href="book-details.html"><img src="assets/img/gallery/best_selling7.jpg" alt=""></a> *@
-                                        @* </div> *@
-                                        @* <div class="properties-caption properties-caption2"> *@
-                                            @* <h3><a href="book-details.html">媒體評分文章1</a></h3> *@
-                                            @* <p>發文者</p> *@
-                                            @* <div class="properties-footer d-flex justify-content-between align-items-center"> *@
-                                                @* <div class="review"> *@
-                                                    @* <div class="rating"> *@
-                                                    @*     <i class="fas fa-star"></i> *@
-                                                    @*     <i class="fas fa-star"></i> *@
-                                                    @*     <i class="fas fa-star"></i> *@
-                                                    @*     <i class="fas fa-star"></i> *@
-                                                    @*     <i class="fas fa-star-half-alt"></i> *@
-                                                    @* </div> *@
-                                                    @* <p>(<span>120</span> Review)</p> *@
-                                                @* </div> *@
-                                                @* <div class="price"> *@
-                                                @*     <span>$50</span> *@
-                                                @* </div> *@
-                                            @* </div> *@
-                                        @* </div> *@
-                                    @* </div> *@
-            @*                     </div> *@
-            @*                 </div> *@
+        @* <div class="row justify-content-between"> *@
+        @*     <div class="col-xl-5 col-lg-5 col-md-12"> *@
+        @*         <!-- Section Tittle --> *@
+        @*         <div class="section-tittle  mb-40"> *@
+        @*             <h2>媒體評分</h2> *@
+        @*         </div> *@
+        @*     </div> *@
+        @*     <div class="col-xl-7 col-lg-7 col-md-12"> *@
+        @*         <div class="nav-button mb-40"> *@
+        @*             <!--Nav Button  --> *@
+        @*             <nav> *@
+        @*                 <div class="nav nav-tabs" id="nav-tab" role="tablist"> *@
+        @*                     <a class="nav-link active" id="nav-one-tab" data-bs-toggle="tab" href="#nav-one" role="tab" aria-controls="nav-one" aria-selected="true">All</a> *@
+        @*                     <a class="nav-link" id="nav-two-tab" data-bs-toggle="tab" href="#nav-two" role="tab" aria-controls="nav-two" aria-selected="false">分類1</a> *@
+        @*                     <a class="nav-link" id="nav-three-tab" data-bs-toggle="tab" href="#nav-three" role="tab" aria-controls="nav-three" aria-selected="false">分類2</a> *@
+        @*                     <a class="nav-link" id="nav-four-tab" data-bs-toggle="tab" href="#nav-four" role="tab" aria-controls="nav-four" aria-selected="false">分類3</a> *@
+        @*                     <a class="nav-link" id="nav-five-tab" data-bs-toggle="tab" href="#nav-five" role="tab" aria-controls="nav-five" aria-selected="false">分類4</a> *@
+        @*                 </div> *@
+        @*             </nav> *@
+        @*             <!--End Nav Button  --> *@
+        @*         </div> *@
+        @*     </div> *@
+        @* </div> *@
+        @* </div> *@
+        @* <div class="container"> *@
+        @*     <!-- Nav Card --> *@
+        @*     <div class="tab-content" id="nav-tabContent"> *@
+        @*         <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab"> *@
+        @*             <!-- Tab 1 --> *@
+        @*             <div class="row"> *@
+        @*                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6"> *@
+        @*                     <div class="properties pb-30"> *@
+        @* <div class="properties-card"> *@
+        @* <div class="properties-img"> *@
+        @*     <a href="book-details.html"><img src="assets/img/gallery/best_selling7.jpg" alt=""></a> *@
+        @* </div> *@
+        @* <div class="properties-caption properties-caption2"> *@
+        @* <h3><a href="book-details.html">媒體評分文章1</a></h3> *@
+        @* <p>發文者</p> *@
+        @* <div class="properties-footer d-flex justify-content-between align-items-center"> *@
+        @* <div class="review"> *@
+        @* <div class="rating"> *@
+        @*     <i class="fas fa-star"></i> *@
+        @*     <i class="fas fa-star"></i> *@
+        @*     <i class="fas fa-star"></i> *@
+        @*     <i class="fas fa-star"></i> *@
+        @*     <i class="fas fa-star-half-alt"></i> *@
+        @* </div> *@
+        @* <p>(<span>120</span> Review)</p> *@
+        @* </div> *@
+        @* <div class="price"> *@
+        @*     <span>$50</span> *@
+        @* </div> *@
+        @* </div> *@
+        @* </div> *@
+        @* </div> *@
+        @*                     </div> *@
+        @*                 </div> *@
 
-            @*             </div> *@
-            @*         </div> *@
-            @*     </div> *@
+        @*             </div> *@
+        @*         </div> *@
+        @*     </div> *@
 
-            @* </div> *@
+        @* </div> *@
         @*     <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab"> *@
 
         @*         <div class="row"> *@
@@ -290,6 +324,8 @@
                 users:[],
                 isCheckOpen:false,
                 LevelUpCheckText:"✖ 關閉",
+                editUser:null,
+                isEditModalVisible: false
             }
         },
         methods:{
@@ -326,7 +362,7 @@
                         self.isCheckOpen = true;
                         self.sidebarControllerText = "☰ 開啟";
                     }
-                });                                       
+                });
             },
             getUser()
             {
@@ -336,6 +372,73 @@
                     this.users = result;
                 })
             },
+            openEditModal(userId)
+            {
+                console.log('編輯 userId:', userId);
+                const userEdit = this.users.find(u => u.userId == userId);
+                this.editUser = JSON.parse(JSON.stringify(userEdit));
+                this.isEditModalVisible = true; // 顯示編輯 Modal
+            },
+            closeEditModal() {
+                this.isEditModalVisible = false;
+                this.editUser = null; // 清空編輯的使用者資料
+            },
+            saveEditedUser() {
+                    if (!this.editUser) {
+                    alert('沒有要儲存的使用者資料！');
+                    return;
+                }
+
+                fetch("api/AccountApi/updateUser", {
+                    method: 'POST', // 或 PUT，根據你的 API 設計
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.editUser)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // 後端更新成功，更新前端 users 陣列
+                        const index = this.users.findIndex(user => user.userId === this.editUser.userId);
+                        
+                        
+                        alert('使用者資料已更新！');
+                        // 可以選擇重新載入使用者資料，以確保資料是最新的
+                        // this.getUser();
+                        window.location.reload()
+                    } else {
+                        console.error('更新使用者資料失敗:', response);
+                        alert('更新使用者資料失敗，請檢查錯誤訊息。');
+                    }
+                })
+                .catch(error => {
+                    console.error('更新使用者資料時發生錯誤:', error);
+                    alert('更新使用者資料時發生錯誤，請稍後再試。');
+                });
+            },
+            // deleteUser(userId) {
+                // console.log(userId)
+                // if (confirm("確定要刪除嗎？")) {
+                    //在這裡發送刪除請求到後端 API
+                    // fetch('api/AccountApi/deleteUser/'+userId, {
+                        // method: 'DELETE'
+                    // })
+                    // .then(response => {
+                        // if (response.ok) {
+                            // this.users = this.users.filter(u => u.userId !== userId);
+                            // alert('使用者已刪除！');
+                        // } else {
+                            // console.error('刪除使用者失敗:', response);
+                            // alert('刪除使用者失敗，請檢查錯誤訊息。');
+                        // }
+                    // })
+                    // .catch(error => {
+                        // console.error('刪除使用者時發生錯誤:', error);
+                        // alert('刪除使用者時發生錯誤，請稍後再試。');
+                    // });
+                // }
+            // }       
+
         },
         mounted() {
             this.sortArticles();
@@ -352,7 +455,7 @@
       if (!localStorage.getItem('splashPlayed')) {
         document.getElementById('splash').style.display = 'flex';
         document.getElementById('main-content').style.display = 'none';
-        // 動畫結束後自動隱藏
+        // 動畫結束後自動隱藏    
         setTimeout(function() {
           document.getElementById('splash').style.display = 'none';
           document.getElementById('main-content').style.display = 'block';

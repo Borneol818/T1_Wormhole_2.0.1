@@ -2,74 +2,81 @@
     ViewData["Title"] = "News";
 }
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>新聞版</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
-    <link href="~/css/Sam.css" rel="stylesheet">
-</head>
+@* <head> *@
+@*     <meta charset="utf-8"> *@
+@*     <meta http-equiv="x-ua-compatible" content="ie=edge"> *@
+@*     <title>新聞版</title> *@
+@*     <meta name="description" content=""> *@
+@*     <meta name="viewport" content="width=device-width, initial-scale=1"> *@
+@*     <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png"> *@
+@*     <link href="~/css/Sam.css" rel="stylesheet"> *@
+@* </head> *@
 
 <div id="app">
 
-    <h1 id="sam">{{articles.title}}</h1>
+    <div class="row justify-content-center wormhole-articleBG">
+        <div class="col-6 text-center">
+            <h1 class="wormhole-word">{{articles.title}}</h1>
+            @* 文章圖片 *@
+            <img class="img-fluid mx-auto d-block" v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
+            @* 文章圖片 *@
 
-    <p id="sam">{{articles.content}}</p>
-    @* 文章圖片 *@
-    <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
-    @* 文章圖片 *@
-
-    <div>
-        @*amy新增，之後請負責人放至適合位置*@
-        <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-        <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
-    </div>
-
-    @* 先新增要驗證修改 *@
-    <div class="comments-area">
-        <div class="comment-list">
-            <button type="button" v-on:click="submitRating(true)" class="btn-liked">喜歡: {{ ratingcount.positive }}</button>
-            <button type="button" v-on:click="submitRating(false)" class="btn-disliked">不喜歡: {{ ratingcount.negative }}</button>
+            <div class="d-flex justify-content-center my-3">
+                @*amy新增，之後請負責人放至適合位置*@
+                <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+                <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
+            </div>
         </div>
+        <p class="wormhole-word">{{articles.content}}</p>
+    </div>
+    
 
-        <div>
-            <div class="single-comment justify-content-between d-flex">
-                <div class="user justify-content-between d-flex" v-for="Response in comments">
-                    <div class="thumb">
-                        <img src="assets/img/blog/comment_1.png" alt="">
-                    </div>
-                    <ul>
-                        <li>
-                            <div class="desc">
-                                <p class="comment" id="sam">
-                                    {{ Response.content }}
-                                </p>
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <h5 id="sam">
-                                            <a href="#">{{ Response.writer }}</a>
-                                        </h5>
-                                    </div>
-                                    <div>
-                                        <br />
-                                        <p class="date" id="sam">時間{{ Response.date }}</p>
+    <div class="row justify-content-center wormhole-articleBG">
+        @* 先新增要驗證修改 *@
+        <div class="comments-area">
+            <div class="comment-list">
+                <button type="button" v-on:click="submitRating(true)" class="genric-btn primary-border radius">喜歡: {{ ratingcount.positive }}</button>
+                <button type="button" v-on:click="submitRating(false)" class="genric-btn danger-border radius" style="margin-left:20px;">不喜歡: {{ ratingcount.negative }}</button>
+            </div>
+
+            <div>
+                <div class="single-comment justify-content-between d-flex">
+                    <div class="user justify-content-between d-flex" v-for="Response in comments">
+                        <div class="thumb">
+                            <img src="assets/img/blog/comment_1.png" alt="">
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="wormhole-article-commentCards wormhole-word">
+                                    <p class="comment" style="color:dimgray;">
+                                        {{ Response.content }}
+                                    </p>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <h5 style="color:dimgray;">
+                                                <a href="#">{{ Response.writer }}</a>
+                                            </h5>
+                                        </div>
+                                        <div>
+                                            <br />
+                                            <p class="date" style="color:dimgray;">時間{{ Response.date }}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
 
+                    </div>
+                </div>
+                <textarea v-model="textResponse" placeholder="輸入留言" class="textarea w-100"></textarea>
+                <div class="reply-btn mt-1">
+                    <button class="genric-btn primary radius" v-on:click="submitResponse">reply</button>
                 </div>
             </div>
-            <textarea v-model="textResponse" placeholder="輸入留言" class="textarea"></textarea>
-            <div class="reply-btn">
-                <button class="btn-reply text-uppercase" v-on:click="submitResponse">reply</button>
-            </div>
-        </div>
 
+        </div>
     </div>
+   
 </div>
 
 <script>

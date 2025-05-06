@@ -104,5 +104,72 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 }).ToList();
             return Ok(users);
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser([FromBody] UserInfo  model)
+        {
+            if (model == null || !ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // 根據 UserId 查找要更新的使用者
+            var userToUpdate = await _context.UserInfos.FindAsync(model.UserId);
+
+            if (userToUpdate == null)
+            {
+                return NotFound($"找不到 ID 為 {model.UserId} 的使用者。");
+            }
+
+            // 更新使用者的屬性 (只更新前端傳送過來的屬性)
+            if (model.Name != null)
+            {
+                userToUpdate.Name = model.Name;
+            }
+            if (model.Email != null)
+            {
+                userToUpdate.Email = model.Email;
+            }
+            if (model.Nickname != null)
+            {
+                userToUpdate.Nickname = model.Nickname;
+            }
+            if (model.Phone != null)
+            {
+                userToUpdate.Phone = model.Phone;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok("使用者資料已成功更新。");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"更新使用者資料時發生錯誤: {ex.Message}");
+                return StatusCode(500, "更新使用者資料時發生伺服器錯誤。");
+            }
+        }
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteUser(int id)
+        //{
+            //var userToDelete = await _context.UserInfos.FindAsync(id);
+            //if (userToDelete == null)
+            //{
+                //return NotFound($"找不到 ID 為 {id} 的使用者。");
+            //}
+
+            //try
+            //{
+                //_context.UserInfos.Remove(userToDelete);
+                //await _context.SaveChangesAsync();
+                //return Ok($"ID 為 {id} 的使用者已成功刪除。");
+            //}
+            //catch (Exception ex)
+            //{
+                //Console.WriteLine($"刪除使用者時發生錯誤: {ex.Message}");
+                //return StatusCode(500, "刪除使用者時發生伺服器錯誤。");
+            //}
+        //}
     }
 }

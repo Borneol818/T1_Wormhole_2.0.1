@@ -40,6 +40,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     new InfoDto()
                     {
                         EmpInfo = "請先登入或註冊帳號，謝謝",
+                        IsAdmin = false,
+                        IsLogin=false,
                     }
                 };
 
@@ -67,7 +69,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     Photo = null,
                     Wallet = e.Wallet,
                     IsAdmin = false,
-                    isLogin=true,
+                    IsLogin=true,
                 });
                 return resultU;
             }
@@ -79,7 +81,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                    ManagerName = e.Name,
                    ManagerTeam = e.Team,
                    IsAdmin = true,
-                   isLogin=true,
+                   IsLogin=true,
                });
                 return resultM;
             }

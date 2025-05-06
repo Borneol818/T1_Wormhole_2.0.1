@@ -72,20 +72,20 @@
         @* <!-- Blog Area Start-->文章內容開始 *@
         <section class="blog_area section-padding">
             <div class="container" >
-                <div class="row">
-                    <article class="blog_item">
-                        <div v-for="article in nowArticles" :key="article.articleID" class="blog_details">
+                <div class="row justify-content-center">
+                    <article class="blog_item col-8">
+                        <div v-for="article in nowArticles" :key="article.articleID" class="blog_details wormhole-articlesListCard">
                             @* 依文章ID跳選到該文章內容 *@
                             <img class="img-fluid" v-bind:src="'/api/ArticlesApi/GetPicture/'+article.articleID+'?v='+rand" />
                             <a :href="'/NewsArticle/NewsArticle?id=' + article.articleID">
-                                <h2 class="blog-head" style="color: #2d2d2d;">{{article.title}}</h2>
+                                <h2 class="blog-head" style=" color:whitesmoke;">{{article.title}}</h2>
                             </a>
-                            <p class="ellipsis-text">
+                            <p class="ellipsis-text" style="color:whitesmoke;">
                                 {{article.content}}
                             </p>
                             <ul class="blog-info-link">
                                 <li><a href="#"><i class="fa fa-user"></i> {{article.releaseByName}}</a></li>
-                                <li><a href="#"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
+                                <li><a :href="'/NewsArticle/NewsArticle?id=' + article.articleID"><i class="fa fa-comments"></i> {{article.commentCount}}則留言</a></li>
                                 <li><a href="#"><i class="far fa-calendar-alt"></i> {{article.createTime}}</a></li>
                             </ul>
                         </div>
@@ -120,41 +120,7 @@
         <!-- Blog Area End -->
     </main>
 
-    <!-- Scroll Up -->
-    <div id="back-top">
-        <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
-    </div>
-
-    <!-- JS here -->
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
-
-    <!-- Slick-slider , Owl-Carousel ,slick-nav -->
-    <script src="./assets/js/owl.carousel.min.js"></script>
-    <script src="./assets/js/slick.min.js"></script>
-    <script src="./assets/js/jquery.slicknav.min.js"></script>
-
-    <!--wow , counter , waypoint, Nice-select -->
-    <script src="./assets/js/wow.min.js"></script>
-    <script src="./assets/js/jquery.magnific-popup.js"></script>
-    <script src="./assets/js/jquery.nice-select.min.js"></script>
-    <script src="./assets/js/jquery.counterup.min.js"></script>
-    <script src="./assets/js/waypoints.min.js"></script>
-    <script src="./assets/js/price_rangs.js"></script>
-
-    <!-- contact js -->
-    <script src="./assets/js/contact.js"></script>
-    <script src="./assets/js/jquery.form.js"></script>
-    <script src="./assets/js/jquery.validate.min.js"></script>
-    <script src="./assets/js/mail-script.js"></script>
-    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
-
-    <!--  Plugins, main-Jquery -->
-    <script src="./assets/js/plugins.js"></script>
-    <script src="./assets/js/main.js"></script>
+    
 </body>
 
 @section Scripts
@@ -173,7 +139,7 @@
 
             getArticles() {
                 let self = this;
-                fetch("/api/ArticlesApi").then(x => x.json()).then(res => self.articles = res)
+                fetch("/api/ArticlesApi/News").then(x => x.json()).then(res => self.articles = res)
             },
             goToPage(page) {
                 if (page >= 1 && page <= this.totalPages) {

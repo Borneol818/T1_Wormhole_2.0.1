@@ -37,9 +37,9 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                     {
                         RelationType = r.RelationType,
                         InviterId = r.InviterId,
-                        InviterName = r.Inviter.Name,
+                        InviterName = r.Inviter.Nickname,
                         InviteeId = r.InviteeId,
-                        InviteeName = r.Invitee.Name,
+                        InviteeName = r.Invitee.Nickname,
                         Invite = r.Invite,
                     });
                 return relations;
