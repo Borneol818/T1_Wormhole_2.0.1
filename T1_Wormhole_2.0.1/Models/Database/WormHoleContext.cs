@@ -29,6 +29,8 @@ public partial class WormHoleContext : DbContext
 
     public virtual DbSet<Login> Logins { get; set; }
 
+    public virtual DbSet<LoginRecord> LoginRecords { get; set; }
+
     public virtual DbSet<Obtain> Obtains { get; set; }
 
     public virtual DbSet<ObtainStatus> ObtainStatuses { get; set; }
@@ -293,6 +295,22 @@ public partial class WormHoleContext : DbContext
                 .HasComment("密碼");
         });
 
+        modelBuilder.Entity<LoginRecord>(entity =>
+        {
+            entity.ToTable("LoginRecord");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.Time).HasColumnType("smalldatetime");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.User).WithMany(p => p.LoginRecords)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LoginRecord_UserInfo");
+        });
+
         modelBuilder.Entity<Obtain>(entity =>
         {
             entity.ToTable("Obtain");
@@ -467,6 +485,7 @@ public partial class WormHoleContext : DbContext
                 .HasComment("簽名檔");
             entity.Property(e => e.Status).HasComment("是否為登入狀態");
             entity.Property(e => e.Wallet).HasComment("論壇幣數量");
+            entity.Property(e => e.Position);
 
             entity.HasOne(d => d.EmailNavigation).WithOne(p => p.UserInfo)
                 .HasPrincipalKey<Login>(p => p.Email)
@@ -490,7 +509,6 @@ public partial class WormHoleContext : DbContext
             entity.Property(e => e.PostCount).HasComment("使用者發文數");
             entity.Property(e => e.ReadCount).HasComment("使用者閱讀數");
             entity.Property(e => e.Status).HasComment("使用者是否達瀏覽數上限");
-            entity.Property(e => e.Logintoday).HasComment("今日是否登入過");
 
             entity.HasOne(d => d.IdNavigation).WithOne(p => p.UserStatus)
                 .HasForeignKey<UserStatus>(d => d.Id)

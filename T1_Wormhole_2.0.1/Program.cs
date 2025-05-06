@@ -5,6 +5,8 @@ using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.LoginScripts;
 using Microsoft.AspNetCore.OData;
 using Hangfire;
+using Google;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,7 @@ builder.Services.AddControllersWithViews().AddOData(options => {
            .Expand()//關聯查詢
            .SetMaxTop(100)//最多100筆
            .Count();//計算數量
-});
+}).AddCookieTempDataProvider();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(option =>
@@ -44,6 +46,16 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddDbContext<WormHoleContext>(x => x.UseSqlServer(conStr));
 //這裡寫一個判定用的方法並存入在這裡new的變數名稱，用來當作登入後的認證跟各項頁面功能的全域變數
+
+// 添加 Session
+builder.Services.AddDistributedMemoryCache(); // 使用記憶體快取儲存 Session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Session 有效期 20 分鐘
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // 確保 Session Cookie 符合 GDPR
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -58,12 +70,53 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 // 啟用 Hangfire Dashboard
 app.UseHangfireDashboard("/hangfire");
+
+app.Use(async (context, next) =>
+{
+    if (context.User.Identity.IsAuthenticated)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var dbContext = context.RequestServices.GetRequiredService<WormHoleContext>();
+            var rewardService = context.RequestServices.GetRequiredService<UserService>();
+            var ConvertUserId = Convert.ToInt32(userId);
+
+            // 檢查是否為新會話
+            var sessionKey = $"Visit_{userId}";
+            if (!context.Session.TryGetValue(sessionKey, out _))
+            {
+                // 嘗試發放每日獎勵
+                var GetReward = await rewardService.DailyRewardAsync(ConvertUserId);
+                if (GetReward) 
+                {
+                    context.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                };
+                // 新會話，記錄到 LoginRecord 表
+                dbContext.LoginRecords.Add(new LoginRecord
+                {
+                    Id = 0,
+                    UserId = ConvertUserId,
+                    Time = DateTime.UtcNow
+                });
+                await dbContext.SaveChangesAsync();
+
+                // 設置 Session 標記
+                context.Session.SetString(sessionKey, "Active");
+
+                
+            }
+        }
+    }
+    await next();
+});
 
 app.MapControllerRoute(
     name: "default",

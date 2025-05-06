@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using Microsoft.Spatial;
 
 namespace T1_Wormhole_2._0._1.Models.Database;
 
@@ -61,6 +62,7 @@ public partial class UserInfo
     /// 論壇幣數量
     /// </summary>
     public int? Wallet { get; set; }
+    public Geometry? Position { get; set; }
 
     public virtual ICollection<ArticleResponse> ArticleResponses { get; set; } = new List<ArticleResponse>();
 
@@ -69,6 +71,8 @@ public partial class UserInfo
     public virtual Login EmailNavigation { get; set; }
 
     public virtual ICollection<ForumCoin> ForumCoins { get; set; } = new List<ForumCoin>();
+
+    public virtual ICollection<LoginRecord> LoginRecords { get; set; } = new List<LoginRecord>();
 
     public virtual ICollection<ObtainStatus> ObtainStatuses { get; set; } = new List<ObtainStatus>();
 
