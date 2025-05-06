@@ -46,9 +46,65 @@ namespace T1_Wormhole_2._0._1.Controllers
                     ReleaseByName = e.ReleaseByNavigation.Name,
                     CommentCount = e.ArticleResponses.Count(),
                     ArticleCover = null
-                });
-
+                })
+            .OrderByDescending(e => e.CreateTime)//依照文章時間排序新的在前面
+            .Take(1000);//最多取1000筆資料
         }
+
+        // GET: api/ArticlesApi
+        [HttpGet("News")]
+        [EnableQuery]
+        public IQueryable<ArticleDTO> GetNewsArticles()
+        {
+
+            return _context.Articles
+                .Include(a => a.Writer)
+                .Include(a => a.ReleaseByNavigation)
+                .Include(a => a.ArticleResponses)
+                .Where(a => a.Type == false)
+                .Select(e => new ArticleDTO
+                {
+                    ArticleID = e.ArticleId,
+                    Title = e.Title,
+                    Type = e.Type,
+                    CreateTime = e.CreateTime,
+                    Content = e.Content,
+                    WriterNickname = e.Writer.Nickname,
+                    ReleaseByName = e.ReleaseByNavigation.Name,
+                    CommentCount = e.ArticleResponses.Count(),
+                    ArticleCover = null
+                })
+            .OrderByDescending(e => e.CreateTime)//依照文章時間排序新的在前面
+            .Take(1000);//最多取1000筆資料
+        }
+
+        // GET: api/ArticlesApi
+        [HttpGet("Discuss")]
+        [EnableQuery]
+        public IQueryable<ArticleDTO> GetDiscussArticles()
+        {
+
+            return _context.Articles
+                .Include(a => a.Writer)
+                .Include(a => a.ReleaseByNavigation)
+                .Include(a => a.ArticleResponses)
+                .Where(a => a.Type == true)
+                .Select(e => new ArticleDTO
+                {
+                    ArticleID = e.ArticleId,
+                    Title = e.Title,
+                    Type = e.Type,
+                    CreateTime = e.CreateTime,
+                    Content = e.Content,
+                    WriterNickname = e.Writer.Nickname,
+                    ReleaseByName = e.ReleaseByNavigation.Name,
+                    CommentCount = e.ArticleResponses.Count(),
+                    ArticleCover = null
+                })
+            .OrderByDescending(e => e.CreateTime)//依照文章時間排序新的在前面
+            .Take(1000);//最多取1000筆資料
+        }
+
         public IQueryable<ArticleDTO> GetArticles(int id)
         {
             return _context.Articles.Select(e => new ArticleDTO

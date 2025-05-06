@@ -29,6 +29,29 @@
 .wormhole-darkblue {
     background-color: #040329 !important;
 }
+.wormhole-word-darkblue {
+    color: #000033 !important;
+}
+
+.wormhole-word-darkblue:hover {
+    color: #040329 !important;
+}
+
+.wormhole-word-lightPurple {
+    color: #e600e6 !important;
+}
+
+.wormhole-word-event {
+    color: #000033 !important;
+}
+
+    .wormhole-word-event:hover {
+        color: #3263cd !important;
+    }
+
+.wormhole-word-lightPinkPurple {
+    color: #ffe6ff !important;
+}
 
 .wormhole-word-noColor {
     font-family: "Roboto", sans-serif,"·L³n¥¿¶ÂÅé";

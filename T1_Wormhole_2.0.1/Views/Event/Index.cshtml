@@ -7,13 +7,13 @@
     <link href="~/assets/css/amy.css" rel="stylesheet" />
 </head>
 @*Tab Bar*@
-<div id="TabBar" class="TabBar">
-    <ul class="row">
-        <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Obtain" asp-action="Index">Obtain</a></li>
+@* <div id="TabBar" class="TabBar"> *@
+@*     <ul class="row"> *@
+@*         <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Home" asp-action="Index">Home</a></li> *@
+@*         <li class="col-6"><a class="nav-link TabBar-a" asp-controller="Obtain" asp-action="Index">Obtain</a></li> *@
         
-    </ul>
-</div>
+@*     </ul> *@
+@* </div> *@
 @*wraaper*@
 <div class="row mt-3 mb-5 wrapper" id="app">
     @*Sider*@
@@ -27,7 +27,7 @@
     <div v-if="showDetail==false">
         <ul class="row p-5 align-items-center">
             <li v-for="event in events" class="col-3 event-box m-md-1">
-                <a @@click.prevent="readEvent(event)" class="event-context">
+                <a @@click.prevent="readEvent(event)" class="event-context wormhole-word-event">
                 <img class="event-img" :src="getEventImage(event.type)" />
                     {{event.title}}
                 </a>
