@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 using T1_Wormhole_2._0._1.Models.Database;
 using T1_Wormhole_2._0._1.Models.DTOs;
 
@@ -152,6 +153,35 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             //        Level = x.Level,
             //    });
             //return result;
+        }
+
+        [HttpGet]
+        public async Task GetRead(int articleId)
+        {
+            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (currentUserId == null)
+            {
+                return;
+            }
+            var id = Convert.ToInt32(currentUserId.Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "User")
+            {
+                var checkArticleId =await _db.Articles.FirstOrDefaultAsync(x => x.ArticleId == articleId);
+                
+                var setUserInStatus = await _db.UserStatuses.FindAsync(id);
+                if (setUserInStatus != null && checkArticleId!=null)
+                {
+                    setUserInStatus.ReadCount += 1;
+
+                    await _db.SaveChangesAsync();
+                }
+               
+            }
+            else
+            {
+                return;
+            }
         }
 
         [HttpGet]
@@ -417,7 +447,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
             var eachLevelExp = new List<int>();
             for (int i = 1; i <= maxLevel; i++)
             {
-                eachLevelExp.Add((int)Math.Pow(i, 2) * 3); //等級= i, Math.Pow=i², 經驗值=(i² × 10), e.g. Lv2 = 3, Lv3 = 12, Lv4 = 27, ...
+                eachLevelExp.Add((int)Math.Pow(i, 2) * 2); //等級= i, Math.Pow=i², 經驗值=(i² × 10), e.g. Lv1 = 2, Lv2 = 4, Lv3 = 8, ...
             }
             return eachLevelExp;
         }
