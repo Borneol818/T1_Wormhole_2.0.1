@@ -25,7 +25,7 @@
             </div>
         </div>
         <p class="wormhole-word" style="margin-left:30px;">{{articles.content}}</p>
-        @* <p class="wormhole-word" style="margin-left:30px; margin-top:30px;">{{articles.content}}</p> *@
+        <p class="wormhole-word" style="margin-left:30px; margin-top:30px;">{{Signature[0]}}</p>
     </div>
     
 
@@ -95,6 +95,7 @@
                 hasDisliked: false, // 使用者是否已經按過不喜歡
 
                 isUserArticle:false,
+                Signature:{},
             }
         },
         methods:{
@@ -143,8 +144,9 @@
             /*--------------進行文章刪除--------------*/
             /*--------------取得簽名檔--------------*/
             getSignature(id){
-
-            }
+                let self = this;
+                fetch(`/api/Comments/getSignature?artId=${id}`).then(x => x.json()).then(res => { if(res[0]!="null"){self.Signature=res}else{self.Signature=""}});
+            },
             /*--------------取得簽名檔--------------*/
             /*--------------跳轉用--------------*/
             jumpToDiscussArticleView(){
@@ -303,6 +305,7 @@
                  this.Comments(id);
                  this.getRatingcount(id);
                  this.getArticles(id);
+                 this.getSignature(id);
                  this.currentArticleID=id;
                  this.UsersArticleORNot(id);
                  this.countRead2(id);

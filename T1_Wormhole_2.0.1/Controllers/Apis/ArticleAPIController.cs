@@ -239,6 +239,14 @@ namespace T1_Wormhole_2._0._1.Controllers
             }
             return false;
         }
+
+        //get:/api/Comments/getSignature?artId=
+        public IEnumerable<string> getSignature(int artId)
+        {
+            var userID =_context.Articles.Where(x=>x.ArticleId==artId).Select(x=>x.WriterId).ToList();
+            var result = _context.UserInfos.Where(x => x.UserId == userID.First()).Select(x => x.SignatureLine);
+            return result;
+        }
     }
 
 }
