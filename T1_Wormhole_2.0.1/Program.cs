@@ -109,8 +109,11 @@ app.Use(async (context, next) =>
                         UserId = ConvertUserId,
                         Time = DateTime.UtcNow
                     };
-                    dbContext.LoginRecords.Add(LoginRecord);
-                    await dbContext.SaveChangesAsync();
+                    if (dbContext != null)
+                    {
+                        dbContext.LoginRecords.Add(LoginRecord);
+                        await dbContext.SaveChangesAsync();
+                    }
                 }
                 // ³]¸m Session ¼Ð°O
                 context.Session.SetString(sessionKey, "Active");
