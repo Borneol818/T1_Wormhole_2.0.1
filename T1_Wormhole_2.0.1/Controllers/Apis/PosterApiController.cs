@@ -37,7 +37,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         Title = DTOModel.Title,
                         Type = true,//讀取是否為使用者(使用者=文章=true)
                         CreateTime = DateTime.Now,
-                        Content = DTOModel.Content + "\n" + DTOModel.Signature[0],
+                        Content = DTOModel.Content,
                         WriterId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),//讀取使用者ID
                     };
                     if (DTOModel.ArticleCover != null)

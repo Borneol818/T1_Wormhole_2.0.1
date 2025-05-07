@@ -58,11 +58,11 @@
                                                   placeholder="簽名檔">{{item}}</textarea>
                                     </div>
                                 </div>
-                                <div class="col-12 pb-3 box">
-                                    <button type="button" @@click="getSignature" class="genric-btn primary radius">加入簽名檔</button>
+                                @* <div class="col-12 pb-3 box"> *@
+                                @*     <button type="button" @@click="getSignature" class="genric-btn primary radius">加入簽名檔</button> *@
                                     @* <input type="checkbox"  @@click="getSignature" class="button button-contactForm btn_1 boxed-btn"> *@
                                     @* <lable>加入簽名檔</lable> *@
-                                </div>
+                                @* </div> *@
                                 
                             </div>
                         </form>
@@ -235,7 +235,7 @@
             },
         },
         mounted() {
-            //this.getSignature();
+            this.getSignature();
             // this.transWords();
                 this.getEditArticle();
         }
