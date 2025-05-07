@@ -290,6 +290,13 @@
                     }
                 });
             },
+            //閱讀文章記數
+            async countRead2(id){
+                await fetch("/api/User/GetRead?articleId="+id,{
+                    credentials: 'include',
+                }).then(x=>x='OK');
+            },
+            //閱讀文章記數
         },
         mounted() {
             // 修改抓取文章id方式
@@ -302,6 +309,7 @@
                  this.getArticles(id);
                  this.currentArticleID=id;
                  this.UsersArticleORNot(id);
+                 this.countRead2(id);
         }
 
     }).mount('#app')
