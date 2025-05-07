@@ -160,6 +160,11 @@
                     }).then(res=>res.json())
                     .then(res=>self.isUser=res);
             },
+            getArticles() {
+                let self = this;
+                fetch("/api/ArticlesApi/Discuss").then(x => x.json()).then(res => self.articles = res)
+            },
+
         },
         computed:{
             nowArticles() {

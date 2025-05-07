@@ -25,45 +25,55 @@
             </div>
         </div>
         <p class="wormhole-word" style="margin-left:30px;">{{articles.content}}</p>
+        <p class="wormhole-word" style="margin-left:30px; margin-top:30px;">{{Signature[0]}}</p>
     </div>
     
 
     <div class="row justify-content-center wormhole-articleBG">
         <div class="comments-area">
-            <div class="comment-list">
+            <div>
                 <button type="button" v-on:click="submitRating(true)" class="genric-btn primary-border radius">喜歡: {{ ratingcount.positive }}</button>
                 <button type="button" v-on:click="submitRating(false)" class="genric-btn danger-border radius" style="margin-left:20px;">不喜歡: {{ ratingcount.negative }}</button>
-            </div>
-            <div>
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex" v-for="Response in comments">
-                        <div class="thumb">
-                            <img src="assets/img/blog/comment_1.png" alt="">
-                        </div>
-                        <ul>
-                            <li>
-                                <div class="wormhole-article-commentCards wormhole-word">
-                                    <p class="comment" style="color:dimgray;">
-                                        {{ Response.content }}
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <h5 style="color:dimgray;">
-                                                <a :href="'/User/ViewProfile?id=' + Response.userId">{{ Response.writer }}</a>
-                                            </h5>
 
-                                        </div>
-                                        <div>
-                                            <p class="date" style="color:dimgray;">時間{{ Response.date }}</p>
+            </div>
+            <div v-for="Response in comments">
+                <div class="comment-list">
+
+                    <div class="single-comment justify-content-between d-flex">
+                        <div class="user justify-content-between d-flex">
+                            @* <div class="thumb"> *@
+                            @*     <img src="'/api/ViewOthers/GetPhoto?id='+Response.userId" alt=""> *@
+                            @* </div> *@
+                            <ul>
+                                <li>
+                                    <div class="wormhole-article-commentCards wormhole-word">
+                                        <p class="comment" style="color:dimgray;">
+                                            {{ Response.content }}
+                                        </p>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <h5 style="color:dimgray;">
+                                                    <a :href="'/User/ViewProfile?id=' + Response.userId">{{ Response.writer }}</a>
+                                                </h5>
+
+                                            </div>
+                                            <div>
+                                                <p class="date" style="color:dimgray;">時間{{ Response.date }}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+
+                        </div>
 
                     </div>
 
                 </div>
+            </div>
+            
+            <div>
+               
                 <textarea v-model="textResponse" placeholder="輸入留言" class="textarea w-100"></textarea>
                 <div class="reply-btn mt-1">
                     <button class="genric-btn primary radius" v-on:click="submitResponse">reply</button>
@@ -94,6 +104,7 @@
                 hasDisliked: false, // 使用者是否已經按過不喜歡
 
                 isUserArticle:false,
+                Signature:{},
             }
         },
         methods:{
@@ -150,6 +161,12 @@
                     .then(res=>self.isUserArticle=res);
             },
             /*--------------進行文章刪除--------------*/
+            /*--------------取得簽名檔--------------*/
+            getSignature(id){
+                let self = this;
+                fetch(`/api/Comments/getSignature?artId=${id}`).then(x => x.json()).then(res => { if(res[0]!="null"){self.Signature=res}else{self.Signature=""}});
+            },
+            /*--------------取得簽名檔--------------*/
             /*--------------跳轉用--------------*/
             jumpToDiscussArticleView(){
                 fetch('/DiscussArticleView/Index' , {
@@ -307,6 +324,7 @@
                  this.Comments(id);
                  this.getRatingcount(id);
                  this.getArticles(id);
+                 this.getSignature(id);
                  this.currentArticleID=id;
                  this.UsersArticleORNot(id);
                  this.countRead2(id);

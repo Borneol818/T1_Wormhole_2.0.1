@@ -39,7 +39,7 @@
                 <div class="row contact_form">
                     <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
                         <label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
-                        <label class="col-md-10" style="font-size: 16px;">{{item.name}}</label>
+                        <label class="col-md-10" style="font-size: 16px;">{{item.nickname}}</label>
                     </div>
                     <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
                         <label for="" class="col-md-10" style="font-size: 16px;">性別</label>
@@ -82,6 +82,7 @@
                         @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
                     </div>
                     <button id="blockUser" type="button" class="btn btn-warning" style="width: 100%; margin-top: 20px;" @@click="blockThisUser(item.userId)">Block</button>
+                    <button id="sendInvite" type="button" class="btn btn-warning" style="width: 100%; margin-top: 20px;" @@click="sendInvite(item.userId)">Send Invite</button>
                 </div>
             </div>
         </div>
@@ -146,6 +147,28 @@
                     method:"PUT",
                     }).then(x=>
                         alert("已加入黑名單！"),                        
+                    );
+            },
+            async sendInvite(userId){
+                let self=this;
+                var request={};
+                    request.inviterId=self.myUserId;
+                    request.inviterName="";
+                    request.inviteeId = userId;
+                    request.inviteeName = "";
+                    request.invite = "邀請中";
+                    request.relationType = "無關係";
+
+                    await fetch('/api/Relation/AddRelation',{
+                     body:JSON.stringify(request),
+                     credentials: 'include',
+                    headers:{
+                        "Content-Type":"application/json",
+                        // "Accept":"application/json",
+                    },
+                    method:"PUT",
+                    }).then(x=>
+                        alert("已成功送出邀請"),
                     );
             },
             async getUserId(){
