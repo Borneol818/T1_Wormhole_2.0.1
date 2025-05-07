@@ -43,6 +43,7 @@
                         position: { lat: pos.lat, lng: pos.lng }
                     })
                 });
+                console.log(`現在位置:${pos.lat}, ${pos.lng}`);
                 if (!response.ok) {
                     throw new Error('Failed to update location');
                 }
@@ -60,14 +61,35 @@
                     throw new Error('Failed to fetch friends data');
                 }
                 const friends = await response.json();
-                return friends.map(friend => ({
-                    userId: friend.UserId,
-                    nickname: friend.Nickname,
-                    position: friend.Position,
-                }));
+                return friends.map(friend => {
+                    let position = null;
+                    if (friend.position != null) {
+                        console.log(`Parsing Position for friend ${friend.userId}: ${friend.position}`);
+                        // More flexible regex to handle variations in WKT format
+                        const match = friend.position.match(/POINT\s*\(\s*([-\d.]+)\s+([-\d.]+)\s*\)/);
+                        if (match && match.length >= 3) {
+                            const lng = parseFloat(match[1]); // X-coordinate (longitude)
+                            const lat = parseFloat(match[2]); // Y-coordinate (latitude)
+                            if (isNaN(lat) || isNaN(lng)) {
+                                console.warn(`Invalid coordinates for friend ${friend.userId}: lat=${lat}, lng=${lng}`);
+                            } else {
+                                position = { lat, lng };
+                            }
+                        } else {
+                            console.warn(`Failed to parse Position for friend ${friend.userId}: ${friend.position}`);
+                        }
+                    } else {
+                        console.warn(`No Position data for friend ${friend.UserId}`);
+                    }
+                    return {
+                        userId: friend.userId,
+                        nickname: friend.nickname,
+                        position: position,
+                    };
+                });
             }
             catch (error) {
-                howError(`Error fetching friends: ${error.message}`);
+                showError(`Error fetching friends: ${error.message}`);
                 return [];
             }
         }
@@ -165,76 +187,86 @@
         }
 
             async function findNearbyFriends() {
-                if (!userMarker) {
-                    showError("Please enable location services to find nearby friends.");
+            if (!userMarker) {
+                showError("Please enable location services to find nearby friends.");
+                return;
+            }
+
+            clearFriendMarkers();
+
+            const userPos = userMarker.getPosition();
+            const radius = parseInt(document.getElementById("radiusSelect").value);
+            const friends = await fetchFriends();
+            const nearbyFriends = [];
+            
+            console.log(`找到朋友 ${friends}`);
+
+            friends.forEach(friend => {
+                if (!friend.position) {
+                    console.warn(`No position data for friend ${friend.userId}`);
                     return;
                 }
+                else{
+                    console.log(`朋友位置:${friend.position.lat},${friend.position.lng}`)
+                }
 
-                clearFriendMarkers();
+                const distance = calculateDistance(
+                    userPos.lat(),
+                    userPos.lng(),
+                    friend.position.lat,
+                    friend.position.lng
+                );
+                if (distance <= radius) {
+                    nearbyFriends.push({ ...friend, distance });
+                }
+            });
 
-                const userPos = userMarker.getPosition();
-                const radius = parseInt(document.getElementById("radiusSelect").value);
-                const friends = await fetchFriends();
-                const nearbyFriends = [];
-
-                friends.forEach(friend => {
-                    const distance = calculateDistance(
-                        userPos.lat(),
-                        userPos.lng(),
-                        friend.position.lat,
-                        friend.position.lng
-                    );
-                    if (distance <= radius) {
-                        nearbyFriends.push({ ...friend, distance });
+            nearbyFriends.forEach(friend => {
+                const marker = new google.maps.Marker({
+                    position: friend.position,
+                    map: map,
+                    title: friend.nickname,
+                    icon: {
+                        url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
                     }
                 });
 
-                nearbyFriends.forEach(friend => {
-                    const marker = new google.maps.Marker({
-                        position: friend.position,
-                        map: map,
-                        title: friend.nickname,
-                        icon: {
-                            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-                        }
-                    });
-
-                    marker.addListener("click", () => {
-                        infoWindow.setContent(`
-                            <div>
-                                <h3>${friend.nickname}</h3>
-                                <p>Distance: ${Math.round(friend.distance)} meters</p>
-                            </div>
-                        `);
-                        infoWindow.open(map, marker);
-                    });
-
-                    friendMarkers.push(marker);
+                marker.addListener("click", () => {
+                    infoWindow.setContent(`
+                        <div>
+                            <h3>${friend.nickname}</h3>
+                            <p>Distance: ${Math.round(friend.distance)} meters</p>
+                        </div>
+                    `);
+                    infoWindow.open(map, marker);
                 });
 
-                if (nearbyFriends.length === 0) {
-                    showError(`No friends found within ${radius / 1000}km.`);
-                } else {
-                    clearError();
-                }
-            }
+                friendMarkers.push(marker);
+            });
 
-            function clearFriendMarkers() {
-                friendMarkers.forEach(marker => marker.setMap(null));
-                friendMarkers = [];
+            if (nearbyFriends.length === 0) {
+                showError(`No friends found within ${radius / 1000}km.`);
+            } else {
+                clearError();
             }
+        }
 
-            function showError(message) {
-                const errorDiv = document.getElementById("errorMessage");
-                errorDiv.textContent = message;
-                errorDiv.style.display = "block";
-            }
+        function clearFriendMarkers() {
+            friendMarkers.forEach(marker => marker.setMap(null));
+            friendMarkers = [];
+        }
 
-            function clearError() {
-                const errorDiv = document.getElementById("errorMessage");
-                errorDiv.textContent = "";
-                errorDiv.style.display = "none";
-            }
+        function showError(message) {
+            const errorDiv = document.getElementById("errorMessage");
+            errorDiv.textContent = message;
+            errorDiv.style.display = "block";
+        }
 
-            window.initMap = initMap;
+        function clearError() {
+            const errorDiv = document.getElementById("errorMessage");
+            errorDiv.textContent = "";
+            errorDiv.style.display = "none";
+        }
+
+        window.initMap = initMap;
 </script>
