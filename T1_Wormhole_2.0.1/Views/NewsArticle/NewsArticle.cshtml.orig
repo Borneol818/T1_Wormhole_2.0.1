@@ -2,103 +2,114 @@
     ViewData["Title"] = "News";
 }
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>新聞版</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png">
-   
-</head>
+@* <head> *@
+@*     <meta charset="utf-8"> *@
+@*     <meta http-equiv="x-ua-compatible" content="ie=edge"> *@
+@*     <title>新聞版</title> *@
+@*     <meta name="description" content=""> *@
+@*     <meta name="viewport" content="width=device-width, initial-scale=1"> *@
+@*     <link rel="shortcut icon" type="image/x-icon" href="assets/img/icon/favicon.png"> *@
+@*     <link href="~/css/Sam.css" rel="stylesheet"> *@
+@* </head> *@
 
 <div id="app">
-    <div class="header-bottom  header-sticky">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-12">
-                    <!-- Main-menu -->
-                    <div class="main-menu text-center d-none d-lg-block">
-                        <nav>
-                            <ul id="navigation">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="categories.html">Categories</a></li>
-                                <li><a href="about.html">About</a></li>
+
+    <div class="row justify-content-center wormhole-articleBG">
+        <div class="col-6 text-center">
+            <h1 class="wormhole-word">{{articles.title}}</h1>
+            @* 文章圖片 *@
+            <img class="img-fluid mx-auto d-block" v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
+            @* 文章圖片 *@
+
+            <div class="d-flex justify-content-center my-3">
+                @*amy新增，之後請負責人放至適合位置*@
+                <button v-if="isUserArticle" @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
+                <button v-if="isUserArticle" @@click="ArticleDelete" class="button button-contactForm btn_1 py-2 my-3">刪除</button>
+            </div>
+        </div>
+        <p class="wormhole-word">{{articles.content}}</p>
+    </div>
+    
+
+    <div class="row justify-content-center wormhole-articleBG">
+        @* 先新增要驗證修改 *@
+        <div class="comments-area">
+            <div>
+                <button type="button" v-on:click="submitRating(true)" class="genric-btn primary-border radius">喜歡: {{ ratingcount.positive }}</button>
+                <button type="button" v-on:click="submitRating(false)" class="genric-btn danger-border radius" style="margin-left:20px;">不喜歡: {{ ratingcount.negative }}</button>
+
+<<<<<<< HEAD
+            <div>
+                <div class="single-comment w-100">
+                    <div class="user" v-for="Response in comments">
+                        @* <div class="thumb"> *@
+                        @*     <img src="assets/img/blog/comment_1.png" alt=""> *@
+                        @* </div> *@
+                        <ul>
+                            <li>
+                                <div class="wormhole-article-commentCards wormhole-word">
+                                    <p class="comment" style="color:dimgray;">
+                                        {{ Response.content }}
+                                    </p>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <h5 style="color:dimgray;">
+                                                <a :href="'/User/ViewProfile?id=' + Response.userId">{{ Response.writer }}</a>
+                                            </h5>
+                                        </div>
+                                        <div>
+                                            <br />
+                                            <p class="date" style="color:dimgray;">時間{{ Response.date }}</p>
+=======
+            </div>
+            <div v-for="Response in comments">
+                <div class="comment-list">
+
+                    <div class="single-comment justify-content-between d-flex">
+                        <div class="user justify-content-between d-flex">
+                            @* <div class="thumb"> *@
+                            @*     <img src="'/api/ViewOthers/GetPhoto?id='+Response.userId" alt=""> *@
+                            @* </div> *@
+                            <ul>
                                 <li>
-                                    <a href="#">Pages</a>
-                                    <ul class="submenu">
-                                        <li><a href="login.html">login</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="book-details.html">book Details</a></li>
-                                        <li><a href="blog_details.html">Blog Details</a></li>
-                                        <li><a href="elements.html">Element</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contect</a></li>
-                                <li>
-                                    <a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a>
-                                </li>
-                                <li>
-                                    <a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a>
+                                    <div class="wormhole-article-commentCards wormhole-word">
+                                        <p class="comment" style="color:dimgray;">
+                                            {{ Response.content }}
+                                        </p>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <h5 style="color:dimgray;">
+                                                    <a :href="'/User/ViewProfile?id=' + Response.userId">{{ Response.writer }}</a>
+                                                </h5>
+
+                                            </div>
+                                            <div>
+                                                <p class="date" style="color:dimgray;">時間{{ Response.date }}</p>
+                                            </div>
+>>>>>>> master
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <h1>{{articles.title}}</h1>
-<<<<<<< HEAD
-
-    <p>{{articles.content}}</p>
-
-    @*amy新增，之後請負責人放至適合位置*@
-    <button @@click="ArticleEdit" class="button button-contactForm btn_1 py-2 my-3">修改</button>
-
-=======
->>>>>>> origin/Sam
-    @* 先新增要驗證修改 *@
-    @* 文章圖片 *@
-    <img v-if="articles && articles.articleID" :src="'/api/ArticlesApi/GetPicture/' + articles.articleID" />
-    @* 文章圖片 *@
-    <p>{{articles.content}}</p>
-    <div class="comments-area">
-        <div class="comment-list">
-            <button type="button" v-on:click="submitRating(true)" class="btn-like">喜歡: ({{ ratingcount.positive }})</button>
-            <button type="button" v-on:click="submitRating(false)" class="btn-dislike">不喜歡: ({{ ratingcount.negative }})</button>
-        </div>
-        <div>
-            <div class="single-comment justify-content-between d-flex">
-                <div class="user justify-content-between d-flex" v-for="Response in comments">
-                    <div class="thumb">
-                        <img src="assets/img/blog/comment_1.png" alt="">
-                    </div>
-                    <div class="desc">
-                        <p class="comment">
-                            {{ Response.content }}
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <h5>
-                                    <a href="#">{{ Response.writer }}</a>
-                                </h5>
-                                <p class="date">時間{{ Response.date }}</p>
-                            </div>
 
                         </div>
+
                     </div>
+
                 </div>
             </div>
-            <textarea v-model="textResponse" placeholder="輸入留言"></textarea>
-            <div class="reply-btn">
-                <button class="btn-reply text-uppercase">reply</button>
+            
+            <div>
+               
+                <textarea v-model="textResponse" placeholder="輸入留言" class="textarea w-100"></textarea>
+                <div class="reply-btn mt-1">
+                    <button class="genric-btn primary radius" v-on:click="submitResponse">reply</button>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
+   
 </div>
 
 <script>
@@ -113,7 +124,12 @@
                 positive: 0,
                 negative: 0,
                 currentArticleID:0,
-                }
+                },
+                currentUserId:0,
+                hasLiked: false, // 使用者是否已經按過喜歡
+                hasDisliked: false, // 使用者是否已經按過不喜歡
+
+                isUserArticle:false,
             }
         },
         methods:{
@@ -146,41 +162,97 @@
                 .then(r => r.json())
                 .then(data => {
                 //console.log( data);
-                    this.ratingcount=data;
+                    // this.ratingcount=data;
+                    this.ratingcount.positive = data.positive;
+                    this.ratingcount.negative = data.negative;
                 })
             },
-            //取得好負評數量
-            //處理好負評的點擊
+            // 點擊喜歡按鈕
+            toggleLike() {
+                this.hasLiked = !this.hasLiked;
+                if (this.hasLiked) {
+                    this.hasDisliked = false; // 如果按了喜歡，取消不喜歡
+                    this.submitRating(true); // 發送喜歡的評價
+                }
+                else {
+                    this.submitRating(null); // 取消評價
+                }
+            },
+
+            // 點擊不喜歡按鈕
+            toggleDislike() {
+                this.hasDisliked = !this.hasDisliked;
+                if (this.hasDisliked) {
+                    this.hasLiked = false; // 如果按了不喜歡，取消喜歡
+                    this.submitRating(false); // 發送不喜歡的評價
+                }
+                else {
+                    this.submitRating(null); // 取消評價
+                }
+            },
             submitRating(isPositive) {
-                console.log("目前文章ID:", this.id);
                 fetch('/api/Comments/SubmitRating', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        articleId: this.id,
-                        isPositive: isPositive // true 表示喜歡，false 表示不喜歡
+                        articleId: this.currentArticleID,
+                        isPositive: isPositive
                     })
+                }).then(response => response.json()).then(data => {
+                   if (data.success) {
+                        this.ratingcount.positive = data.data.prCount;
+                        this.ratingcount.negative = data.data.ngrCount;
+                   }
+                   else {
+                        alert('提交評價失敗：' + data.message);
+                   }
+            }).catch(error => {
+                    console.error('提交評價錯誤:', error);
+                    alert('請先登入');
+                });
+            },
+            //取得好負評數量
+            //留言
+            submitResponse() {
+                if (!this.textResponse || !this.textResponse.trim()) {
+                    alert("請輸入留言內容");
+                    return;
+                }
+
+                const response = {
+                    articleID: this.currentArticleID,
+                    comment: this.textResponse
+                };
+
+                fetch('/api/Comments/AddArticleResponse', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(response)
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        this.getRatingcount(id); // 更新網頁上的數字
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        this.comments.unshift({
+                            writer: res.nickname, // 可以從使用者資料取 nickname
+                            content: this.textResponse,
+                            date: new Date().toLocaleString('zh-TW', { hour12: false })
+                        });
+                        this.textResponse = "";
                     } else {
-                        alert('提交評價失敗');
+                        alert("留言失敗：" + res.message);
                     }
                 })
                 .catch(error => {
-                    console.error('提交評價錯誤:', error);
-                    alert('提交評價時發生錯誤');
+                    console.error(error);
+                    alert("留言失敗");
                 });
             },
-<<<<<<< HEAD
             //amy新增
-=======
-	    //amy新增
->>>>>>> origin/Sam
             /*--------------進行文章編輯--------------*/
             ArticleEdit(){
                 let self=this;
@@ -189,19 +261,62 @@
                         method: 'GET'
                         }).then(() => {window.location.href="/NewsArticle/newsPoster";})
             },
-<<<<<<< HEAD
             /*--------------進行文章編輯--------------*/
-=======
-			/*--------------進行文章編輯--------------*/
             loadRating(id) {
-                fetch('/api/Comments/GetRating?articleId='+id)
-                    .then(response => response.json())
-                    .then(data => {
-                        this.positive = data.positive;
-                        this.negative = data.negative;
-                    });
+                fetch('/api/Comments/GetRating?articleId=' + id)
+                .then(response => response.json())
+                .then(data => {
+                    this.ratingcount.positive = data.positive;
+                    this.ratingcount.negative = data.negative;
+
+                    // 假設從後端返回的資料中有「是否已經評價過」的標記
+                    // 根據後端的資料來設置使用者的按鈕狀態
+                    if (data.userRating === true) {
+                        this.hasLiked = true;
+                        this.hasDisliked = false;
+                    }
+                    else if (data.userRating === false) {
+                        this.hasLiked = false;
+                        this.hasDisliked = true;
+                    }
+                    else {
+                        this.hasLiked = false;
+                        this.hasDisliked = false;
+                    }
+                });
             },
->>>>>>> origin/Sam
+             /*--------------進行文章刪除--------------*/
+            async ArticleDelete(){
+                var ret=confirm("確定要刪除嗎?");
+                let artId=this.currentArticleID;
+                    if(ret){
+                await fetch(`/api/Comments/DeleteArticle?id=${artId}`, {
+                    method: 'Delete'
+                    }).then(res=>res.text())
+                    .then(res=>{
+                        alert(res);
+                    }).then(()=>window.location.href="/NewsArticle")
+                    .catch(Err=>{
+                    alert("刪除失敗");
+                });
+                }
+            },
+            //送到後端比對是否是文章作者
+            async UsersArticleORNot(artId){
+                self=this;
+                await fetch(`/api/Comments/isArticleAuthor?id=${artId}`, {
+                    credentials: 'include'
+                    }).then(res=>res.json())
+                    .then(res=>self.isUserArticle=res);
+            },
+            /*--------------進行文章刪除--------------*/
+            //閱讀文章記數
+            async countRead(id){
+                await fetch("/api/User/GetRead?articleId="+id,{
+                    credentials: 'include',
+                }).then(x=>x='OK');
+            },
+            //閱讀文章記數
         },
         mounted() {
 
@@ -217,6 +332,8 @@
             this.currentArticleID=id;
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
             this.loadRating(id);
+            this.UsersArticleORNot(id);
+            this.countRead(id);
         }
 
     }).mount('#app')
