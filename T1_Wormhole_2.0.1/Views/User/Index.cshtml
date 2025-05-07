@@ -73,7 +73,7 @@
 							<div class="order_box">
 								<div style="border-bottom:2px solid #333; margin-bottom:30px;">
 									<label class="col-md-12" style="font-size: 20px;">Wallet</label>
-									<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
+									<a href="#" style="font-size: 16px; color: #FFF6E0; margin-bottom: 10px;" @@click.prevent="coinsLog">Coins $ {{item.wallet}}</a>
 								</div>
 								<div style="border-bottom:2px solid #333; margin-bottom:20px;">
 									<h2 style="margin-bottom: 10px;">Article History</h2>
@@ -104,7 +104,7 @@
 					</form>
 				</template>
 				<template v-else-if="item.isAdmin==false&&item.edit==false">
-					<div class="col-lg-3" align="center" style="color:antiquewhite;">
+					<div class="col-lg-3" align="center" style="color:whitesmoke;">
 						<!-- 大頭貼 -->
 						<div style="width: 200px;height: 200px; border: 2px solid black; border-radius: 100%; margin-bottom: 20px; overflow: hidden;">
 							<img class="img-fluid" :src="'/api/User/GetPhoto?id='+item.userId+'&?v='+rand" :title="item.name" />
@@ -113,40 +113,40 @@
 							<h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
 						</div>
 						<div class="row" style="width: 200px;">
-							<h3 style="margin:0px;">Badges</h3>
+							<h3 style="margin:0px;color:whitesmoke;">Badges</h3>
 							<div class="col-4 m-md-1" style="width:30px;" v-for="(img,index) in badgeImg" :key="index">
 								<img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
 							</div>
 						</div>
 						<div class="row" style="width: 200px;">
-							<h3 style="margin:0px;">Achievements</h3>
+							<h3 style="margin:0px;color:whitesmoke;">Achievements</h3>
 							<div class="m-md-1" style="width:200px;" v-for="(img,index) in achievementImg" :key="index">
 								<img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
 							</div>
 						</div>
 
 					</div>
-					<div class="col-lg-5" style="color:antiquewhite;">
-						<h1 style="color:antiquewhite;">User Profile</h1>
+					<div class="col-lg-5" style="color:whitesmoke;">
+						<h1 style="color:whitesmoke;">User Profile</h1>
 						<div class="row contact_form">
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-								<label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
-								<label class="col-md-10" style="font-size: 16px;">{{item.name}}</label>
+								<label class="col-md-10" style="font-size: 16px;color:whitesmoke;">使用者名稱:</label>
+								<label class="col-md-10" style="font-size: 16px;color:whitesmoke;">{{item.name}}</label>
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-								<label for="" class="col-md-10" style="font-size: 16px;">性別</label>
-								<label for="" class="col-md-10" style="font-size: 16px;">{{item.sex}}</label>
+								<label for="" class="col-md-10" style="font-size: 16px;color:whitesmoke;">性別</label>
+								<label for="" class="col-md-10" style="font-size: 16px;color:whitesmoke;">{{item.sex}}</label>
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-								<label for="" class="col-md-10" style="font-size: 16px;">生日</label>
-								<label for="" class="col-md-10" style="font-size: 16px;">{{item.birthday}}</label>
+								<label for="" class="col-md-10" style="font-size: 16px;color:whitesmoke;">生日</label>
+								<label for="" class="col-md-10" style="font-size: 16px;color:whitesmoke;">{{item.birthday}}</label>
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-								<label for="" class="col-md-10" style="font-size: 16px;">簽名檔</label>
-								<label for="" class="col-md-10" style="font-size: 16px;">{{item.signature}}</label>
+								<label for="" class="col-md-10" style="font-size: 16px;color:whitesmoke;">簽名檔</label>
+								<label for="" class="col-md-10" style="font-size: 16px;color:whitesmoke;">{{item.signature}}</label>
 							</div>
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
-								<button class="btn btn-primary" @@click="edit(item.userId)">編輯資訊</button>
+								<button class="genric-btn default circle" @@click="edit(item.userId)">編輯資訊</button>
 							</div>
 						</div>
 					</div>
@@ -154,7 +154,7 @@
 						<div class="order_box">
 							<div style="border-bottom:2px solid #333; margin-bottom:30px;">
 								<label class="col-md-12" style="font-size: 20px;">Wallet</label>
-								<a href="#" style="font-size: 16px; color: blue; margin-bottom: 10px;">Coins $ {{item.wallet}}</a>
+								<a href="#" style="font-size: 16px; color: #FFF6E0; margin-bottom: 10px;" @@click.prevent="coinsLog">Coins $ {{item.wallet}}</a>
 							</div>
 							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
 								<h2 style="margin-bottom: 10px;">Article History</h2>
@@ -218,6 +218,7 @@
 				achievementImg:[],
 				articlesHistory:[],
 				commentHistory:[],
+				myCoinsLog:[],
 				name:"",
 				userId:0,
 				phone:"",
@@ -356,6 +357,15 @@
 				self.readURL(inputTypeFile,inputTypeFile.parentElement.previousElementSibling.firstElementChild,$("#saveEdit"));
 			},
 
+			coinsLog() {
+				 axios.get("/api/User/GetCoinsLog")
+				.then(response => {
+					alert(response.data);
+				})
+				.catch(err => {
+					alert("沒有紀錄");
+				});
+			},
 		},
 		mounted() {
 			this.getAll();

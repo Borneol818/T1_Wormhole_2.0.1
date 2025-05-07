@@ -100,7 +100,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: "Roboto", sans-serif,"微軟正黑體";
-    color: #1a1a1a;
+/*    color: #1a1a1a;*/
     margin-top: 0px;
     font-style: normal;
     font-weight: 500;
@@ -6577,7 +6577,7 @@ hr {
     }
 
 .order_box {
-    background-color: #333;
+    background-color: #6B7899;
     padding: 10px;
     color: white;
 }
@@ -7480,7 +7480,7 @@ hr {
 }
 
 .submit-btn3 {
-    background: #FF1616;
+    background: #023373;
     height: 60px;
     padding: 10px 43px;
     border: 0;

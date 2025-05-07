@@ -277,6 +277,13 @@
                     .then(res=>self.isUserArticle=res);
             },
             /*--------------進行文章刪除--------------*/
+            //閱讀文章記數
+            async countRead(id){
+                await fetch("/api/User/GetRead?articleId="+id,{
+                    credentials: 'include',
+                }).then(x=>x='OK');
+            },
+            //閱讀文章記數
         },
         mounted() {
 
@@ -293,6 +300,7 @@
             //test https://localhost:7253/api/comments/GetByArticleId?articleId=1
             this.loadRating(id);
             this.UsersArticleORNot(id);
+            this.countRead(id);
         }
 
     }).mount('#app')

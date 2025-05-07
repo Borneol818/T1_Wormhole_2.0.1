@@ -272,16 +272,18 @@ namespace T1_Wormhole_2._0._1.Controllers
                     var GetReward = await _userService.DailyRewardAsync(userInfo.UserId); //登入獎勵發放
                     if (GetReward)
                     {
-                        HttpContext.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
-                    };
-                    userInfo.Status = true;
-                    var LoginRecord = new LoginRecord //新增login紀錄
+                        TempData["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                    }
+                    else
                     {
-                        Id = 0,
-                        UserId = userInfo.UserId,
-                        Time = DateTime.UtcNow,
-                    };
-                    _context.LoginRecords.Add(LoginRecord);
+                        var LoginRecord = new LoginRecord //新增login紀錄
+                        {
+                            UserId = userInfo.UserId,
+                            Time = DateTime.UtcNow,
+                        };
+                        _context.LoginRecords.Add(LoginRecord);
+                    }
+                    userInfo.Status = true;
                     _context.SaveChanges();
                     HttpContext.Session.SetString($"Visit_{userInfo.UserId}", "Active");
 
@@ -475,16 +477,18 @@ namespace T1_Wormhole_2._0._1.Controllers
                 var GetReward = await _userService.DailyRewardAsync(user.UserId); //登入獎勵發放
                 if (GetReward)
                 {
-                    HttpContext.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
-                };
+                    TempData["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                }
+                else { 
+
+                    var LoginRecord = new LoginRecord
+                    {
+                        UserId = user.UserId,
+                        Time = DateTime.UtcNow,
+                    };
+                    _context.LoginRecords.Add(LoginRecord);
+                }
                 user.Status = true;
-                var LoginRecord = new LoginRecord
-                {
-                    Id = 0,
-                    UserId = user.UserId,
-                    Time = DateTime.UtcNow,
-                };
-                _context.LoginRecords.Add(LoginRecord);
                 _context.SaveChanges();
                 HttpContext.Session.SetString($"Visit_{user.UserId}", "Active");
                 return RedirectToAction("Index", "Home");
