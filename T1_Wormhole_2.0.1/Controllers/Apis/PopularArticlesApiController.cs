@@ -42,7 +42,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 if (_db.Articles.Where(x => x.ArticleId == id).Select(x => x.WriterId).First()!=null)
                 {
                      writerId= _db.Articles.Where(x => x.ArticleId == id).Select(x => x.WriterId).First();
-                     name= _db.UserInfos.Where(x => x.UserId == writerId).Select(x => x.Name).First();
+                     name= _db.UserInfos.Where(x => x.UserId == writerId).Select(x => x.Nickname).First();
                      type = _db.Articles.Where(x=> x.ArticleId == id).Select(x=>x.Type).First();
                 }
                 else {
