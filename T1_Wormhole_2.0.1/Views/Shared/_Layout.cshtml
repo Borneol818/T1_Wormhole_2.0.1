@@ -46,7 +46,7 @@
 						<button class="toggleBtn" :class="{active:isSidebarOpen}" @@click="sidebarController()" style="background-color:#333; border-radius:0 100% 100% 0;">{{sidebarControllerText}}</button>
 
 						<div class="sidebar" :class="{active:isSidebarOpen}">
-							<div style="width:100%; padding:3px;">															
+							<div style="width:100%; height:100%; padding:3px;">															
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
 									<h1 style="margin-bottom: 10px; color: whitesmoke; font-size:36px;">Relation List</h1>
 									<ul v-for="friend in relations" :key="friend.inviteeId">
@@ -103,9 +103,12 @@
 											</div>
 										</li>
 									</ul>
-									@*     @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@ 
-								</div>								
-							</div>
+									     @* <a href="#" style="font-size: 16px; color: blue;">Show More</a>  *@
+								</div>	
+								<div class="mapLink">
+									<a asp-controller="Home" asp-action="Map">在地圖上查看</a>
+								</div>
+							</div>														
 						</div>
 					</div>
 					<!--好友列表-->
