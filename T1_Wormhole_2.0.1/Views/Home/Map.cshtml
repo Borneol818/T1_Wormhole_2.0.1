@@ -16,8 +16,11 @@
                 <option value="2000">2 公里</option>
             </select>
         </div>
-        <button  onclick="findNearbyFriends()" class="btn btn-primary">搜尋附近好友</button>
-        <button  onclick="stopWatchingPosition()" class="btn btn-secondary mt-2">停止追蹤位置</button>
+        <div class="tracking-btns">
+            <button onclick="startWatchingPosition()" class="btn btn-success mt-2 ">立即開始定位</button>
+            <button  onclick="stopWatchingPosition()" class="btn btn-secondary mt-2">停止追蹤位置</button>
+        </div>
+        <button onclick="findNearbyFriends()" class="btn btn-primary centered-btn mt-2">搜尋附近好友</button>
         <div id="errorMessage" class="text-danger mt-2" style="display: none;"></div>
     </div>
 </div>
@@ -76,21 +79,11 @@
             });
             infoWindow = new google.maps.InfoWindow();
 
-            const locationButton = document.createElement("button");
-            locationButton.textContent = "Pan to Current Location";
-            locationButton.classList.add("custom-map-control-button");
-            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-
-            locationButton.addEventListener("click", () => {
-                if (userMarker) {
-                    map.setCenter(userMarker.getPosition());
-                }
-            });
-
             startWatchingPosition();
         }
 
         function startWatchingPosition() {
+            clearError(); // Clear any existing error message when starting tracking
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(
                     (position) => {
@@ -131,6 +124,7 @@
                 handleLocationError(false, infoWindow, map.getCenter());
             }
         }
+     
 
         function stopWatchingPosition() {
             if (watchId) {
