@@ -70,6 +70,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+// ±Ò¥Î Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire");
 
 app.UseRouting();
 app.UseSession();
@@ -77,8 +79,6 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-// ±Ò¥Î Hangfire Dashboard
-app.UseHangfireDashboard("/hangfire");
 
 app.Use(async (context, next) =>
 {
