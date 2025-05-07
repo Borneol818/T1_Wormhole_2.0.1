@@ -81,7 +81,7 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                         {
                             u.UserId,
                             u.Nickname,
-                            Position = u.Position.ToString()
+                            Position = u.Position != null? u.Position.ToString(): null
                         })
                         .FirstOrDefault()
                 })
