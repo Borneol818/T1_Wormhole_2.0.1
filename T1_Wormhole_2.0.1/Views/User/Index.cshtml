@@ -28,23 +28,23 @@
 							<div v-for="item in userstatus">
 								<h4 style="margin-top: 20px;">LV: {{item.level}}</h4>
 							</div>
-							<div>
-								<p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Achievement</p>
-							</div>
+							@* <div> *@
+							@* 	<p style="margin-top: 20px; font-size: 20px; font-weight: bold;">Achievement</p> *@
+							@* </div> *@
 						</div>
 						<div class="col-lg-5">
-							<h1 style="color:antiquewhite;">Edit Profile</h1>
+							<h1 style="color:antiquewhite;">個人資訊編輯</h1>
 							@* <form class="row contact_form" action="#" method="post" novalidate="novalidate" v-for="item in userinfo"> *@
 							<div class="col-md-10 form-group p_star">
-								<input type="text" class="form-control" name="name" v-model="item.name" placeholder="Username" />
+								<input type="text" class="form-control" name="name" v-model="item.name" placeholder="使用者名稱" />
 								@* <span class="placeholder" data-placeholder="Username"></span>*@
 							</div>
 							<div class="col-md-5 form-group p_star">
-								<input type="text" class="form-control" name="phone" v-model="item.phone" placeholder="Phone number" />
+								<input type="text" class="form-control" name="phone" v-model="item.phone" placeholder="手機號碼" />
 								@* <span class="placeholder" data-placeholder="Phone number"></span> *@
 							</div>
 							<div class="col-md-5 form-group p_star">
-								<input type="text" class="form-control" name="nickname" v-model="item.nickname" placeholder="nickname" />
+								<input type="text" class="form-control" name="nickname" v-model="item.nickname" placeholder="暱稱" />
 								@* <span class="placeholder" data-placeholder="nickname"></span> *@
 							</div>
 							<div class="col-md-10 form-group p_star">
@@ -55,28 +55,28 @@
 								<p style="font-size:18px; color:orangered;">性別為必填喔!</p>
 							</div>
 							<div class="col-md-10 form-group p_star">
-								<input placeholder="Birthday" type="text" name="birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="item.birthday" />
+								<input placeholder="生日" type="text" name="birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="item.birthday" />
 							</div>
 							<div class="col-md-10 form-group">
-								<textarea class="form-control" name="message" id="message" rows="1" placeholder="Edit Your Own Signature"
+								<textarea class="form-control" name="message" id="message" rows="1" placeholder="簽名檔"
 										  v-model="item.signature"></textarea>
 							</div>
 							<div style="margin-top: 20px; display: flex; justify-content: center;">
-								<button id="saveEdit" type="button" class="btn btn-primary" @@click="editInfo">Save</button>
+								<button id="saveEdit" type="button" class="btn btn-primary" @@click="editInfo">儲存</button>
 							</div>
 							<div style="margin-top: 20px; display: flex; justify-content: center;">
-								<button class="btn btn-primary" @@click="cancel">Cancel</button>
+								<button class="btn btn-primary" @@click="cancel">取消</button>
 							</div>
 							@* </form> *@
 						</div>
 						<div class="col-lg-4">
 							<div class="order_box">
 								<div style="border-bottom:2px solid #333; margin-bottom:30px;">
-									<label class="col-md-12" style="font-size: 20px;">Wallet</label>
-									<a href="#" style="font-size: 16px; color: #FFF6E0; margin-bottom: 10px;" @@click.prevent="coinsLog">Coins $ {{item.wallet}}</a>
+									<label class="col-md-12" style="font-size: 20px;">蟲洞幣</label>
+									<a href="#" style="font-size: 16px; color: #FFF6E0; margin-bottom: 10px;" @@click.prevent="coinsLog">餘額 $ {{item.wallet}}</a>
 								</div>
 								<div style="border-bottom:2px solid #333; margin-bottom:20px;">
-									<h2 style="margin-bottom: 10px;">Article History</h2>
+									<h2 style="margin-bottom: 10px; border-bottom:0;">發文歷史紀錄</h2>
 									<ul class="list" v-for="art in articlesHistory" :key="art.articleID">
 										<li>
 											<a :href="'/DiscussArticleView/DiscussArticle?id='+art.articleID">
@@ -88,7 +88,7 @@
 									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
 								</div>
 								<div style="border-bottom:2px solid #333; margin-bottom:20px;">
-									<h2 style="margin-bottom: 10px;">Comment History</h2>
+									<h2 style="margin-bottom: 10px; border-bottom:0;">留言歷史紀錄</h2>
 									<ul class="list" v-for="com in commentHistory" :key="com.articleID">
 										<li>
 											<a :href="'/DiscussArticleView/DiscussArticle?id='+com.articleID">
@@ -113,13 +113,13 @@
 							<h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
 						</div>
 						<div class="row" style="width: 200px;">
-							<h3 style="margin:0px;color:whitesmoke;">Badges</h3>
+							<h3 style="margin:0px;color:whitesmoke;">徽章</h3>
 							<div class="col-4 m-md-1" style="width:30px;" v-for="(img,index) in badgeImg" :key="index">
 								<img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
 							</div>
 						</div>
 						<div class="row" style="width: 200px;">
-							<h3 style="margin:0px;color:whitesmoke;">Achievements</h3>
+							<h3 style="margin:0px;color:whitesmoke;">稱號</h3>
 							<div class="m-md-1" style="width:200px;" v-for="(img,index) in achievementImg" :key="index">
 								<img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
 							</div>
@@ -127,7 +127,7 @@
 
 					</div>
 					<div class="col-lg-5" style="color:whitesmoke;">
-						<h1 style="color:whitesmoke;">User Profile</h1>
+						<h1 style="color:whitesmoke;">我的個人資訊</h1>
 						<div class="row contact_form">
 							<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
 								<label class="col-md-10" style="font-size: 16px;color:whitesmoke;">使用者名稱:</label>
@@ -153,11 +153,11 @@
 					<div class="col-lg-4">
 						<div class="order_box">
 							<div style="border-bottom:2px solid #333; margin-bottom:30px;">
-								<label class="col-md-12" style="font-size: 20px;">Wallet</label>
-								<a href="#" style="font-size: 16px; color: #FFF6E0; margin-bottom: 10px;" @@click.prevent="coinsLog">Coins $ {{item.wallet}}</a>
+								<label class="col-md-12" style="font-size: 20px;">蟲洞幣</label>
+								<a href="#" style="font-size: 16px; color: #FFF6E0; margin-bottom: 10px;" @@click.prevent="coinsLog">餘額 $ {{item.wallet}}</a>
 							</div>
 							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
-								<h2 style="margin-bottom: 10px;">Article History</h2>
+								<h2 style="margin-bottom: 10px; border-bottom:0;">發文歷史紀錄</h2>
 								<ul class="list" v-for="art in articlesHistory" :key="art.articleID">
 									<li>
 										<a :href="'/DiscussArticleView/DiscussArticle?id='+art.articleID">
@@ -169,7 +169,7 @@
 								@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
 							</div>
 							<div style="border-bottom:2px solid #333; margin-bottom:20px;">
-								<h2 style="margin-bottom: 10px;">Comment History</h2>
+								<h2 style="margin-bottom: 10px; border-bottom:0;">留言歷史紀錄</h2>
 								<ul class="list" v-for="com in commentHistory" :key="com.articleID">
 									<li>
 										<a :href="'/DiscussArticleView/DiscussArticle?id='+com.articleID">
@@ -184,7 +184,7 @@
 					</div>
 				</template>
 				<template v-else-if="item.isAdmin==true&&item.edit==false">
-					<h1 style="color:antiquewhite;">Manager Profile</h1>
+					<h1 style="color:antiquewhite;">管理員個人資訊</h1>
 					<div class ="row contact_form">
 						<div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
 							<label class="col-md-10" style="font-size: 16px;">管理員名稱:</label>

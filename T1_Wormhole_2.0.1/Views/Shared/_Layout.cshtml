@@ -48,7 +48,7 @@
 						<div class="sidebar" :class="{active:isSidebarOpen}">
 							<div style="width:100%; height:100%; padding:3px;">															
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
-									<h1 style="margin-bottom: 10px; color: whitesmoke; font-size:36px;">Relation List</h1>
+									<h1 style="margin-bottom: 10px; color: whitesmoke; font-size:36px;">好友列表</h1>
 									<ul v-for="friend in relations" :key="friend.inviteeId">
 										<li>
 											<div class="row">
@@ -60,7 +60,7 @@
 												@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(self.inviterId)">Accept</button> *@
 												@* </div> *@
 												<div class="col-4">
-													<button id="break" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(friend.inviteeId)">Break</button>
+													<button id="break" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(friend.inviteeId)">刪除</button>
 												</div>
 											</div>
 										</li>
@@ -68,7 +68,7 @@
 									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
 								</div>
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
-									<h1 style="margin-bottom: 10px; color: whitesmoke;font-size:36px;">Inviting List</h1>
+									<h1 style="margin-bottom: 10px; color: whitesmoke;font-size:36px;">已送出的邀請</h1>
 									<ul v-for="invitee in invitings" :key="invitee.inviteeId">
 										<li>
 											<div class="row">
@@ -80,7 +80,7 @@
 												@*     <button type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitee.inviteeId)">Accept</button> *@
 												@* </div> *@
 												<div class="col-5">
-													<button id="cancel" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(invitee.inviteeId)">Cancel</button>
+													<button id="cancel" type="button" class="btn btn-warning" style="width: 100%;" @@click="breakInvite(invitee.inviteeId)">取消</button>
 												</div>
 											</div>
 										</li>
@@ -88,7 +88,7 @@
 									@* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
 								</div>
 								<div style="border-bottom:2px solid black; margin-bottom:20px;">
-									<h1 style="margin-bottom: 10px; color: whitesmoke;font-size:36px;">Inviting Me</h1>
+									<h1 style="margin-bottom: 10px; color: whitesmoke;font-size:36px;">接收到的邀請</h1>
 									<ul v-for="invitingMe in myInvitings" :key="invitingMe.inviterId">
 										<li>
 											<div class="row">
@@ -97,8 +97,8 @@
 													<p class="ellipsis-text" style="margin-left:10px;color: whitesmoke;font-size:18px;">{{invitingMe.invite}}</p>
 												</a>
 												<div class="col-5">
-													<button id="accept" type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitingMe.inviterId)">Accept</button>
-													<button id="refuse" type="button" class="btn btn-warning" style="width: 100%;" @@click="refuseInvite(invitingMe.inviterId)">Refuse</button>
+													<button id="accept" type="button" class="btn btn-warning" style="width: 100%;" @@click="acceptInvite(invitingMe.inviterId)">同意</button>
+													<button id="refuse" type="button" class="btn btn-warning" style="width: 100%;" @@click="refuseInvite(invitingMe.inviterId)">拒絕</button>
 												</div>												
 											</div>
 										</li>
@@ -142,7 +142,7 @@
 													   id="dropdownId"
 													   data-bs-toggle="dropdown"
 													   aria-haspopup="true"
-													   aria-expanded="false">Account</a>
+													   aria-expanded="false">{{user.nickname}}</a>
 													@* <div class="shopping-card"> *@
 													<a class="" asp-controller="User" asp-action="Index" style="width:40px;"><img class="img-fluid" :src="'/api/User/GetPhoto?id='+user.userId" alt=""></a>
 													@* </div> *@
@@ -150,10 +150,10 @@
 														 aria-labelledby="dropdownId" v-for="layoutItem in userInfoForLayout">
 														<template v-if="layoutItem.isAdmin==false && layoutItem.isLogin==true" class="wormhole-word-noColor">
 															<div class="wormhole-userInfo" style="width:300px; border-bottom:2px solid gray;">
-																<h3>My Account</h3>
-																<label>User Name</label>
+																<h3>我的名片</h3>
+																<label>使用者名稱</label>
 																<p>{{layoutItem.name}}</p>
-																<label>Nickname</label>
+																<label>暱稱</label>
 																<p>{{layoutItem.nickname}}</p>
 															</div>
 															@* <a class="dropdown-item" asp-controller="User" asp-action="TestRelation">TestRelation</a> *@
@@ -162,10 +162,10 @@
 														</template>
 														<template v-else-if="layoutItem.isAdmin==true && layoutItem.isLogin==true">
 															<div class="dropdown-item" style="width:300px; border-bottom:2px solid gray;">
-																<h3>Manager Account</h3>
+																<h3>管理員名稱</h3>
 																<label>Manager Name</label>
 																<p>{{layoutItem.managerName}}</p>
-																<label>Team</label>
+																<label>組別</label>
 																<p>{{layoutItem.managerTeam}}</p>
 															</div>
 															@* <a class="dropdown-item" href="#">使用者設定</a> *@
@@ -184,8 +184,8 @@
 														@* </template> *@
 													</div>													
 												</li>
-												<li v-if="isLogin==false"><a href="/Account/Login" class="genric-btn primary-border circle arrow">Login</a></li>
-												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">Register</a></li>
+												<li v-if="isLogin==false"><a href="/Account/Login" class="genric-btn primary-border circle arrow">登入</a></li>
+												<li v-if="isLogin==false"><a href="/Account/Register" class="genric-btn primary-border circle arrow">註冊</a></li>
 											</ul>
 										</div>
 									</div>
@@ -214,7 +214,7 @@
 															<li><a asp-controller="Event" asp-action="Index">活動</a></li>
 															<li><a asp-controller="DiscussArticleView" asp-action="Index">討論版</a></li>
 															<li><a asp-controller="NewsArticle" asp-action="Index">新聞版</a></li>
-															<li><a asp-controller="Obtain" asp-action="Index">Wormhole Shop</a></li>
+															<li><a asp-controller="Obtain" asp-action="Index">蟲洞集市</a></li>
 
 														</ul>
 													</nav>
@@ -269,7 +269,7 @@
 										<li><a asp-controller="Event" asp-action="Index">活動</a></li>
 										<li><a asp-area="" asp-controller="DiscussArticleView" asp-action="Index">討論版</a></li>
 										<li><a asp-area="" asp-controller="NewsArticle" asp-action="Index">新聞版</a></li>
-										<li><a asp-controller="Obtain" asp-action="Index">Wormhole Shop</a></li>										
+										<li><a asp-controller="Obtain" asp-action="Index">蟲洞集市</a></li>										
 									</ul>
 								</div>
 							</div>

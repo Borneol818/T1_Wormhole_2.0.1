@@ -2,42 +2,41 @@
 
 <body>
 
-    <main class="login-bg" style="height: 140vh;">
+    <main class="login-bg" style="height: 120vh;">
         <!-- login Area Start -->
         <div class="login-form-area" id="app">
             <form action="/Account/Login" method="post">
                 <div class="login-form">
                     <!-- Login Heading -->
                     <div class="login-heading">
-                        <span>Login</span>
-                        <p>Enter Login details to get access</p>
+                        <span style="font-weight:bolder;">登入</span>
                     </div>
                     <!-- Single Input Fields -->
                     <div class="input-box">
 
                         <div class="single-input-fields" style="overflow: hidden;">
-                            <label>Account or Email Address</label>
-                            <input type="text" v-model="UserIdentifier" name="UserIdentifier" @@input="checkIdentifier" placeholder="Username or Email address" minlength="4">
-                            <label v-show="isEmptyUserIdentifier" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label style="font-size:20px; font-weight:bold;">帳號或電子郵件</label>
+                            <input type="text" v-model="UserIdentifier" name="UserIdentifier" @@input="checkIdentifier" placeholder="請輸入帳號或電子郵件" minlength="4">
+                            <label v-show="isEmptyUserIdentifier" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
                         </div>
                         <div class="single-input-fields" style="overflow: hidden;">
-                            <label>Password</label>
-                            <input type="password" v-model="Password" name="Password" @@input="checkPassword" placeholder="Enter Password" minlength="8" maxlength="20">
-                            <label v-show="isEmptyPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
-                        </div>
-                        <div class="single-input-fields login-check">
-                            <a href="/Account/ForgotPassword" style="margin-bottom: 20px">Forgot Password?</a> @* 修改連結內容 *@
+                            <label style="font-size:20px; font-weight:bold;">密碼</label>
+                            <input type="password" v-model="Password" name="Password" @@input="checkPassword" placeholder="輸入密碼" minlength="8" maxlength="20">
+                            <label v-show="isEmptyPassword" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
                         </div>
                         <div class="single-input-fields login-check" style="margin-top: 20px;">
                             <input type="checkbox" id="KeepLog" name="KeepLog">
-                            <label for="KeepLog">Keep me logged in</label>
+                            <label for="KeepLog" style="font-weight:bold; line-height:1;">保持登入狀態</label>
                         </div>
-                        <div class="single-input-fields login-check" style="margin-top: 20px;">
+                        <div class="single-input-fields login-check" style="margin-top: 20px; margin-bottom:40px">
                             <input type="checkbox" id="RememberMe" name="RememberMe">
-                            <label for="RememberMe">Remember Me</label>
+                            <label for="RememberMe" style="font-weight:bold; line-height:1;">記住我</label>
+                        </div>
+                        <div class="single-input-fields login-check">
+                            <a href="/Account/ForgotPassword" style="margin-bottom: 20px;font-size:20px; font-weight:bold;">忘記密碼?</a> @* 修改連結內容 *@
                         </div>
                         <div class="single-input-fields login-check" style="margin-top: 20px;">
-                            <label>Login with</label>
+                            <label style="font-size:20px; font-weight:bold;">使用其他帳號登入</label>
                         </div>
                         <div id="g_id_onload"
                              data-client_id="775349593232-348s21pflg84e22t1j34h9kqtl5hfvgb.apps.googleusercontent.com"
@@ -56,8 +55,8 @@
                     
                     <!-- form Footer -->
                     <div class="login-footer">
-                        <p>Don’t have an account? <a href="/Account/Register">Sign Up</a>  here</p> @* 修改連結內容 *@
-                        <button v-bind:disabled="!formIsValid" class="submit-btn3" type="submit">Login</button>
+                        <p style="font-size:20px; font-weight:bold;">還沒有帳號嗎? 現在<a href="/Account/Register">註冊</a>吧!</p> @* 修改連結內容 *@
+                        <button v-bind:disabled="!formIsValid" class="submit-btn3" type="submit" style="font-size:20px; font-weight:bold;">登入</button>
                     </div>
                 </div>
             </form>
