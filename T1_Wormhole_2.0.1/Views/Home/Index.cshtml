@@ -185,16 +185,16 @@
                 </div>
                 <div class="row  d-flex justify-content-center">
                     <div v-for="item in popularArticles" class="col-md-4" style="width:25%;margin:0 20px;">
-                        <div class="selling-active">
+                        <div class="selling-active h-100">
                             <!-- Single -->
                             <div class="col properties pb-20">
-                                <div class="properties-card">
+                                <div class="properties-card h-100 d-flex flex-column">
                                     <div class="properties-img">
                                         <a :href="getArticleUrl(item)"><img v-bind:src="'/api/ArticlesApi/GetPicture/'+item.articlesId+'?v='+rand" alt=""></a>
                                     </div>
-                                    <div class="properties-caption">
-                                        <h3><a :href="getArticleUrl(item)">{{item.articleTitle}}</a></h3>
-                                        <p>{{item.name}}</p>
+                                    <div class="properties-caption d-flex flex-column flex-grow-1">
+                                        <h3 class="wormhole-title-ellipsis"><a :href="getArticleUrl(item)">{{item.articleTitle}}</a></h3>
+                                        <p class="flex-grow-1" style="margin-bottom: 0px;">{{item.name}}</p>
                                         <div class="properties-footer d-flex justify-content-between align-items-center">
                                             <div class="review">
                                                 @* <div class="rating"> *@
