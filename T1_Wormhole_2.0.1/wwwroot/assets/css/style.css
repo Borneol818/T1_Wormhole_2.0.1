@@ -3807,10 +3807,13 @@ hr {
 
     .most-popular .properties .properties-card {
         background-color: #fff;
+        min-height: 100%;
     }
 
         .most-popular .properties .properties-card .properties-img img {
-            width: 100%
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
 
         .most-popular .properties .properties-card .properties-caption {
