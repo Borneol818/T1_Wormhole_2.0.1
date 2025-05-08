@@ -22,20 +22,20 @@
                     <h4 style="margin-top: 20px; margin-bottom: 20px;">LV: {{item.level}}</h4>
                 </div>
                 <div class="row" style="width: 200px;">
-                    <h3 style="margin:0px;">Badges</h3>
+                    <h3 style="margin:0px;">徽章</h3>
                     <div class="col-4 m-md-1" style="width:30px;" v-for="(img,index) in badgeImg" :key="index">
                         <img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
                     </div>
                 </div>
                 <div class="row" style="width: 200px;">
-                    <h3 style="margin:0px;">Achievements</h3>
+                    <h3 style="margin:0px;">稱號</h3>
                     <div class="m-md-1" style="width:200px;" v-for="(img,index) in achievementImg" :key="index">
                         <img style="height:30px;" class="img-fluid" :src="img" alt="Obtain Image" />
                     </div>
                 </div>
             </div>
             <div class="col-lg-5" style="color:antiquewhite;">
-                <h1 style="color:antiquewhite;">User Profile</h1>
+                <h1 style="color:antiquewhite;">使用者資訊</h1>
                 <div class="row contact_form">
                     <div class="col-md-10" style="margin-top: 10px;margin-bottom: 10px;">
                         <label class="col-md-10" style="font-size: 16px;">使用者名稱:</label>
@@ -58,7 +58,7 @@
             <div class="col-lg-4">
                 <div class="order_box">                    
                     <div style="border-bottom:2px solid #333; margin-bottom:20px;">
-                        <h2 style="margin-bottom: 10px;">Article History</h2>
+                        <h2 style="margin-bottom: 10px; border-bottom:0;">發文歷史紀錄</h2>
                         <ul class="list" v-for="art in articlesHistory" :key="art.articleID">
                             <li>
                                 <a :href="'/DiscussArticleView/DiscussArticle?id='+art.articleID">
@@ -70,7 +70,7 @@
                         @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
                     </div>
                     <div style="border-bottom:2px solid #333; margin-bottom:20px;">
-                        <h2 style="margin-bottom: 10px;">Comment History</h2>
+                        <h2 style="margin-bottom: 10px; border-bottom:0;">留言歷史紀錄</h2>
                         <ul class="list" v-for="com in commentHistory" :key="com.articleID">
                             <li>
                                 <a :href="'/DiscussArticleView/DiscussArticle?id='+com.articleID">
@@ -81,8 +81,8 @@
                         </ul>
                         @* <a href="#" style="font-size: 16px; color: blue;">Show More</a> *@
                     </div>
-                    <button id="blockUser" type="button" class="btn btn-warning" style="width: 100%; margin-top: 20px;" @@click="blockThisUser(item.userId)">Block</button>
-                    <button id="sendInvite" type="button" class="btn btn-warning" style="width: 100%; margin-top: 20px;" @@click="sendInvite(item.userId)">Send Invite</button>
+                    <button id="blockUser" type="button" class="btn btn-warning" style="width: 100%; margin-top: 20px;" @@click="blockThisUser(item.userId)">加入黑名單</button>
+                    <button id="sendInvite" type="button" class="btn btn-warning" style="width: 100%; margin-top: 20px;" @@click="sendInvite(item.userId)">邀請成為好友</button>
                 </div>
             </div>
         </div>
