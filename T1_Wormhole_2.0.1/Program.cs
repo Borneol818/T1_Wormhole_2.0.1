@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.OData;
 using Hangfire;
 using Google;
 using System.Security.Claims;
+using T1_Wormhole_2._0._1.Filter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,15 +70,20 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 // ±Ò¥Î Hangfire Dashboard
-app.UseHangfireDashboard("/hangfire");
+app.UseHangfireDashboard("/hangfire",new DashboardOptions 
+{
+    Authorization = new[] {new ClaimBaseHangfireDashboardAuthorizationFilter("Admin") }
+});
 
 app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
 
 
 app.Use(async (context, next) =>
