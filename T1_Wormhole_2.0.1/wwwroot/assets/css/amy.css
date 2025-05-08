@@ -137,3 +137,11 @@
     .wormhole-artPostBTN:hover {
         color: darkblue;
     }
+.wormhole-title-ellipsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* ­­¨î¬° 1 ¦æ */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
+}
