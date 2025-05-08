@@ -2,6 +2,10 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+@* <link href="~/css/Sam.css" rel="stylesheet"> *@
+@* <link href="~\css\sam.css" rel="stylesheet" /> *@
+
+
 <!-- 開場動畫區塊 -->
 <div id="splash" class="splash-animate">
     <img src="/assets/img/hero/home02.gif" alt="Logo" class="splash-logo" />
@@ -11,7 +15,6 @@
 	<input type="text" id="secret-input" placeholder="請輸入關鍵字..." style="position:fixed;bottom:10px;right:10px;z-index:9999;display:none;">
 </div>
 <main id="app">
-    <link href="~/css/Sam.css" rel="stylesheet">
     <!--管理員介面區開始-->
     <template v-if="isAdmin">
         <h1 class="wormhole-word">我是管理員</h1>
@@ -47,7 +50,8 @@
                 </tr>
             </table>
         </div>
-        <div v-if="isEditModalVisible" class="edit">
+        <div v-if="isEditModalVisible" class="modal-overlaysam" @@click="closeEditModal"></div>
+        <div v-if="isEditModalVisible" class="editsam">
             <table class="sam">
                 <tr class="sam">
                     <th class="sam">欄位</th>
@@ -403,7 +407,10 @@
                     if (response.ok) {
                         // 後端更新成功，更新前端 users 陣列
                         const index = this.users.findIndex(user => user.userId === this.editUser.userId);
-                        
+                        if (index !== -1) {
+                             // 使用 Object.assign 保持響應式
+                            Object.assign(this.users[index], this.editUser);
+                        }
                         
                         alert('使用者資料已更新！');
                         // 可以選擇重新載入使用者資料，以確保資料是最新的
@@ -499,5 +506,27 @@
     });
     
 </script>
+<style>
+    .editsam {
+        position: fixed; /* 相對於瀏覽器視窗定位 */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* 將元素中心移動到視窗中心 */
+        background-color: white; /* 設定背景顏色 */
+        padding: 20px; /* 增加內邊距 */
+        border: 1px solid #ccc; /* 可選：增加邊框 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 可選：增加陰影效果 */
+        z-index: 1001; /* 確保彈出視窗在遮罩之上 */
+    }
 
-
+    /* 半透明背景遮罩 */
+    .modal-overlaysam {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+        z-index: 1000; /* 確保遮罩在彈出視窗之下 */
+    }
+</style>
