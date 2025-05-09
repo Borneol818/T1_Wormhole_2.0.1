@@ -165,7 +165,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             }
             _context.Obtains.Add(obt);
             await _context.SaveChangesAsync();
-            return $"Obtain編號:{obt.ObtainId}";
+            return $"稱號編號:{obt.ObtainId}";
         }
 
         // POST: api/ObtainsApi/3
@@ -250,12 +250,12 @@ namespace T1_Wormhole_2._0._1.Controllers
             var obtain = await _context.Obtains.FindAsync(id);
             if (obtain == null)
             {
-                return "刪除Obtain失敗!";
+                return "刪除稱號失敗!";
             }
 
             _context.Obtains.Remove(obtain);
             await _context.SaveChangesAsync();
-            return "刪除Obtain成功!";
+            return "刪除稱號成功!";
         }
 
         [HttpGet("isAdmin")]
