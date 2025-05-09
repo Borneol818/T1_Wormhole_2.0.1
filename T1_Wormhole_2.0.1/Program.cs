@@ -82,46 +82,53 @@ app.UseAuthorization();
 
 app.Use(async (context, next) =>
 {
-    if (context.User.Identity.IsAuthenticated && context.User.FindFirst(ClaimTypes.Role)?.Value == "User")
-    {
-        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!string.IsNullOrEmpty(userId))
+    //try
+    //{
+        if (context.User.Identity.IsAuthenticated && context.User.FindFirst(ClaimTypes.Role)?.Value == "User")
         {
-            var dbContext = context.RequestServices.GetRequiredService<WormHoleContext>();
-            var rewardService = context.RequestServices.GetRequiredService<IUserService>();
-            var ConvertUserId = Convert.ToInt32(userId);
-
-            // 檢查是否為新會話
-            var sessionKey = $"Visit_{userId}";
-            if (!context.Session.TryGetValue(sessionKey, out _))
+            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
             {
-                // 嘗試發放每日獎勵
-                var GetReward = await rewardService.DailyRewardAsync(ConvertUserId);
-                if (GetReward) 
-                {
-                    context.Items["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
-                }
-                // 新會話，記錄到 LoginRecord 表
-                else
-                {
-                    var LoginRecord = new LoginRecord
-                    {
-                        UserId = ConvertUserId,
-                        Time = DateTime.UtcNow
-                    };
-                    if (dbContext != null)
-                    {
-                        dbContext.LoginRecords.Add(LoginRecord);
-                        await dbContext.SaveChangesAsync();
-                    }
-                }
-                // 設置 Session 標記
-                context.Session.SetString(sessionKey, "Active");
+                var dbContext = context.RequestServices.GetRequiredService<WormHoleContext>();
+                var rewardService = context.RequestServices.GetRequiredService<IUserService>();
+                var ConvertUserId = Convert.ToInt32(userId);
 
-                
+                // 檢查是否為新會話
+                var sessionKey = $"Visit_{userId}";
+                if (!context.Session.TryGetValue(sessionKey, out _))
+                {
+                    // 嘗試發放每日獎勵
+                    var GetReward = await rewardService.DailyRewardAsync(ConvertUserId);
+                    if (GetReward)
+                    {
+                        context.Items["RewardMessage"] = "已獲得每日登入獎勵: 2枚金幣";
+                    }
+                    // 新會話，記錄到 LoginRecord 表
+                    else
+                    {
+                        var LoginRecord = new LoginRecord
+                        {
+                            UserId = ConvertUserId,
+                            Time = DateTime.UtcNow.AddHours(8)
+                        };
+                        if (dbContext != null)
+                        {
+                            dbContext.LoginRecords.Add(LoginRecord);
+                            await dbContext.SaveChangesAsync();
+                        }
+                    }
+                    // 設置 Session 標記
+                    context.Session.SetString(sessionKey, "Active");
+
+
+                }
             }
         }
-    }
+    //}
+    //catch (Exception ex)
+    //{
+        
+    //}
     await next();
 });
 

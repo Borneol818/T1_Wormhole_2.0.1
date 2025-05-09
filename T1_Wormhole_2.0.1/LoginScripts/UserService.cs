@@ -57,10 +57,9 @@ namespace T1_Wormhole_2._0._1.LoginScripts
                 var taiwanZone = TimeZoneInfo.FindSystemTimeZoneById("Taipei Standard Time");
                 var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, taiwanZone);
                 var todayStart = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Unspecified);
-                var todayStartUtc = TimeZoneInfo.ConvertTimeToUtc(todayStart, taiwanZone);
 
                 // 檢查當天是否已有記錄
-                var hasVisitToday = await _context.LoginRecords.AnyAsync(l => l.UserId == userId && l.Time >= todayStartUtc);
+                var hasVisitToday = await _context.LoginRecords.AnyAsync(l => l.UserId == userId && l.Time >= todayStart);
 
 
                 if (!hasVisitToday)
@@ -74,13 +73,13 @@ namespace T1_Wormhole_2._0._1.LoginScripts
                             UserId = userId,
                             CoinSource = "每日登入獎勵",
                             CoinAmount = 2,
-                            AccessTime = DateTime.UtcNow,
+                            AccessTime = DateTime.UtcNow.AddHours(8),
                             Status = "已發放"
                         };
                         var LoginRecord = new LoginRecord
                         {
                             UserId = user.UserId,
-                            Time = DateTime.UtcNow,
+                            Time = DateTime.UtcNow.AddHours(8),
                         };
                         _context.ForumCoins.Add(LoginAward);
                         _context.LoginRecords.Add(LoginRecord);

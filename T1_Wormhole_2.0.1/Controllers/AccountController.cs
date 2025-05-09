@@ -49,65 +49,74 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(Login model1, UserInfo model2)
         {
-            var ExistUser = _userService.FindByUsername(model1.Account);
-            if (model1.Password != model1.ConfirmPassword || (ExistUser != null))
+            var ExistUser = _userService.FindByEmail(model1.Email);
+            var ExistAccount = _userService.FindByUsername(model1.Account);
+            if (model1.Password != model1.ConfirmPassword || (ExistUser != null) || (ExistAccount != null))
             {
                 ModelState.AddModelError("ConfirmPassword", "The password and confirmation password do not match.");
                 Console.WriteLine("帳號創建失敗");
+                TempData["RegisterFail"] = "創建帳號失敗!您是否已註冊會員或檢查您的資訊是否有誤";
                 return View("Register");
             }
-            
-            if (ModelState.IsValid)
+            try
             {
-                var user = new Login
+                if (ModelState.IsValid)
                 {
-                    Account = model1.Account,
-                    Email = model1.Email,
-                    EmailConfirmed = false,
-                    EmailVerificationToken = Guid.NewGuid().ToString("N")
-                };
-                user.Password = _passwordHasher.HashPassword(model1.Password);
+                    var user = new Login
+                    {
+                        Account = model1.Account,
+                        Email = model1.Email,
+                        EmailConfirmed = false,
+                        EmailVerificationToken = Guid.NewGuid().ToString("N")
+                    };
+                    user.Password = _passwordHasher.HashPassword(model1.Password);
 
-                _userService.CreateUser(user);
-                //新增UserInfo
-                var userInfo = new UserInfo
-                {
-                    UserId = 0,
-                    Name = model2.Name,
-                    Email = model1.Email,
-                    Nickname = model2.Nickname,
-                    Sex = model2.Sex,
-                    Birthday = model2.Birthday,
-                    Phone = model2.Phone,
-                    Status = false
-                };
+                    _userService.CreateUser(user);
+                    //新增UserInfo
+                    var userInfo = new UserInfo
+                    {
+                        UserId = 0,
+                        Name = model2.Name,
+                        Email = model1.Email,
+                        Nickname = model2.Nickname,
+                        Sex = model2.Sex,
+                        Birthday = model2.Birthday,
+                        Phone = model2.Phone,
+                        Status = false
+                    };
 
-                _context.UserInfos.Add(userInfo);
-                _context.SaveChanges();
-                var TempUserId = _context.UserInfos.FirstOrDefault(u => u.Email == model1.Email).UserId;
-                var userStatus = new UserStatus
-                {
-                    Id = TempUserId,
-                    Status = false,
-                    Level = 1
-                };
+                    _context.UserInfos.Add(userInfo);
+                    _context.SaveChanges();
+                    var TempUserId = _context.UserInfos.FirstOrDefault(u => u.Email == model1.Email).UserId;
+                    var userStatus = new UserStatus
+                    {
+                        Id = TempUserId,
+                        Status = false,
+                        Level = 1
+                    };
 
-                _context.UserStatuses.Add(userStatus);
-                _context.SaveChanges();
-                var baseUrl = _configuration["AppSettings:BaseUrl"];
-                var verificationLink = $"{baseUrl}/Account/VerifyEmail?token={user.EmailVerificationToken}&email={user.Email}";
+                    _context.UserStatuses.Add(userStatus);
+                    _context.SaveChanges();
+                    var baseUrl = _configuration["AppSettings:BaseUrl"];
+                    var verificationLink = $"{baseUrl}/Account/VerifyEmail?token={user.EmailVerificationToken}&email={user.Email}";
 
-                var emailMessage = $@"
-                <h2>Welcome to Wormhole</h2>
-                <p>Please verify your email by clicking the link below:</p>
-                <a href='{verificationLink}'>Verify Email</a>";
+                    var emailMessage = $@"
+                        <h2>歡迎來到Wormhole</h2>
+                        <p>請點擊以下連結驗證您的電子郵件：</p>
+                        <a href='{verificationLink}'>驗證Email</a>";
 
-                await _emailSender.SendEmailAsync(user.Email,
-                    "Verify Your Email",emailMessage);
-                TempData["Email"] = user.Email;
-                return RedirectToAction("RegisterConfirmation");
+                    await _emailSender.SendEmailAsync(user.Email,
+                        "請驗證您的電子郵件", emailMessage);
+                    TempData["Email"] = user.Email;
+                    return RedirectToAction("RegisterConfirmation");
+                }
+                return View("Register");
             }
-            return View("Register");
+            catch (Exception ex)
+            {
+                TempData["RegisterFail"] = "創建帳號失敗!您是否已註冊會員或檢查您的資訊是否有誤";
+                return View("Register");
+            }
         }
 
         [HttpGet]
@@ -177,12 +186,12 @@ namespace T1_Wormhole_2._0._1.Controllers
                 var verificationLink = $"{baseUrl}/Account/VerifyEmail?token={user.EmailVerificationToken}&email={email}";
 
                 var emailMessage = $@"
-                <h2>Welcome to Wormhole</h2>
-                <p>Please verify your email by clicking the link below:</p>
-                <a href='{verificationLink}'>Verify Email</a>";
+                    <h2>歡迎來到Wormhole</h2>
+                    <p>請點擊以下連結驗證您的電子郵件：</p>
+                    <a href='{verificationLink}'>驗證Email</a>";
 
                 await _emailSender.SendEmailAsync(email,
-                    "Verify Your Email", emailMessage);
+                    "請驗證您的電子郵件", emailMessage);
 
                 return RedirectToAction("RegisterConfirmation", "Account");
             }
@@ -206,99 +215,108 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                
-                var user = _userService.FindByEmail(model.UserIdentifier);
-
-                // If not found by email, try username
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    user = _userService.FindByUsername(model.UserIdentifier);
-                }
-                Console.WriteLine($"User found: {user != null}");
-                string email = user != null ? user.Email : string.Empty;
-                var userInfo = _context.UserInfos.FirstOrDefault(u => u.Email == email);
-                string userId = userInfo.UserId != null ? userInfo.UserId.ToString() : string.Empty;
-                if (user != null && _passwordHasher.VerifyPassword(user.Password, model.Password) && user.EmailConfirmed)
-                {
-   
-                    var claims = new List<Claim>
+
+                    var user = _userService.FindByEmail(model.UserIdentifier);
+
+                    // If not found by email, try username
+                    if (user == null)
                     {
-                        new Claim(ClaimTypes.Name, user.Account),
-                        new Claim(ClaimTypes.NameIdentifier, userId),
-                        new Claim("UserID", userId),
-                        new Claim(ClaimTypes.Role, "User"),
-                    };
-
-                    //做一張身分證叫做cookies
-                    var claimsIdentity = new ClaimsIdentity(
-                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-
-                    //放身分證在原則內
-                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = model.KeepLog == null ? false : true, //保持登入
-                        ExpiresUtc = DateTime.UtcNow.AddDays(7),
-                        AllowRefresh = true,
-                    };
-
-                    if (model.RememberMe != null)
-                    {
-                        var NameProtector = _dataProtectionProvider.CreateProtector("LoginNameCookie");
-                        string encryptedUserIdentifier = NameProtector.Protect(model.UserIdentifier);
-                        var PWDProtector = _dataProtectionProvider.CreateProtector("LoginPWDCookie");
-                        string encryptedPWD = PWDProtector.Protect(model.Password);
-                        CookieOptions options = new CookieOptions
-                        {
-                            Expires = DateTime.UtcNow.AddDays(30),
-                            HttpOnly = true,
-                            Secure = true,
-                            SameSite = SameSiteMode.Strict
-                        };
-                        HttpContext.Response.Cookies.Append("LoginName", encryptedUserIdentifier, options);
-                        HttpContext.Response.Cookies.Append("LoginPassword", encryptedPWD, options);
+                        user = _userService.FindByUsername(model.UserIdentifier);
                     }
-
-                    await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        claimsPrincipal,
-                        authProperties);
-
-                    var GetReward = await _userService.DailyRewardAsync(userInfo.UserId); //登入獎勵發放
-                    if (GetReward)
+                    Console.WriteLine($"User found: {user != null}");
+                    string email = user != null ? user.Email : string.Empty;
+                    var userInfo = _context.UserInfos.FirstOrDefault(u => u.Email == email);
+                    string userId = userInfo.UserId != null ? userInfo.UserId.ToString() : string.Empty;
+                    if (user != null && _passwordHasher.VerifyPassword(user.Password, model.Password) && user.EmailConfirmed)
                     {
-                        TempData["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.Account),
+                            new Claim(ClaimTypes.NameIdentifier, userId),
+                            new Claim("UserID", userId),
+                            new Claim(ClaimTypes.Role, "User"),
+                        };
+
+                        //做一張身分證叫做cookies
+                        var claimsIdentity = new ClaimsIdentity(
+                            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+                        //放身分證在原則內
+                        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = model.KeepLog == null ? false : true, //保持登入
+                            ExpiresUtc = DateTime.UtcNow.AddHours(8).AddDays(7),
+                            AllowRefresh = true,
+                        };
+
+                        if (model.RememberMe != null)
+                        {
+                            var NameProtector = _dataProtectionProvider.CreateProtector("LoginNameCookie");
+                            string encryptedUserIdentifier = NameProtector.Protect(model.UserIdentifier);
+                            var PWDProtector = _dataProtectionProvider.CreateProtector("LoginPWDCookie");
+                            string encryptedPWD = PWDProtector.Protect(model.Password);
+                            CookieOptions options = new CookieOptions
+                            {
+                                Expires = DateTime.UtcNow.AddDays(30),
+                                HttpOnly = true,
+                                Secure = true,
+                                SameSite = SameSiteMode.Strict
+                            };
+                            HttpContext.Response.Cookies.Append("LoginName", encryptedUserIdentifier, options);
+                            HttpContext.Response.Cookies.Append("LoginPassword", encryptedPWD, options);
+                        }
+
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            claimsPrincipal,
+                            authProperties);
+
+                        var GetReward = await _userService.DailyRewardAsync(userInfo.UserId); //登入獎勵發放
+                        if (GetReward)
+                        {
+                            TempData["RewardMessage"] = "已獲得每日登入獎勵: 2枚金幣";
+                        }
+                        else
+                        {
+                            var LoginRecord = new LoginRecord //新增login紀錄
+                            {
+                                UserId = userInfo.UserId,
+                                Time = DateTime.UtcNow.AddHours(8),
+                            };
+                            _context.LoginRecords.Add(LoginRecord);
+                        }
+                        userInfo.Status = true;
+                        _context.SaveChanges();
+                        HttpContext.Session.SetString($"Visit_{userInfo.UserId}", "Active");
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        var LoginRecord = new LoginRecord //新增login紀錄
-                        {
-                            UserId = userInfo.UserId,
-                            Time = DateTime.UtcNow,
-                        };
-                        _context.LoginRecords.Add(LoginRecord);
+                        Console.WriteLine("帳號或密碼錯誤");
+                        TempData["LoginFail"] = "登入失敗!請檢查您的登入資料是否有誤";
+                        return View(model);
                     }
-                    userInfo.Status = true;
-                    _context.SaveChanges();
-                    HttpContext.Session.SetString($"Visit_{userInfo.UserId}", "Active");
+                }
 
-                    return RedirectToAction("Index", "Home");
-                }
-                else 
-                {
-                    Console.WriteLine("帳號或密碼錯誤");
-                    return View(model);
-                }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                Console.WriteLine($"Login attempt for email: {model.UserIdentifier} fail");
+                return View(model);
             }
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt");
-            Console.WriteLine($"Login attempt for email: {model.UserIdentifier} fail");
-            return View(model);
+            catch (Exception ex) 
+            {
+                TempData["LoginFail"] = "登入失敗!請檢查您的登入資料是否有誤";
+                return View(model);
+            }
         }
 
         [Authorize]
@@ -325,33 +343,43 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO model)
         {
-            //sent letter only
-            var user = _userService.FindByEmail(model.Email);
-            if (ModelState.IsValid && user != null)
+            try
             {
-                if (user.EmailConfirmed)
+                //sent letter only
+                var user = _userService.FindByEmail(model.Email);
+                if (ModelState.IsValid && user != null)
                 {
-                    user.EmailVerificationToken = Guid.NewGuid().ToString("N");
-                    _userService.UpdateUser(user);
-                    var baseUrl = _configuration["AppSettings:BaseUrl"];
-                    var verificationLink = $"{baseUrl}/Account/ResetPassword?token={user.EmailVerificationToken}&email={user.Email}";
+                    if (user.EmailConfirmed)
+                    {
+                        user.EmailVerificationToken = Guid.NewGuid().ToString("N");
+                        _userService.UpdateUser(user);
+                        var baseUrl = _configuration["AppSettings:BaseUrl"];
+                        var verificationLink = $"{baseUrl}/Account/ResetPassword?token={user.EmailVerificationToken}&email={user.Email}";
 
-                    var emailMessage = $@"
-                    <h2>Welcome to Wormhole</h2>
-                    <p>Please reset password by clicking the link below:</p>
-                    <a href='{verificationLink}'>Reset Password</a>";
+                        var emailMessage = $@"
+                        <h2>歡迎來到Wormhole</h2>
+                        <p>請點擊以下連結重設密碼：</p>
+                        <a href='{verificationLink}'>重設密碼</a>";
 
-                    await _emailSender.SendEmailAsync(user.Email,
-                        "Reset Your Password", emailMessage);
+                        await _emailSender.SendEmailAsync(user.Email,
+                            "重設您的密碼", emailMessage);
 
-                    TempData["Email"] = user.Email;
-                    TempData["token"] = user.EmailVerificationToken;
-                    return RedirectToAction("ForgotPasswordConfirmation");
+                        TempData["Email"] = user.Email;
+                        TempData["token"] = user.EmailVerificationToken;
+                        return RedirectToAction("ForgotPasswordConfirmation");
+                    }
+                    return View(model);
                 }
+                Console.WriteLine("something wrong with input data");
+                TempData["ForgotPasswordFail"] = "電子郵件有誤";
                 return View(model);
             }
-            Console.WriteLine("something wrong with input data");
-            return View(model);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                TempData["ForgotPasswordFail"] = "電子郵件有誤";
+                return View(model);
+            }
         }
 
         [HttpGet]
@@ -379,43 +407,52 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordDTO model)
         {
-            model.Email = TempData["Email"]?.ToString();
-            model.EmailVerificationToken = TempData["token"]?.ToString();
-            var user = _userService.FindByEmail(model.Email);
-            TempData.Keep("Email");
-            if (model.Password != model.ConfirmPassword)
+            try
             {
-                ModelState.AddModelError("", "Passwords do not match.");
-                Console.WriteLine("pwd incorrect");
+                model.Email = TempData["Email"]?.ToString();
+                model.EmailVerificationToken = TempData["token"]?.ToString();
+                var user = _userService.FindByEmail(model.Email);
+                TempData.Keep("Email");
+                if (model.Password != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "Passwords do not match.");
+                    Console.WriteLine("pwd incorrect");
+                    return View(model);
+                }
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "User not found.");
+                    Console.WriteLine("can't find user");
+                    return View(model);
+                }
+
+                if (user.EmailVerificationToken != model.EmailVerificationToken)
+                {
+                    ModelState.AddModelError("", "Invalid token.");
+                    Console.WriteLine("token mismatch");
+                    return View(model);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    Console.WriteLine($"{user.Account}");
+                    user.EmailVerificationToken = null;
+                    user.Password = _passwordHasher.HashPassword(model.Password);
+                    _userService.UpdateUser(user);
+                    // Update the user
+                    Console.WriteLine("Reseting user password");
+
+                    return RedirectToAction("Index", "Home");
+                }
+                Console.WriteLine("something wrong");
+                TempData["ResetPasswordFail"] = "重設密碼失敗!請聯絡管理員";
                 return View(model);
             }
-            if (user == null)
+            catch (Exception ex) 
             {
-                ModelState.AddModelError("", "User not found.");
-                Console.WriteLine("can't find user");
+                TempData["ResetPasswordFail"] = "重設密碼失敗!請聯絡管理員";
                 return View(model);
             }
-
-            if (user.EmailVerificationToken != model.EmailVerificationToken)
-            {
-                ModelState.AddModelError("", "Invalid token.");
-                Console.WriteLine("token mismatch");
-                return View(model);
-            }
-
-            if (ModelState.IsValid)
-            {
-                Console.WriteLine($"{user.Account}");
-                user.EmailVerificationToken = null;
-                user.Password = _passwordHasher.HashPassword(model.Password);
-                _userService.UpdateUser(user);
-                // Update the user
-                Console.WriteLine("Reseting user password");
-
-                return RedirectToAction("Index", "Home");
-            }
-            Console.WriteLine("something wrong");
-            return View(model);
         }
 
         public async Task<IActionResult> ValidGoogleLogin()
@@ -477,14 +514,14 @@ namespace T1_Wormhole_2._0._1.Controllers
                 var GetReward = await _userService.DailyRewardAsync(user.UserId); //登入獎勵發放
                 if (GetReward)
                 {
-                    TempData["RewardMessage"] = "已獲得每日登入獎勵 - 2枚金幣";
+                    TempData["RewardMessage"] = "已獲得每日登入獎勵: 2枚金幣";
                 }
                 else { 
 
                     var LoginRecord = new LoginRecord
                     {
                         UserId = user.UserId,
-                        Time = DateTime.UtcNow,
+                        Time = DateTime.UtcNow.AddHours(8),
                     };
                     _context.LoginRecords.Add(LoginRecord);
                 }
@@ -548,45 +585,62 @@ namespace T1_Wormhole_2._0._1.Controllers
         [HttpGet]
         public IActionResult SubmitUserInfo()
         {
-            TempData.Keep("Email");
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                TempData.Keep("Email");
+                return View();
+            }
         }
 
         [HttpPost]
         public IActionResult SubmitUserInfo(UserInfo model)
         {
-            model.Email = TempData["Email"]?.ToString();
-            model.UserId = 0;
-            if (ModelState.IsValid)
+            try
             {
-                var userInfo = new UserInfo
+                model.Email = TempData["Email"]?.ToString();
+                model.UserId = 0;
+                if (ModelState.IsValid)
                 {
-                    UserId = 0,
-                    Name = model.Name,
-                    Email = model.Email,
-                    Nickname = model.Nickname,
-                    Sex = model.Sex,
-                    Birthday = model.Birthday,
-                    Phone = model.Phone,
-                    Status = false
-                };
+                    var userInfo = new UserInfo
+                    {
+                        UserId = 0,
+                        Name = model.Name,
+                        Email = model.Email,
+                        Nickname = model.Nickname,
+                        Sex = model.Sex,
+                        Birthday = model.Birthday,
+                        Phone = model.Phone,
+                        Status = false
+                    };
 
-                _context.UserInfos.Add(userInfo);
-                _context.SaveChanges();
-                var TempUserId = _context.UserInfos.FirstOrDefault(u => u.Email == model.Email).UserId;
-                var userStatus = new UserStatus
+                    _context.UserInfos.Add(userInfo);
+                    _context.SaveChanges();
+                    var TempUserId = _context.UserInfos.FirstOrDefault(u => u.Email == model.Email).UserId;
+                    var userStatus = new UserStatus
+                    {
+                        Id = TempUserId,
+                        Status = false,
+                        Level = 1
+                    };
+                    _context.UserStatuses.Add(userStatus);
+                    _context.SaveChanges();
+                    return RedirectToAction("Login", "Account");
+                }
+                else
                 {
-                    Id = TempUserId,
-                    Status = false,
-                    Level = 1
-                };
-                _context.UserStatuses.Add(userStatus);
-                _context.SaveChanges();
-                return RedirectToAction("Login", "Account");
+                    Console.WriteLine("使用者資訊有誤");
+                    TempData["SubmitFail"] = "寫入會員資料失敗!請檢查您的資料是否有誤或不符合格式";
+                    return View(model);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("使用者資訊有誤");
+                Console.WriteLine(ex.Message);
+                TempData["SubmitFail"] = "寫入會員資料失敗!請檢查您的資料是否有誤或不符合格式";
                 return View(model);
             }
         }

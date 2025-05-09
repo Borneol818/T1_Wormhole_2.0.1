@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Web
+
 
 <body>
 
@@ -68,6 +69,16 @@
 </body>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var hasLoginMessage = @((TempData["LoginFail"] != null) ? "true" : "false");
+        if (hasLoginMessage) {
+            Swal.fire({
+                title: '登入異常',
+                text: '@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["LoginFail"]?.ToString() ?? ""))',
+                confirmButtonText: '確定'
+            });
+        }
+    });
      Vue.createApp({
         data() {
             return {

@@ -1,4 +1,5 @@
-﻿<main class="login-bg" style="height: 120vh;">
+﻿@using System.Web
+<main class="login-bg" style="height: 120vh;">
     <!-- Register Area Start -->
     <div class="register-form-area" id="app">
         <div class="register-form text-center">
@@ -57,6 +58,16 @@
     <!-- Register Area End -->
 </main>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var hasMessage = @((TempData["SubmitFail"] != null) ? "true" : "false");
+        if (hasMessage) {
+            Swal.fire({
+                title: '異常通知',
+                text: '@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["SubmitFail"]?.ToString() ?? ""))',
+                confirmButtonText: '確定'
+            });
+        }
+    });
      Vue.createApp({
         data() {
             return {
