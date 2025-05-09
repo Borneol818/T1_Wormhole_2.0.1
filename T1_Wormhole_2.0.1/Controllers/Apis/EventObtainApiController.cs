@@ -35,8 +35,8 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
                 ManagerId=e.ManagerId,
                 Coin=e.Coin,
                 Obtain=e.Obtain,
-                EventTimeStrat=e.EventTimeStrat,
-                EventTimeEnd=e.EventTimeEnd,
+                EventTimeStrat=e.EventTimeStrat.ToString("yyyy年MM月dd日 HH點mm分"),
+                EventTimeEnd=e.EventTimeEnd.ToString("yyyy年MM月dd日 HH點mm分"),
                 Type=e.Type, 
 
             }).ToListAsync();

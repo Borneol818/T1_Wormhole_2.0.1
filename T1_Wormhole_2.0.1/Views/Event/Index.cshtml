@@ -49,8 +49,8 @@
                             {{currentEvent.title}}
                         </h2>
                         <ul class="blog-info-link mt-3 mb-4">
-                            <li><i class="fa fa-user"></i> {{currentEvent.eventTimeStrat}}</li>
-                            <li><i class="fa fa-comments"></i>{{currentEvent.EventTimeEnd}}</li>
+                            <li>開始時間:{{currentEvent.eventTimeStrat}}</li>
+                            <li>截止時間:{{currentEvent.eventTimeEnd}}</li>
                         </ul>
                         <p class="excert">
                             {{currentEvent.eventContent}}
@@ -91,6 +91,7 @@
                 }).then(data=>{
                     // alert(JSON.stringify(data));
                     self.events=data;
+
                 }).catch(err=>{
                     alert(err);
                 });
@@ -120,6 +121,7 @@
                 let self=this;
                 // alert(JSON.stringify(event));
                 self.currentEvent=event;
+                
                 // alert(self.currentEvent);
                 self.showDetail=true;
             },
