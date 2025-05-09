@@ -47,12 +47,12 @@ public class EventDTO
     /// <summary>
     /// 活動開始時間
     /// </summary>
-    public DateTime EventTimeStrat { get; set; }
+    public string EventTimeStrat { get; set; }
 
     /// <summary>
     /// 活動結束時間
     /// </summary>
-    public DateTime EventTimeEnd { get; set; }
+    public string EventTimeEnd { get; set; }
 
     /// <summary>
     /// 活動類別
