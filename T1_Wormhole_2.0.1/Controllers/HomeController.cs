@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using T1_Wormhole_2._0._1.Models;
 using T1_Wormhole_2._0._1.Models.Database;
@@ -33,6 +34,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         public IActionResult Map() 
         {
             return View();

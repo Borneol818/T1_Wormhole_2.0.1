@@ -1,4 +1,5 @@
-﻿<body>
+﻿@using System.Web
+<body>
     <!-- header end -->
     <main class="login-bg" style="height: 1500px;">
         <!-- Register Area Start -->
@@ -90,6 +91,16 @@
 </body>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+            var hasRegisterMessage = @((TempData["RegisterFail"] != null) ? "true" : "false");
+    if (hasRegisterMessage) {
+        Swal.fire({
+            title: '註冊異常',
+            text: '@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["RegisterFail"]?.ToString() ?? ""))',
+            confirmButtonText: '確定'
+        });
+    }
+});
      Vue.createApp({
         data() {
             return {

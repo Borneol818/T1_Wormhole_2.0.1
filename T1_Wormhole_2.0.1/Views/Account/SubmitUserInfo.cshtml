@@ -1,55 +1,56 @@
-﻿<main class="login-bg" style="height: 180vh;">
+﻿@using System.Web
+<main class="login-bg" style="height: 120vh;">
     <!-- Register Area Start -->
     <div class="register-form-area" id="app">
         <div class="register-form text-center">
             <!-- Login Heading -->
             <div class="register-heading">
-                <span>Sign Up</span>
-                <p>Create your account to get full access</p>
+                <span style="font-weight:bolder;">使 用 者 資 料</span>
+                <p style="font-weight:bold;">請填寫基本資料</p>
             </div>
             <form action="/Account/SubmitUserInfo" method="post">
                 <!-- Single Input Fields -->
                 <div class="input-box" style="margin-bottom:20px;">
 
                     <div class="single-input-fields" style="overflow: hidden;">
-                        <label>Name</label>
-                        <input type="text" name="Name" v-model="Name" @@input="checkName" placeholder="Enter Your Name" style="margin-bottom: 10px;" minlength="3" maxlength="20">
-                        <label v-show="isEmptyName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
-                        <label v-show="isInvalidName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Name is too short</label>
+                        <label style="font-size:20px; font-weight:bold;">姓名</label>
+                        <input type="text" name="Name" v-model="Name" @@input="checkName" placeholder="ex:王大明" style="margin-bottom: 10px;" minlength="2" maxlength="20">
+                        <label v-show="isEmptyName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
+                        <label v-show="isInvalidName" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">請輸入真實姓名</label>
                     </div>
                     <div class="single-input-fields" style="overflow: hidden;">
-                        <label>Nickname</label>
-                        <input type="text" name="Nickname" v-model="Nickname" @@input="checkNickname" placeholder="Enter Your Nickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
-                        <label v-show="isEmptyNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
-                        <label v-show="isInvalidNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Nickname is too short</label>
+                        <label style="font-size:20px; font-weight:bold;">暱稱</label>
+                        <input type="text" name="Nickname" v-model="Nickname" placeholder="輸入暱稱" @@input="checkNickname" style="margin-bottom: 10px;" minlength="3" maxlength="20">
+                        <label v-show="isEmptyNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
+                        <label v-show="isInvalidNickname" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">暱稱長度太短</label>
                     </div>
                     <div class="single-input-fields" style="overflow: hidden;">
-                        <label>Phone</label>
+                        <label style="font-size:20px; font-weight:bold;">聯絡電話</label>
                         <input type="text" name="Phone" v-model="Phone" @@input="checkPhone" placeholder="09XXXXXXXX" style="margin-bottom: 10px;" minlength="10" maxlength="10">
-                        <label v-show="isEmptyPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
-                        <label v-show="isNotPhoneFormat" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">Incorrect Phone format</label>
+                        <label v-show="isEmptyPhone" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
+                        <label v-show="isNotPhoneFormat" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">請輸入正確的電話</label>
                     </div>
                     <div class="row">
                         <div class="single-input-fields col-6" style="margin-left: 10px; margin-right:20px;">
-                            <label>Birthday</label>
-                            <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" :max="today" placeholder="Birthday" style="margin-bottom: 10px; margin-right: 10px">
-                            <label v-show="isEmptyBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label style="font-size:20px; font-weight:bold;">生日</label>
+                            <input type="text" name="Birthday" onfocus="(this.type='date')" onblur="(this.type='text')" v-model="Birthday" :max="today" placeholder="生日" style="margin-bottom: 10px; margin-right: 10px">
+                            <label v-show="isEmptyBirthday" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
                         </div>
                         <div class="single-input-fields col-5">
-                            <label>Sex</label>
+                            <label style="font-size:20px; font-weight:bold;">性別</label>
                             <select name="Sex" v-model="Sex" class="country_select" style="height: 50px; width: 100%; margin-bottom:10px;">
                                 <option value=""></option>
-                                <option value="false">Male</option>
-                                <option value="true">Female</option>
+                                <option value="false">男</option>
+                                <option value="true">女</option>
                             </select>
-                            <label v-show="isEmptySex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">This field is required</label>
+                            <label v-show="isEmptySex" style="float:left; color: red; font-size: 12px; margin-bottom: 20px;">此欄位為必填</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- form Footer -->
                 <div class="register-footer" style="float:right;">
-                    <button v-bind:disabled="!formIsValid" class="submit-btn3">Submit</button>
+                    <button v-bind:disabled="!formIsValid" class="submit-btn3" style="font-size:20px; font-weight:bold;">確認送出</button>
                 </div>
             </form>
         </div>
@@ -57,6 +58,16 @@
     <!-- Register Area End -->
 </main>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var hasMessage = @((TempData["SubmitFail"] != null) ? "true" : "false");
+        if (hasMessage) {
+            Swal.fire({
+                title: '異常通知',
+                text: '@Html.Raw(HttpUtility.JavaScriptStringEncode(TempData["SubmitFail"]?.ToString() ?? ""))',
+                confirmButtonText: '確定'
+            });
+        }
+    });
      Vue.createApp({
         data() {
             return {
