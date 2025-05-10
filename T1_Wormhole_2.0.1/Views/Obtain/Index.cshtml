@@ -401,6 +401,7 @@
 						axios.post(`/api/ObtainsApi/${obtainID}`,null,{withCredentials:true}).then(response=>{
 							alert(response.data.message)
 							_this.filterObtains();
+							_this.updateCoins();
 						}).catch(err=>{
 							if (err.response){
 								if (err.response.status === 401) {
