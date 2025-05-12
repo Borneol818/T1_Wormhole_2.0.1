@@ -126,16 +126,10 @@ namespace T1_Wormhole_2._0._1.Controllers.Apis
         {
             var Article = await _db.Articles.FindAsync(id);
 
-            if (DTOModel.Signature!=null&&DTOModel.Signature.Length >= 1) 
-            {
+
                 Article.Title = DTOModel.Title;
-                Article.Content = DTOModel.Content + DTOModel.Signature[0];
-            } 
-            else 
-            {
-                Article.Title = DTOModel.Title;
-                Article.Content= DTOModel.Content;
-            }
+                Article.Content = DTOModel.Content;
+
             if (DTOModel.ArticleCover != null)
             {
                 using (BinaryReader br = new BinaryReader(DTOModel.ArticleCover.OpenReadStream()))
