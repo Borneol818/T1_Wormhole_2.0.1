@@ -196,12 +196,13 @@ namespace T1_Wormhole_2._0._1.Controllers
                 .Where(x => x.UserId == userID && x.Status == "已發放")
                 .Sum(x => (int?)x.CoinAmount) ?? 0;
 
-            if (user.Wallet < obtain.Price)
-            return BadRequest(new { message = "餘額不足" });
-
             bool alreadyOwned = _context.ObtainStatuses.Any(x => x.UserId == userID && x.ObtainId == id);
             if (alreadyOwned)
                 return BadRequest(new { message = "您已擁有此稱號" });
+
+            if (user.Wallet < obtain.Price)
+            return BadRequest(new { message = "餘額不足" });
+
             
             //寫入稱號狀態表
             var status = new ObtainStatus
@@ -218,7 +219,7 @@ namespace T1_Wormhole_2._0._1.Controllers
             var coinRecord = new ForumCoin
             {
                 UserId = userID,
-                CoinSource = $"購買稱號：{obtain.Name}", // 改成你的實際欄位
+                CoinSource = $"購買稱號：{obtain.Name}", 
                 AccessTime = DateTime.Now,
                 CoinAmount = -obtain.Price,
                 Status = "已發放"
