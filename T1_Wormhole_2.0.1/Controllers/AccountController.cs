@@ -217,6 +217,7 @@ namespace T1_Wormhole_2._0._1.Controllers
         {
             try
             {
+                ViewBag.BaseUrl = _configuration["AppSettings:BaseUrl"];
                 if (ModelState.IsValid)
                 {
 
