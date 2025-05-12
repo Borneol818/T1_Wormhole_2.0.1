@@ -73,10 +73,11 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 // ±Ò¥Î Hangfire Dashboard
-app.UseHangfireDashboard("/hangfire",new DashboardOptions 
-{
-    Authorization = new[] {new ClaimBaseHangfireDashboardAuthorizationFilter("Admin") }
-});
+app.UseHangfireDashboard("/hangfire");
+//,new DashboardOptions 
+//{
+//    Authorization = new[] {new ClaimBaseHangfireDashboardAuthorizationFilter("Admin") }
+//});
 
 app.UseRouting();
 app.UseSession();
